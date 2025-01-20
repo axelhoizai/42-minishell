@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 13:52:18 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/20 18:45:41 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <unistd.h>
+# include "src/pipex.h"
 
 #endif

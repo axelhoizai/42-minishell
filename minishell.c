@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 18:40:14 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/20 18:44:54 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,13 @@ void	get_promt()
 	printf("\e[m");
 }
 
-void	main(char **envp)
+int	main(int ac, char **envp)
 {
 	// int		argc;
 	char	**argv;
 	char	*input;
-	char	*prompt;
+	(void)envp;
+	(void)ac;
 	
 	signal(SIGINT, handle_sigint);
 	while (1)
@@ -66,7 +67,6 @@ void	main(char **envp)
 			;		
 		get_promt();
 		input = readline(" % ");
-		free(prompt);
 		if (!input) // CTRL+D
 		{
 			printf("Exiting...\n");
