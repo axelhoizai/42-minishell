@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 17:53:00 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/20 18:40:14 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	handle_sigquit(int sig)
+void	handle_sigquit(int sig) //revoir pour 'ctrl+\'
 {
 	(void)sig;
 }
 
-char	*get_promt()
+void	get_promt()
 {
 	char	*username;
 	char	hostname[1024];
@@ -41,36 +41,31 @@ char	*get_promt()
 		ft_strlcpy(hostname, "unknown", ft_strlen("unknown"));
 	username = ft_strjoin(username, "@");
 	tmp = ft_strtok(hostname, ".");
-	tmp = ft_strjoin(username, tmp);
-	tmp2 = ft_strjoin(tmp, "$ ");
+	tmp2 = ft_strjoin(username, tmp);
 	prompt = ft_strdup(tmp2);
 	free(username);
-	free(tmp);
 	free(tmp2);
 	ft_strtok(NULL, ".");
-	return (prompt);
+	printf("\e[0;44m");
+	printf("%s\n", prompt);
+	free (prompt);
+	printf("\e[m");
 }
 
-
-int	main(int argc, char **argv, char **envp)
+void	main(char **envp)
 {
+	// int		argc;
+	char	**argv;
 	char	*input;
 	char	*prompt;
-	(void)argc;
-	(void)argv;
-	(void)envp;
 	
 	signal(SIGINT, handle_sigint);
 	while (1)
 	{
-		//revoir pour 'ctrl+\'
-		if (signal(SIGQUIT, handle_sigquit) == SIG_ERR)
-			;
-			
-		printf("\e[0;32m");
-		prompt = get_promt();
-		input = readline(prompt);
-		printf("\e[m");
+		if (signal(SIGQUIT, handle_sigquit) == SIG_ERR) //revoir pour 'ctrl+\'
+			;		
+		get_promt();
+		input = readline(" % ");
 		free(prompt);
 		if (!input) // CTRL+D
 		{
@@ -81,10 +76,10 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*input)
 			add_history(input);
-		printf("You entered: %s\n", input);
-		//split input
-
+		// printf("You entered: %s\n", input);
+		argv = ft_split(input, ' ');
 		free(input);
+		free_tab(argv);
 	}
 	return (0);
 }
