@@ -6,12 +6,18 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 13:17:53 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/20 13:38:35 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifdef MINISHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <signal.h>
+# include <unistd.h>
 
 #endif

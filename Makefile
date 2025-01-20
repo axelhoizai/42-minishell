@@ -14,7 +14,7 @@ CFLAGS += -Wall -Wextra -Werror -g -I./libft
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
