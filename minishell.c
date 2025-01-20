@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 13:43:46 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/20 13:53:13 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	get_user_and_host()
 
 	if (gethostname(hostname, sizeof(hostname)) != 0)
 		strcpy(hostname, "unknown");
-	printf("User: %s\n", username);
-	printf("Host: %s\n", hostname);
+	printf("%s", username);
+	printf("@");
+	printf("%s >\n", ft_strtok(hostname, "."));
 }
 
 
@@ -47,6 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, handle_sigint);
 	while (1)
 	{
+		get_user_and_host();
 		input = readline("minishell> ");
 		if (!input) // CTRL+D
 		{
