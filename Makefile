@@ -1,7 +1,8 @@
 NAME = minishell
 
 SRCS = 	minishell.c src/pipex.c src/utils.c src/utils_error.c \
-		src/utils_files.c src/ft_here_doc.c src/utils_parse.c
+		src/utils_files.c src/ft_here_doc.c src/utils_parse.c \
+		utils_prompt.c 
 
 SRCS_BONUS = \
 
