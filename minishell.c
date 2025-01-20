@@ -21,9 +21,10 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	handle_sigquit(int sig) //revoir pour 'ctrl+\'
+void	handle_sigquit(int sig)
 {
 	(void)sig;
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	get_promt()
