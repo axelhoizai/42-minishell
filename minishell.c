@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 16:29:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:53:00 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	handle_sigquit(int sig)
+{
+	(void)sig;
 }
 
 char	*get_promt()
@@ -36,9 +41,11 @@ char	*get_promt()
 		ft_strlcpy(hostname, "unknown", ft_strlen("unknown"));
 	username = ft_strjoin(username, "@");
 	tmp = ft_strtok(hostname, ".");
-	tmp2 = ft_strjoin(username, tmp);
+	tmp = ft_strjoin(username, tmp);
+	tmp2 = ft_strjoin(tmp, "$ ");
 	prompt = ft_strdup(tmp2);
 	free(username);
+	free(tmp);
 	free(tmp2);
 	ft_strtok(NULL, ".");
 	return (prompt);
@@ -56,8 +63,12 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, handle_sigint);
 	while (1)
 	{
-		prompt = get_promt();
+		//revoir pour 'ctrl+\'
+		if (signal(SIGQUIT, handle_sigquit) == SIG_ERR)
+			;
+			
 		printf("\e[0;32m");
+		prompt = get_promt();
 		input = readline(prompt);
 		printf("\e[m");
 		free(prompt);
@@ -65,13 +76,14 @@ int	main(int argc, char **argv, char **envp)
 		{
 			printf("Exiting...\n");
 			rl_clear_history();
-			// free(prompt);
 			free(input);
 			break;
 		}
 		if (*input)
 			add_history(input);
 		printf("You entered: %s\n", input);
+		//split input
+
 		free(input);
 	}
 	return (0);
