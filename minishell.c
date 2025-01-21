@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 22:11:52 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/21 09:52:25 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	**get_argv(char *input)
 {
 	char	**argv;
 
+	argv = NULL;
 	if (input)
 	{
 		printf("You entered: %s\n", input);
@@ -49,7 +50,7 @@ int	main(int ac, char **envp)
 		input = readline("$ ");
 		if (!input)
 		{
-			printf("Exiting...\n");
+			printf("exit\n");
 			rl_clear_history();
 			free(input);
 			break ;

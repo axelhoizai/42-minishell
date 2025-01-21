@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_prompt.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 22:16:48 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/21 09:48:16 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,19 @@ static char	*ft_get_hostname(void)
 {
 	int		fd;
 	char	*hostname;
+	char	*tmp;
 
 	fd = open("/etc/hostname", O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-	hostname = get_next_line(fd);
-	if (ft_strchr(hostname, '\n'))
-		hostname[strlen(hostname) - 1] = '\0';
+	tmp = get_next_line(fd);
+	if (ft_strchr(tmp, '\n'))
+		tmp[strlen(tmp) - 1] = '\0';
 	close(fd);
+	hostname = ft_strtok(tmp, ".");
 	if (!hostname)
 		hostname = "minishell";
+	ft_strtok(NULL, ".");
 	return (hostname);
 }
 
@@ -65,7 +68,7 @@ static char	*ft_get_username(void)
 	username = ft_strjoin(username, "@");
 	return (username);
 }
-
+//PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 void	get_promt(void)
 {
 	char	*username;
