@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 14:10:06 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/21 14:17:40 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_promt(void);
 char	**get_argv(char *input);
 
 //utils_dir
-int		change_dir(char *dir);
+void		change_dir(char *dir);
 char	*get_dir(void);
 
 void	handle_exit(char *input, char **argv);
