@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_prompt.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 10:41:29 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/21 13:33:25 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,31 +68,51 @@ static char	*ft_get_username(void)
 	username = ft_strjoin(username, "@");
 	return (username);
 }
+
+char	*color_prompt(char *prompt, char *current_path)
+{
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
+	char	*color_prompt;
+	char	*colorcurrentpath;
+
+	tmp1 = ft_strjoin("\e[1;32m", prompt);
+	tmp2 = ft_strjoin(tmp1, "\e[m");
+	free(tmp1);
+	tmp3 = ft_strjoin(tmp2, ":");
+	free(tmp2);
+	
+	tmp1 = ft_strjoin("\e[1;34m", current_path);
+	tmp2 = ft_strjoin(tmp1, "\e[m");
+	colorcurrentpath = ft_strjoin(tmp2, "$ ");
+	free(tmp1);
+	free(tmp2);
+	color_prompt = ft_strjoin(tmp3, colorcurrentpath);
+	free(tmp3);
+	free(colorcurrentpath);
+	return (color_prompt);
+}
+
 //PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-void	get_promt(void)
+char	*get_promt(void)
 {
 	char	*username;
 	char	*hostname;
 	char	*prompt;
 	char	*tmp2;
 	char	*current_path;
+	
 
 	username = ft_get_username();
 	hostname = ft_get_hostname();
 	tmp2 = ft_strjoin(username, hostname);
-	prompt = ft_strdup(tmp2);
 	current_path = ft_get_currentpath();
-	printf("\e[1;32m");
-	printf("%s", prompt);
-	printf("\e[m");
-	printf(":");
-	printf("\e[1;34m");
-	printf("%s", current_path);
-	printf("\e[m");
+	prompt = color_prompt(tmp2, current_path);
+	free(tmp2);
 	free(username);
 	if (ft_strncmp(hostname, "minishell", 9) != 0)
 		free(hostname);
-	free(tmp2);
-	free(prompt);
 	free(current_path);
+	return (prompt);
 }

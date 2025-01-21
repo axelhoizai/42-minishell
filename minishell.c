@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 11:28:44 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/21 14:01:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	handle_sigint(int sig)
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	get_promt();
 	rl_redisplay();
 }
 
@@ -32,17 +31,16 @@ char	**get_argv(char *input)
 	argc = 0;
 	if (input)
 	{
-		// printf("%% %s\n", input);
 		argv = ft_split(input, ' ');
 		if (argv)
 		{
 			while (argv[argc])
 				argc++;
 		}
+		if (ft_strcmp(argv[0], "exit") == 0)
+			handle_exit(input, argv);
 		if (ft_strcmp(argv[0], "pwd") == 0)
 			printf("%s\n", get_dir());
-		if (ft_strcmp(argv[0], "exit") == 0)
-			handle_exit(input);
 		if (ft_strcmp(argv[0], "cd") == 0 && argc == 2)
 			change_dir(argv[1]);
 	}
@@ -53,19 +51,20 @@ int	main(int ac, char **envp)
 {
 	char	*input;
 	char	**argv;
+	char	*prompt;
 
 	(void)envp;
 	(void)ac;
 	signal(SIGINT, handle_sigint);
 	while (1)
 	{
-		get_promt();
-		// change_dir("/home/mdemare/");
-		// printf("pwd = %s\n", get_dir());
-		input = readline("$ ");
+		prompt = get_promt();
+		input = readline(prompt);
+		free(prompt);
 		if (!input)
 		{
-			handle_exit(input);
+			handle_exit(input, argv);
+			// free_tab(argv);
 			break ;
 		}
 		if (*input)
