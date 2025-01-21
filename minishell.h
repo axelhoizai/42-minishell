@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 11:22:51 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/21 13:09:30 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,7 @@ void	change_dir(char *dir);
 char	*get_dir(void);
 
 void	handle_exit(char *input);
+
+void	ft_echo(char **input);
 
 #endif
