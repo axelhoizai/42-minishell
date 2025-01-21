@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_prompt.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 09:48:16 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/21 10:41:29 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*ft_get_hostname(void)
 
 	fd = open("/etc/hostname", O_RDONLY);
 	if (fd < 0)
-		return (NULL);
+		return ("minishell");
 	tmp = get_next_line(fd);
 	if (ft_strchr(tmp, '\n'))
 		tmp[strlen(tmp) - 1] = '\0';
@@ -90,7 +90,8 @@ void	get_promt(void)
 	printf("%s", current_path);
 	printf("\e[m");
 	free(username);
-	free(hostname);
+	if (ft_strncmp(hostname, "minishell", 9) != 0)
+		free(hostname);
 	free(tmp2);
 	free(prompt);
 	free(current_path);
