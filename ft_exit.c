@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_dir.c                                        :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 11:31:03 by ahoizai          ###   ########.fr       */
+/*   Created: 2025/01/21 10:50:35 by ahoizai           #+#    #+#             */
+/*   Updated: 2025/01/21 11:09:44 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	change_dir(char *dir)
+void	ft_exit(char *input)
 {
-	if (dir && *dir)
-		chdir(dir);
-}
-
-char	*get_dir(void)
-{
-	char	*currentpath;
-
-	currentpath = getcwd(NULL, 0);
-	return (currentpath);
+	if (ft_strcmp(input, "exit") == 0)
+		return (1);
 }

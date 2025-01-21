@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 11:06:39 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/21 11:28:44 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ char	**get_argv(char *input)
 		}
 		if (ft_strcmp(argv[0], "pwd") == 0)
 			printf("%s\n", get_dir());
+		if (ft_strcmp(argv[0], "exit") == 0)
+			handle_exit(input);
+		if (ft_strcmp(argv[0], "cd") == 0 && argc == 2)
+			change_dir(argv[1]);
 	}
 	return (argv);
 }
@@ -61,9 +65,7 @@ int	main(int ac, char **envp)
 		input = readline("$ ");
 		if (!input)
 		{
-			printf("exit\n");
-			rl_clear_history();
-			free(input);
+			handle_exit(input);
 			break ;
 		}
 		if (*input)

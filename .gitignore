@@ -1,0 +1,8 @@
+.vscode
+*.o
+*.a
+*copy*
+minishell
+*.txt
+.valgrindrc
+valgrindrc

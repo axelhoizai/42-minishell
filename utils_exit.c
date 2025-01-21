@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_dir.c                                        :+:      :+:    :+:   */
+/*   utils_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 11:31:03 by ahoizai          ###   ########.fr       */
+/*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
+/*   Updated: 2025/01/21 11:24:29 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	change_dir(char *dir)
+void	handle_exit(char *input)
 {
-	if (dir && *dir)
-		chdir(dir);
-}
-
-char	*get_dir(void)
-{
-	char	*currentpath;
-
-	currentpath = getcwd(NULL, 0);
-	return (currentpath);
+	printf("exit\n");
+	rl_clear_history();
+	if (input)
+		free(input);
+	exit (0);
 }
