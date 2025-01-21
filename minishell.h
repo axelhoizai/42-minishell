@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 15:08:44 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/21 18:27:06 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "src/pipex.h"
 # include <sys/types.h>
 # include <dirent.h>
+# include <errno.h>
 
 char	*get_promt(void);
 char	**get_argv(char *input);
