@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 09:52:25 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/21 11:06:39 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,21 @@ void	handle_sigint(int sig)
 char	**get_argv(char *input)
 {
 	char	**argv;
+	int		argc;
 
 	argv = NULL;
+	argc = 0;
 	if (input)
 	{
-		printf("You entered: %s\n", input);
+		// printf("%% %s\n", input);
 		argv = ft_split(input, ' ');
+		if (argv)
+		{
+			while (argv[argc])
+				argc++;
+		}
+		if (ft_strcmp(argv[0], "pwd") == 0)
+			printf("%s\n", get_dir());
 	}
 	return (argv);
 }
@@ -47,6 +56,8 @@ int	main(int ac, char **envp)
 	while (1)
 	{
 		get_promt();
+		// change_dir("/home/mdemare/");
+		// printf("pwd = %s\n", get_dir());
 		input = readline("$ ");
 		if (!input)
 		{

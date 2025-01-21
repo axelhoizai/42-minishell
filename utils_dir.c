@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   utils_dir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 10:48:43 by mdemare          ###   ########.fr       */
+/*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
+/*   Updated: 2025/01/21 10:49:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "libft/libft.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <signal.h>
-# include <unistd.h>
-# include "src/pipex.h"
-# include <sys/types.h>
-# include <dirent.h>
+void	change_dir(char *dir)
+{
+	if (dir && *dir)
+		chdir(dir);
+	get_argv("");
+	get_promt();
+	get_dir();
+}
 
-void	get_promt(void);
-char	**get_argv(char *input);
+char	*get_dir(void)
+{
+	char	*currentpath;
 
-//utils_dir
-void	change_dir(char *dir);
-char	*get_dir(void);
-
-#endif
+	currentpath = getcwd(NULL, 0);
+	return (currentpath);
+}
