@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 17:41:14 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/21 16:50:23 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,17 @@ static void	handle_quoted_word(const char *str, char **result, int *i, int *j)
 	start = *i + 1;
 	(*i)++;
 	len = handle_quote(&str[*i], quote);
-	result[*j] = strndup(&str[start], len - 1);
+	result[*j] = (char *)malloc(sizeof(char) * len);
+	if (result[*j])
+	{
+		int	k = 0;
+		while (k < len - 1)
+		{
+			result[*j][k] = str[start + k];
+			k++;
+		}
+		result[*j][k] = '\0';
+	}
 	(*i) += len;
 	(*j)++;
 }
@@ -71,12 +81,24 @@ static void	handle_quoted_word(const char *str, char **result, int *i, int *j)
 static void	handle_unquoted_word(const char *str, char **result, int *i, int *j)
 {
 	int	start;
+	int	len;
 
 	start = *i;
 	while (str[*i] && !(str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\n')
 		&& str[*i] != '\'' && str[*i] != '\"')
 		(*i)++;
-	result[*j] = strndup(&str[start], *i - start);
+	len = *i - start;
+	result[*j] = (char *)malloc(sizeof(char) * (len + 1));
+	if (result[*j])
+	{
+		int	k = 0;
+		while (k < len)
+		{
+			result[*j][k] = str[start + k];
+			k++;
+		}
+		result[*j][k] = '\0';
+	}
 	(*j)++;
 }
 

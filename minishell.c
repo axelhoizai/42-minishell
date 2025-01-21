@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 14:09:53 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/21 16:46:46 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ char	**get_argv(char *input)
 			handle_exit(input, argv);
 		else if (ft_strcmp(argv[0], "pwd") == 0)
 			printf("%s\n", get_dir());
-		else if (ft_strcmp(argv[0], "cd") == 0 && argc == 2)
-			change_dir(argv[1]);
+		else if (ft_strcmp(argv[0], "cd") == 0)
+			change_dir(argc, argv[1]);
 		else if (ft_strcmp(argv[0], "echo") == 0)
 			ft_echo(argv);
 	}
@@ -66,14 +66,14 @@ int	main(int ac, char **envp)
 		if (!input)
 		{
 			handle_exit(input, argv);
-			// free_tab(argv);
 			break ;
 		}
 		if (*input)
 			add_history(input);
 		argv = get_argv(input);
+		// if (argv && input)
+			free_tab(argv);
 		free(input);
-		free_tab(argv);
 	}
 	return (0);
 }
