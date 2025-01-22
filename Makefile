@@ -8,7 +8,7 @@ PIPEX = pipex/pipex.c pipex/utils.c pipex/utils_error.c \
 BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exit.c builtins/builtins_echo.c \
 			builtins/builtins_export.c builtins/builtins_unset.c  builtins/builtins_env.c 
 
-UTILS = utils/utils_prompt.c 
+UTILS = utils/utils_prompt.c utils/utils_error.c 
 
 SRCS_BONUS = \
 

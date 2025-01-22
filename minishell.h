@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 13:44:51 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/22 13:52:17 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,8 @@ void	ft_unset(int argc, char *argv);
 
 //debug
 void	print_tab(char **tab);
+
+//utils_error
+void	ft_print_error(char *builting, char *arg, char *msg, int exit_code);
 
 #endif
