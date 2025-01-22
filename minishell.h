@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 11:10:31 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 13:20:31 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,8 @@ void	ft_env(int argc, char *argv);
 
 //builtins_unset
 void	ft_unset(int argc, char *argv);
+
+//utils_error
+void	ft_print_error(char *builting, char *arg, char *msg, int exit_code);
 
 #endif

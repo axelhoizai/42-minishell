@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 11:06:13 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 13:47:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,16 @@ void	change_dir(int argc, char *dir)
 	cwd = getcwd(NULL, 0);
 	tmpdir = ft_strjoin(cwd, dir);
 	if (argc > 2)
-		printf("minishell: cd: too many arguments\n");//echo $? = 1
+		ft_print_error("cd", NULL, "too many arguments", 1);
 	else if (!dir)
 		chdir(getenv("HOME"));
 	else if(open(dir, O_RDONLY | __O_DIRECTORY) == -1)
-		printf("minishell: cd: %s: Not a directory\n", dir);//echo $? = 1
+		ft_print_error("cd", dir, "Not a directory", 1);
 	else if(access(dir, F_OK) == 0)
 		chdir(dir);
 	else if(!ft_strnstr(tmpdir, "//", ft_strlen(tmpdir)) && access(tmpdir, F_OK) == 0)
 		chdir(tmpdir);
 	else
-		printf("minishell: cd: %s: No such file or directory\n", dir);
-		// perror("minishell: cd");
+		ft_print_error("cd", dir, "No such file or directory", 1);
 	free_change_dir(cwd, tmpdir);
-	// free(dir);
 }
