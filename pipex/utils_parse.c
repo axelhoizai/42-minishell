@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 16:50:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 14:51:14 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	handle_quoted_word(const char *str, char **result, int *i, int *j)
 	start = *i + 1;
 	(*i)++;
 	len = handle_quote(&str[*i], quote);
-	result[*j] = (char *)malloc(sizeof(char) * len);
+	result[*j] = (char *)malloc(sizeof(char) * len + 1);
 	if (result[*j])
 	{
 		int	k = 0;
@@ -119,7 +119,7 @@ char	**utils_parse_args(const char *str)
 	{
 		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
 			i++;
-		if (str[i] == '\'' || str[i] == '\"')
+		if ((str[i] == '\'' || str[i] == '\"'))
 			handle_quoted_word(str, result, &i, &j);
 		else if (str[i] != '\0')
 			handle_unquoted_word(str, result, &i, &j);

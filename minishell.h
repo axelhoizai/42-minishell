@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 13:52:17 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/22 14:43:46 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*get_dir(void);
 void	handle_exit(char *input, char **argv);
 
 //builtins_echo
-void	ft_echo(char *input);
+void	ft_echo(int argc,char **argv);
 
 //builtins_export
 void	ft_export(int argc, char *argv);

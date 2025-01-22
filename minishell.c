@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 13:00:39 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/22 16:43:08 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	handle_builtins(int argc, char **argv, char *input)
 {
 	// print_tab(argv);
 	if (ft_strcmp(argv[0], "echo") == 0)
-		ft_echo(input);
+		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
