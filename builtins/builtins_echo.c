@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/22 19:02:08 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 19:50:21 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,19 +132,59 @@ char	*parse_arg(char *arg)
 	return (handle_n(arg));
 }
 
-void	ft_echo(int argc,char **argv)
+char	**ft_echo_tab(int argc, char **argv)
 {
 	int		i;
-	char	*tmp1;
+	char	**builtin_tab;
 
 	i = 0;
-	(void)argc;
 	print_tab(argv);
+	builtin_tab = malloc(sizeof (char *) * (argc + 1));
 	while (argv[i])
 	{
-		tmp1 = parse_arg(argv[i]);
-		if (tmp1 != argv[i])
-			free(tmp1);
+		builtin_tab[i] = parse_arg(argv[i]);
+		printf("arg : %s\n", builtin_tab[i]);
 		i++;
 	}
+	builtin_tab[i] = NULL;
+	return (builtin_tab);
+}
+
+void	ft_echo(int argc, char **argv)
+{
+	int		i;
+	char	**builtin_tab;
+
+	builtin_tab = ft_echo_tab(argc, argv);
+	if (ft_strcmp(builtin_tab[0], "echo") == 0)
+	{
+		if (!builtin_tab[1] || (ft_strcmp("-n", builtin_tab[1])) != 0)
+		{
+			i = 1;
+			while (builtin_tab[i])
+			{
+				if (builtin_tab[i] && builtin_tab[i + 1])
+					printf("%s ", builtin_tab[i]);
+				else if (builtin_tab[i] && !builtin_tab[i + 1])
+					printf("%s", builtin_tab[i]);
+				i++;
+			}
+			printf("\n");
+		}
+		else if (ft_strcmp(builtin_tab[0], "echo") == 0 && (ft_strcmp("-n", builtin_tab[1])) == 0)
+		{
+			i = 1;
+			while (builtin_tab[i] && (ft_strcmp("-n", builtin_tab[i])) == 0)
+				i++;
+			while (builtin_tab[i])
+			{
+				if (builtin_tab[i + 1])
+					printf("%s ", builtin_tab[i]);
+				else
+					printf("%s", builtin_tab[i]);
+				i++;
+			}
+		}
+	}
+	free_tab(builtin_tab);
 }
