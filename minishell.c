@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/21 16:46:46 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 10:23:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,45 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
+void	handle_builtins(int argc, char **argv, char *input)
+{
+	if (ft_strcmp(argv[0], "exit") == 0)
+		handle_exit(input, argv);
+	else if (ft_strcmp(argv[0], "pwd") == 0)
+		printf("%s\n", get_dir());
+	else if (ft_strcmp(argv[0], "cd") == 0)
+		change_dir(argc, argv[1]);
+	else if (ft_strcmp(argv[0], "echo") == 0)
+		ft_echo(argv);
+	
+}
+
 char	**get_argv(char *input)
 {
 	char	**argv;
 	int		argc;
+	char	*builtins;
+	int		i;
 
 	argv = NULL;
 	argc = 0;
+	i = 0;
 	if (input)
 	{
-		argv = ft_split(input, ' ');
-		if (argv)
+		builtins = ft_strtok(input, "\n");
+		while (builtins != NULL)
 		{
-			while (argv[argc])
+			printf("builtins = %s\n", builtins);
+			argv = ft_split(builtins, ' ');
+			while (argv && argv[argc])
 				argc++;
+			//netoyer
+			//ranger
+			handle_builtins(argc, argv, builtins);
+			builtins = ft_strtok(NULL, "\n");
+			argc = 0;
+			free_tab(argv);
 		}
-		if (ft_strcmp(argv[0], "exit") == 0)
-			handle_exit(input, argv);
-		else if (ft_strcmp(argv[0], "pwd") == 0)
-			printf("%s\n", get_dir());
-		else if (ft_strcmp(argv[0], "cd") == 0)
-			change_dir(argc, argv[1]);
-		else if (ft_strcmp(argv[0], "echo") == 0)
-			ft_echo(argv);
 	}
 	return (argv);
 }
@@ -72,7 +88,7 @@ int	main(int ac, char **envp)
 			add_history(input);
 		argv = get_argv(input);
 		// if (argv && input)
-			free_tab(argv);
+		// free_tab(argv);
 		free(input);
 	}
 	return (0);
