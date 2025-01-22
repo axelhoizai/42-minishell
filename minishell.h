@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 19:44:03 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/22 19:54:50 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,11 @@ void	print_tab(char **tab);
 
 //utils_error
 void	ft_print_error(char *builting, char *arg, char *msg, int exit_code);
+
+//utils_parsing
+char	*parse_quote(char *arg);
+
+//utils_debug
+void	print_tab(char **tab);
 
 #endif
