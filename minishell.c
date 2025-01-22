@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 11:11:17 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 13:00:39 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void	handle_sigint(int sig)
 
 void	handle_builtins(int argc, char **argv, char *input)
 {
+	// print_tab(argv);
 	if (ft_strcmp(argv[0], "echo") == 0)
-		ft_echo(argv);
+		ft_echo(input);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
@@ -39,7 +40,6 @@ void	handle_builtins(int argc, char **argv, char *input)
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		handle_exit(input, argv);
 
-	
 	
 }
 
