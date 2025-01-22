@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 10:23:59 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:11:17 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,22 @@ void	handle_sigint(int sig)
 
 void	handle_builtins(int argc, char **argv, char *input)
 {
-	if (ft_strcmp(argv[0], "exit") == 0)
-		handle_exit(input, argv);
-	else if (ft_strcmp(argv[0], "pwd") == 0)
-		printf("%s\n", get_dir());
+	if (ft_strcmp(argv[0], "echo") == 0)
+		ft_echo(argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1]);
-	else if (ft_strcmp(argv[0], "echo") == 0)
-		ft_echo(argv);
+	else if (ft_strcmp(argv[0], "pwd") == 0)
+		printf("%s\n", get_dir());
+	else if (ft_strcmp(argv[0], "export") == 0)
+		ft_export(argc, argv[1]);
+	else if (ft_strcmp(argv[0], "unset") == 0)
+		ft_unset(argc, argv[1]);
+	else if (ft_strcmp(argv[0], "env") == 0)
+		ft_env(argc, argv[1]);
+	else if (ft_strcmp(argv[0], "exit") == 0)
+		handle_exit(input, argv);
+
+	
 	
 }
 

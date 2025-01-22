@@ -1,12 +1,21 @@
 NAME = minishell
 
-SRCS = 	minishell.c src/pipex.c src/utils.c src/utils_error.c \
-		src/utils_files.c src/ft_here_doc.c src/utils_parse.c \
-		utils_prompt.c utils_dir.c utils_exit.c ft_echo.c
+SRCS = 	minishell.c \
+
+PIPEX = pipex/pipex.c pipex/utils.c pipex/utils_error.c \
+		pipex/utils_files.c pipex/ft_here_doc.c pipex/utils_parse.c \
+
+BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exit.c builtins/builtins_echo.c \
+			builtins/builtins_export.c builtins/builtins_unset.c  builtins/builtins_env.c 
+
+UTILS = utils/utils_prompt.c 
 
 SRCS_BONUS = \
 
-OBJS = $(SRCS:.c=.o)
+ALL_SRCS = $(SRCS) $(PIPEX) $(BUILTINS) $(UTILS)
+
+OBJS = $(ALL_SRCS:.c=.o)
+
 OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 LIBFT = ./libft/libft.a
 
