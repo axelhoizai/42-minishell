@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 13:47:47 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 20:30:09 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,37 @@ void	free_change_dir(char *cwd, char *tmpdir)
 		free(tmpdir);
 }
 
-char	*parse_dir(char *dir)
-{
-	char	**tmp1;
-	int		i;
+// char	*parse_dir(char *dir)
+// {
+// 	char	**tmp1;
+// 	int		i;
 
-	i = 0;
-	tmp1 = utils_parse_args(dir);
-	if(access(*tmp1, F_OK) == 0)
-	{
-		dir = ft_strdup(*tmp1);
-		free_tab(tmp1);
+// 	i = 0;
+// 	tmp1 = parse_quote(dir);
+// 	if(access(*tmp1, F_OK) == 0)
+// 	{
+// 		dir = ft_strdup(*tmp1);
+// 		free_tab(tmp1);
+// 		return (dir);
+// 	}
+// 	while (tmp1[i])
+// 		i++;
+// 	if (i > 1)
+// 		dir = ft_strjoin(tmp1[0], tmp1[1]);
+// 	free_tab(tmp1);
+// 	return (dir);
+// }
+
+
+char	*parse_dir(char *dir) //cd "ho""la"
+{
+	char *tmp1;
+
+	tmp1 = parse_quote(dir); //a free
+	if (tmp1 == NULL)
 		return (dir);
-	}
-	while (tmp1[i])
-		i++;
-	if (i > 1)
-		dir = ft_strjoin(tmp1[0], tmp1[1]);
-	free_tab(tmp1);
-	return (dir);
+	else
+		return (tmp1);
 }
 
 void	change_dir(int argc, char *dir)

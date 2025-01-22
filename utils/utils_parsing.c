@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:13:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 19:50:17 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 20:22:04 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,26 @@ char	*parse_quote(char *arg)
 	j = 0;
 	count_simgle = ft_count_single(arg);
 	count_double = ft_count_double(arg);
-	tmp1 = ft_calloc(ft_strlen(arg), 1);
+	tmp1 = ft_calloc(ft_strlen(arg) + 1, sizeof(char));
+	if (!tmp1)
+		return (NULL);
 	while (arg && *arg)
 	{
-		while (count_double > 0 && *arg == '"')
-		{
-			count_double -= 1;
-			arg++;
-		}
 		while (count_simgle > 0 && *arg == '\'')
 		{
 			count_simgle -= 1;
 			arg++;
 		}
-		tmp1[j++] = *arg;
-		arg++;
+		while (count_double > 0 && *arg == '"')
+		{
+			count_double -= 1;
+			arg++;
+		}
+		if (*arg)
+		{
+			tmp1[j++] = *arg;
+			arg++;
+		}
 	}
 	return (tmp1);
 }
