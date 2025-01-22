@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 14:43:46 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/22 19:17:39 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,11 @@ void	print_tab(char **tab);
 
 //utils_error
 void	ft_print_error(char *builting, char *arg, char *msg, int exit_code);
+
+//utils_parsing
+char	*parse_quote(char *arg);
+
+//utils_debug
+void	print_tab(char **tab);
 
 #endif
