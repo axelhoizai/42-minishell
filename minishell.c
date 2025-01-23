@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 19:41:58 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/23 11:37:23 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	handle_builtins(int argc, char **argv, char *input)
+void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 {
 	// print_tab(argv);
 	if (ft_strcmp(argv[0], "echo") == 0)
-		ft_echo(argc, argv);
+		ft_echo(argc, argv, data);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
@@ -43,7 +43,13 @@ void	handle_builtins(int argc, char **argv, char *input)
 	
 }
 
-char	**get_argv(char *input)
+void	ft_init(t_data	*data)
+{
+	data->exit_code = 0;
+	
+}
+
+char	**get_argv(char *input, t_data *data)
 {
 	char	**argv;
 	int		argc;
@@ -64,7 +70,7 @@ char	**get_argv(char *input)
 				argc++;
 			//netoyer
 			//ranger
-			handle_builtins(argc, argv, builtins);
+			handle_builtins(argc, argv, builtins, data);
 			builtins = ft_strtok(NULL, "\n");
 			argc = 0;
 			free_tab(argv);
@@ -78,12 +84,14 @@ int	main(int ac, char **envp)
 	char	*input;
 	char	**argv;
 	char	*prompt;
+	t_data	data;
 
 	(void)envp;
 	(void)ac;
 	signal(SIGINT, handle_sigint);
 	while (1)
 	{
+		ft_init(&data);
 		prompt = get_promt();
 		input = readline(prompt);
 		free(prompt);
@@ -94,7 +102,7 @@ int	main(int ac, char **envp)
 		}
 		if (*input)
 			add_history(input);
-		argv = get_argv(input);
+		argv = get_argv(input, &data);
 		// if (argv && input)
 		// free_tab(argv);
 		free(input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/22 19:55:29 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/23 12:51:56 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,35 @@ char	**ft_echo_tab(int argc, char **argv)
 	return (builtin_tab);
 }
 
-void	ft_echo(int argc, char **argv)
+char	*parse_dollar(char *arg, t_data *data)
+{
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+	char	*result;
+	int i;
+
+	data->exit_code = 404;
+	i = 0;
+	while (arg)
+	{
+		if (arg[i] == '$' && arg[i + 1] == '?')
+			break ;
+		i++;
+	}
+	tmp = ft_substr(arg, 0, i);
+	tmp2 = ft_substr(arg, i + 2, ft_strlen(arg));
+	tmp3 = ft_strjoin(tmp, ft_itoa(data->exit_code));
+	result = ft_strjoin(tmp3, tmp2);
+	free(tmp);
+	free(tmp2);
+	free(tmp3);	
+	if (ft_strstr(result, "$?"))
+		return (parse_dollar(result, data));
+	return (result);
+}
+
+void	ft_echo(int argc, char **argv, t_data *data)
 {
 	int		i;
 	char	**builtin_tab;
@@ -85,6 +113,8 @@ void	ft_echo(int argc, char **argv)
 			i = 1;
 			while (builtin_tab[i])
 			{
+				if (ft_strstr(builtin_tab[i], "$?"))
+					builtin_tab[i] = parse_dollar(builtin_tab[i], data);
 				if (builtin_tab[i] && builtin_tab[i + 1])
 					printf("%s ", builtin_tab[i]);
 				else if (builtin_tab[i] && !builtin_tab[i + 1])
@@ -100,6 +130,8 @@ void	ft_echo(int argc, char **argv)
 				i++;
 			while (builtin_tab[i])
 			{
+				if (ft_strstr(builtin_tab[i], "$?"))
+					builtin_tab[i] = parse_dollar(builtin_tab[i], data);
 				if (builtin_tab[i + 1])
 					printf("%s ", builtin_tab[i]);
 				else

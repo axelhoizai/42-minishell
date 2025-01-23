@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 19:54:50 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/23 11:36:09 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,15 @@
 # define CMD		6	//"|"
 # define ARG		7	//"|"
 
+typedef struct s_data
+{
+	int exit_code;
+	// pid_t pid;
+	// int pip[2];
+} t_data;
+
 char	*get_promt(void);
-char	**get_argv(char *input);
+char	**get_argv(char *input, t_data *data);
 
 //utils_cd
 void	change_dir(int argc, char *dir);
@@ -47,7 +54,7 @@ void	handle_exit(char *input, char **argv);
 
 //builtins_echo
 char	**ft_echo_tab(int argc, char **argv);
-void	ft_echo(int argc, char **argv);
+void	ft_echo(int argc, char **argv, t_data *data);
 
 
 //builtins_export
