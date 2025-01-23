@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 14:51:14 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 19:52:09 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ static void	handle_quoted_word(const char *str, char **result, int *i, int *j)
 	char	quote;
 	int		start;
 	int		len;
+	int		k;
 
+	k = 0;
 	quote = str[*i];
 	start = *i + 1;
 	(*i)++;
@@ -66,7 +68,6 @@ static void	handle_quoted_word(const char *str, char **result, int *i, int *j)
 	result[*j] = (char *)malloc(sizeof(char) * len + 1);
 	if (result[*j])
 	{
-		int	k = 0;
 		while (k < len - 1)
 		{
 			result[*j][k] = str[start + k];
@@ -82,7 +83,9 @@ static void	handle_unquoted_word(const char *str, char **result, int *i, int *j)
 {
 	int	start;
 	int	len;
+	int	k;
 
+	k = 0;
 	start = *i;
 	while (str[*i] && !(str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\n')
 		&& str[*i] != '\'' && str[*i] != '\"')
@@ -91,7 +94,6 @@ static void	handle_unquoted_word(const char *str, char **result, int *i, int *j)
 	result[*j] = (char *)malloc(sizeof(char) * (len + 1));
 	if (result[*j])
 	{
-		int	k = 0;
 		while (k < len)
 		{
 			result[*j][k] = str[start + k];

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:13:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 17:43:51 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/23 19:48:52 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ static int	ft_count_quote(char *arg, char quote)
 {
 	int	count;
 	int	i;
-	
+
 	count = 0;
 	i = 0;
-	while(arg[i])
+	while (arg[i])
 	{
 		if (arg[i] == quote)
 			count++;
@@ -28,9 +28,9 @@ static int	ft_count_quote(char *arg, char quote)
 	return (count);
 }
 
-static void parse_single_quote(char **arg, char *str, int *j, int *count_s)
+static void	parse_single_quote(char **arg, char *str, int *j, int *count_s)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while ((*arg + 1)[len] && (*arg + 1)[len] != '\'')
@@ -42,9 +42,9 @@ static void parse_single_quote(char **arg, char *str, int *j, int *count_s)
 	*count_s -= 2;
 }
 
-static void parse_double_quote(char **arg, char *str, int *j, int *count_d)
+static void	parse_double_quote(char **arg, char *str, int *j, int *count_d)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while ((*arg + 1)[len] && (*arg + 1)[len] != '"')
@@ -56,10 +56,10 @@ static void parse_double_quote(char **arg, char *str, int *j, int *count_d)
 	*count_d -= 2;
 }
 
-char *parse_quote(char *arg)
+char	*parse_quote(char *arg)
 {
 	char	*str;
-	int 	j;
+	int		j;
 	int		count_s;
 	int		count_d;
 
@@ -82,61 +82,3 @@ char *parse_quote(char *arg)
 	}
 	return (str);
 }
-
-// char	*parse_quote(char *arg)
-// {
-// 	char	*str;
-// 	int		j;
-// 	int		len;
-// 	int		count_d;
-// 	int		count_s;
-
-// 	j = 0;
-// 	count_s = ft_count_quote(arg, '\'');
-// 	count_d = ft_count_quote(arg, '"');
-// 	str = ft_calloc(ft_strlen(arg) + 1, sizeof(char));
-// 	if (!str)
-// 		return (NULL);
-// 	while (arg && *arg)
-// 	{
-// 		while (*arg && *arg != '\'' && *arg != '"')
-// 		{
-// 			str[j] = *arg;
-// 			arg++;
-// 			j++;
-// 		}
-// 		if (*arg == '\'' && (count_s % 2 == 0 || count_s >= 2))
-// 		{
-// 			len = 0;
-// 			while ((arg + 1)[len] && (arg + 1)[len] != '\'')
-// 				len++;
-// 			arg++;
-// 			while(len > 0)
-// 			{
-// 				str[j] = *arg;
-// 				len--;
-// 				j++;
-// 				arg++;
-// 			}
-// 			count_s -= 2;
-// 			arg++;
-// 		}
-// 		if (*arg == '"' && (count_d % 2 == 0 || count_d >= 2))
-// 		{
-// 			len = 0;
-// 			while ((arg + 1)[len] && (arg + 1)[len] != '"')
-// 				len++;
-// 			arg++;
-// 			while(len > 0)
-// 			{
-// 				str[j] = *arg;
-// 				len--;
-// 				j++;
-// 				arg++;
-// 			}
-// 			count_d -= 2;
-// 			arg++;
-// 		}
-// 	}
-// 	return (str);
-// }

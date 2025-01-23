@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:27 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 11:12:45 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 19:51:40 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 void	ft_env(int argc, char *argv)
 {
 	(void)argc;
-	
 	printf("env get = %s/n", argv);
 }

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 10:58:51 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 19:47:21 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ char	*color_prompt(char *prompt, char *current_path)
 	free(tmp1);
 	tmp3 = ft_strjoin(tmp2, ":");
 	free(tmp2);
-	
 	tmp1 = ft_strjoin("\e[1;34m", current_path);
 	tmp2 = ft_strjoin(tmp1, "\e[m");
 	colorcurrentpath = ft_strjoin(tmp2, "$ ");
@@ -94,7 +93,6 @@ char	*color_prompt(char *prompt, char *current_path)
 	return (color_prompt);
 }
 
-//PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 char	*get_promt(void)
 {
 	char	*username;
@@ -102,7 +100,6 @@ char	*get_promt(void)
 	char	*prompt;
 	char	*tmp2;
 	char	*current_path;
-	
 
 	username = ft_get_username();
 	hostname = ft_get_hostname();

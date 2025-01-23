@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 11:12:50 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 19:51:48 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 void	ft_export(int argc, char *argv)
 {
 	(void)argc;
-	
 	printf("export get = %s/n", argv);
 }

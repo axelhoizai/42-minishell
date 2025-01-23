@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 11:37:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 19:54:53 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	handle_sigint(int sig)
 
 void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 {
-	// print_tab(argv);
 	if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv, data);
 	else if (ft_strcmp(argv[0], "cd") == 0)
@@ -39,14 +38,11 @@ void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 		ft_env(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		handle_exit(input, argv);
-
-	
 }
 
 void	ft_init(t_data	*data)
 {
 	data->exit_code = 0;
-	
 }
 
 char	**get_argv(char *input, t_data *data)
@@ -54,11 +50,9 @@ char	**get_argv(char *input, t_data *data)
 	char	**argv;
 	int		argc;
 	char	*builtins;
-	int		i;
 
 	argv = NULL;
 	argc = 0;
-	i = 0;
 	if (input)
 	{
 		builtins = ft_strtok(input, "\n");
@@ -103,8 +97,6 @@ int	main(int ac, char **envp)
 		if (*input)
 			add_history(input);
 		argv = get_argv(input, &data);
-		// if (argv && input)
-		// free_tab(argv);
 		free(input);
 	}
 	return (0);

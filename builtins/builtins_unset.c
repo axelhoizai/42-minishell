@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:10 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 11:13:03 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 19:51:44 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 void	ft_unset(int argc, char *argv)
 {
 	(void)argc;
-
 	printf("unset get = %s/n", argv);
 }
