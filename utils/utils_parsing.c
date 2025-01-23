@@ -3,82 +3,140 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:13:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 20:22:04 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 17:43:51 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	ft_count_single(char *arg)
+static int	ft_count_quote(char *arg, char quote)
 {
-	int	count_simgle;
+	int	count;
 	int	i;
 	
-	count_simgle = 0;
+	count = 0;
 	i = 0;
 	while(arg[i])
 	{
-		if (arg[i] == '\'')
-			count_simgle++;
+		if (arg[i] == quote)
+			count++;
 		i++;
 	}
-	if (count_simgle % 2 == 1)
-		count_simgle -=1;
-	return (count_simgle);
+	return (count);
 }
 
-static int	ft_count_double(char *arg)
+static void parse_single_quote(char **arg, char *str, int *j, int *count_s)
 {
-	int	count_double;
-	int	i;
-	
-	count_double = 0;
-	i = 0;
-	while(arg[i])
-	{
-		if (arg[i] == '\"')
-			count_double++;
-		i++;
-	}
-	if (count_double % 2 == 1)
-		count_double -=1;
-	
-	return (count_double);
+	int len;
+
+	len = 0;
+	while ((*arg + 1)[len] && (*arg + 1)[len] != '\'')
+		len++;
+	(*arg)++;
+	ft_memcpy(str + *j, *arg, len);
+	*j += len;
+	*arg += len + 1;
+	*count_s -= 2;
 }
 
-char	*parse_quote(char *arg)
+static void parse_double_quote(char **arg, char *str, int *j, int *count_d)
 {
-	char	*tmp1;
-	int		j;
-	int		count_double;
-	int		count_simgle;
+	int len;
+
+	len = 0;
+	while ((*arg + 1)[len] && (*arg + 1)[len] != '"')
+		len++;
+	(*arg)++;
+	ft_memcpy(str + *j, *arg, len);
+	*j += len;
+	*arg += len + 1;
+	*count_d -= 2;
+}
+
+char *parse_quote(char *arg)
+{
+	char	*str;
+	int 	j;
+	int		count_s;
+	int		count_d;
 
 	j = 0;
-	count_simgle = ft_count_single(arg);
-	count_double = ft_count_double(arg);
-	tmp1 = ft_calloc(ft_strlen(arg) + 1, sizeof(char));
-	if (!tmp1)
+	count_s = ft_count_quote(arg, '\'');
+	count_d = ft_count_quote(arg, '"');
+	str = ft_calloc(ft_strlen(arg) + 1, sizeof(char));
+	if (!str)
 		return (NULL);
 	while (arg && *arg)
 	{
-		while (count_simgle > 0 && *arg == '\'')
-		{
-			count_simgle -= 1;
-			arg++;
-		}
-		while (count_double > 0 && *arg == '"')
-		{
-			count_double -= 1;
-			arg++;
-		}
-		if (*arg)
-		{
-			tmp1[j++] = *arg;
-			arg++;
-		}
+		while (*arg && *arg != '\'' && *arg != '"')
+			str[j++] = *arg++;
+		if (*arg == '\'' && (count_s % 2 == 0 || count_s >= 2))
+			parse_single_quote(&arg, str, &j, &count_s);
+		else if (*arg == '"' && (count_d % 2 == 0 || count_d >= 2))
+			parse_double_quote(&arg, str, &j, &count_d);
+		else
+			str[j++] = *arg++;
 	}
-	return (tmp1);
+	return (str);
 }
+
+// char	*parse_quote(char *arg)
+// {
+// 	char	*str;
+// 	int		j;
+// 	int		len;
+// 	int		count_d;
+// 	int		count_s;
+
+// 	j = 0;
+// 	count_s = ft_count_quote(arg, '\'');
+// 	count_d = ft_count_quote(arg, '"');
+// 	str = ft_calloc(ft_strlen(arg) + 1, sizeof(char));
+// 	if (!str)
+// 		return (NULL);
+// 	while (arg && *arg)
+// 	{
+// 		while (*arg && *arg != '\'' && *arg != '"')
+// 		{
+// 			str[j] = *arg;
+// 			arg++;
+// 			j++;
+// 		}
+// 		if (*arg == '\'' && (count_s % 2 == 0 || count_s >= 2))
+// 		{
+// 			len = 0;
+// 			while ((arg + 1)[len] && (arg + 1)[len] != '\'')
+// 				len++;
+// 			arg++;
+// 			while(len > 0)
+// 			{
+// 				str[j] = *arg;
+// 				len--;
+// 				j++;
+// 				arg++;
+// 			}
+// 			count_s -= 2;
+// 			arg++;
+// 		}
+// 		if (*arg == '"' && (count_d % 2 == 0 || count_d >= 2))
+// 		{
+// 			len = 0;
+// 			while ((arg + 1)[len] && (arg + 1)[len] != '"')
+// 				len++;
+// 			arg++;
+// 			while(len > 0)
+// 			{
+// 				str[j] = *arg;
+// 				len--;
+// 				j++;
+// 				arg++;
+// 			}
+// 			count_d -= 2;
+// 			arg++;
+// 		}
+// 	}
+// 	return (str);
+// }

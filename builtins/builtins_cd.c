@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 20:30:09 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 11:20:51 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ void	change_dir(int argc, char *dir)
 		chdir(tmpdir);
 	else
 		ft_print_error("cd", dir, "No such file or directory", 1);
+	free (dir);
 	free_change_dir(cwd, tmpdir);
 }
