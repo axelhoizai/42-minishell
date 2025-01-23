@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 19:45:45 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 22:19:09 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 char	*handle_n(char *flag)
 {
 	int		i;
-	int		j;
 
 	i = 1;
-	j = 0;
 	if (ft_strcmp("-n", flag) != 0 && flag[0] == '-')
 	{
 		while (flag[i] && flag[i] == 'n')

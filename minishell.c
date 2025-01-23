@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 19:54:53 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/23 23:08:26 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,30 @@ void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 		handle_exit(input, argv);
 }
 
-void	ft_init(t_data	*data)
+void	ft_init(t_data	*data, char **envp)
 {
 	data->exit_code = 0;
+	data->envp = envp;
+}
+
+void	sh_tester(char *input, t_data *data)
+{
+	char	**argv;
+
+	argv = NULL;
+	while ((input = get_next_line(STDIN_FILENO)) != NULL)
+	{
+		// printf("input = %s\n", input);
+		argv = get_argv(input, data);
+		if (!argv)
+		{
+			// free(input);
+			continue ;
+		}
+		// free(input);
+		// free_tab(argv);
+	}
+	exit (0);
 }
 
 char	**get_argv(char *input, t_data *data)
@@ -53,12 +74,12 @@ char	**get_argv(char *input, t_data *data)
 
 	argv = NULL;
 	argc = 0;
-	if (input)
+	if (input && !isatty(STDIN_FILENO))
 	{
 		builtins = ft_strtok(input, "\n");
 		while (builtins != NULL)
 		{
-			printf("builtins = %s\n", builtins);
+			//printf("builtins = %s\n", builtins);
 			argv = ft_split(builtins, ' ');
 			while (argv && argv[argc])
 				argc++;
@@ -80,12 +101,12 @@ int	main(int ac, char **envp)
 	char	*prompt;
 	t_data	data;
 
-	(void)envp;
 	(void)ac;
 	signal(SIGINT, handle_sigint);
+	sh_tester(NULL, &data);
 	while (1)
 	{
-		ft_init(&data);
+		ft_init(&data, envp);
 		prompt = get_promt();
 		input = readline(prompt);
 		free(prompt);
