@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 11:04:35 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/24 18:46:22 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,20 @@
 # define CMD		6	//"|"
 # define ARG		7	//"|"
 
+typedef struct s_env_ms
+{
+	char			*env_var;
+	struct s_env_ms	*next;
+}			t_env_ms;
+
 typedef struct s_data
 {
-	int		exit_code;
-	char	**envp;
+	int			exit_code;
+	char		**envp;
+	t_env_ms	*env_ms;
 	// pid_t pid;
 	// int pip[2];
-}	t_data;
+}			t_data;
 
 char	*get_promt(void);
 char	**get_argv(char *input, t_data *data);
@@ -64,11 +71,12 @@ char	*process_arg(char **builtin_tab, char **argv, int i);
 char	**ft_echo_tab(int argc, char **argv);
 
 //builtins_export
-void	ft_export(int argc, char *argv);
+void	print_export(t_env_ms *lst);
+void	ft_export(t_env_ms *lst, char **argv);
 
 //builtins_env
-void	ft_env(int argc, char *argv);
-
+void	init_env_ms(t_data *data, char **envp);
+void	ft_env(t_data *data);
 //builtins_unset
 void	ft_unset(int argc, char *argv);
 
@@ -83,5 +91,13 @@ char	*parse_quote(char *arg);
 
 //utils_debug
 void	print_tab(char **tab);
+void	print_lst(t_env_ms *lst);
+
+//utils_list
+int			ms_lstsize(t_env_ms *lst);
+void		ms_lstadd_back(t_env_ms **lst, t_env_ms *new);
+t_env_ms	*ms_lstnew(char *env_var);
+t_env_ms	*ms_lstlast(t_env_ms *lst);
+t_env_ms	*sort_list(t_env_ms *lst);
 
 #endif

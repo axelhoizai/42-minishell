@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 20:01:31 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/24 20:04:00 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,22 @@ void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		get_dir(data);
 	else if (ft_strcmp(argv[0], "export") == 0)
-		ft_export(argc, argv[1]);
+		ft_export(data->env_ms, argv);
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		ft_unset(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "env") == 0)
-		ft_env(argc, argv[1]);
+		ft_env(data);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		handle_exit(input, argv);
 }
 
 void	ft_init(t_data	*data, char **envp)
 {
+	// (void)envp;
+	
 	data->exit_code = 0;
-	data->envp = envp;
+	// data->envp = envp;
+	init_env_ms(data, envp);
 }
 
 void	sh_tester(char *input, t_data *data)
@@ -98,20 +101,26 @@ char	**get_argv(char *input, t_data *data)
 	return (argv);
 }
 
-int	main(int ac, char **envp)
+int	main(int ac, char** av, char **envp)
 {
 	char	*input;
+	(void)av;
 	char	**argv;
 	char	*prompt;
 	t_data	data;
+	int start = 0;
 
 	(void)ac;
+	if (start == 0)
+	{
+		start = 1;
+		ft_init(&data, envp);
+	}
 	signal(SIGINT, handle_sigint);
 	if (ac > 1)
 		sh_tester(NULL, &data);
 	while (1)
 	{
-		ft_init(&data, envp);
 		prompt = get_promt();
 		input = readline(prompt);
 		free(prompt);
