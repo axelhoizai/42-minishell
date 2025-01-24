@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 01:08:50 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/24 09:37:51 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	sh_tester(char *input, t_data *data)// probleme leak
 	char	**argv;
 
 	argv = NULL;
+
 	while ((input = get_next_line(STDIN_FILENO)) != NULL)
 	{
 		// printf("input = %s\n", input);
@@ -60,7 +61,6 @@ void	sh_tester(char *input, t_data *data)// probleme leak
 			free(input);
 			continue ;
 		}
-
 	}
 	exit (0);
 }
@@ -73,7 +73,7 @@ char	**get_argv(char *input, t_data *data)
 
 	argv = NULL;
 	argc = 0;
-	if (input && !isatty(STDIN_FILENO))
+	if (input)
 	{
 		builtins = ft_strtok(input, "\n");
 		while (builtins != NULL)
@@ -102,7 +102,8 @@ int	main(int ac, char **envp)
 
 	(void)ac;
 	signal(SIGINT, handle_sigint);
-	sh_tester(NULL, &data);
+	if (isatty(STDIN_FILENO))
+		sh_tester(NULL, &data);
 	while (1)
 	{
 		ft_init(&data, envp);

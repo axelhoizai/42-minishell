@@ -2,7 +2,7 @@
 
 # Chemin vers minishell
 MINISHELL="./minishell"
-MINISHELL_VALGRIND="valgrind --leak-check=full ./minishell"
+MINISHELL_VALGRIND="valgrind --leak-check=full --track-origins=yes ./minishell"
 
 # Répertoire pour les fichiers Valgrind
 VALGRIND_DIR="valgrind_logs"
