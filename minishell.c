@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 23:08:26 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/24 01:08:50 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_init(t_data	*data, char **envp)
 	data->envp = envp;
 }
 
-void	sh_tester(char *input, t_data *data)
+void	sh_tester(char *input, t_data *data)// probleme leak
 {
 	char	**argv;
 
@@ -57,11 +57,10 @@ void	sh_tester(char *input, t_data *data)
 		argv = get_argv(input, data);
 		if (!argv)
 		{
-			// free(input);
+			free(input);
 			continue ;
 		}
-		// free(input);
-		// free_tab(argv);
+
 	}
 	exit (0);
 }

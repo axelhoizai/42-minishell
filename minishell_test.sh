@@ -2,6 +2,7 @@
 
 # Chemin vers minishell
 MINISHELL="./minishell"
+MINISHELL_VALGRIND="valgrind --leak-check=full ./minishell"
 
 # Répertoire pour les fichiers Valgrind
 VALGRIND_DIR="valgrind_logs"
@@ -43,24 +44,52 @@ test_builtin() {
         echo "Diff between minishell and bash output:"
         cat $TMP_DIFF_OUTPUT
     fi
-
+    echo "$cmd" | $MINISHELL_VALGRIND 
     # Exécuter la commande dans minishell avec Valgrind pour capturer les informations sur la mémoire
     echo "$cmd" | valgrind --leak-check=full --log-file="$valgrind_log" $MINISHELL > /dev/null 2>&1
     echo "Valgrind log saved to $valgrind_log"
 }
 
-# Liste des commandes à tester
-test_builtin "echo Hello, World!"
-test_builtin "echo -n No new line"
-test_builtin "cd /tmp && pwd"
-test_builtin "cd /nonexistent && pwd"
-test_builtin "pwd"
-# test_builtin "export TEST_VAR=42 && env | grep TEST_VAR"
-# test_builtin "unset TEST_VAR && env | grep TEST_VAR"
-test_builtin "exit 42"
-test_builtin "exit"
+# Vérification des options
+if [ $# -eq 0 ]; then
+    # Aucun argument : tester toutes les commandes avec et sans Valgrind
+    echo "Running all tests with and without Valgrind..."
+    for test_file in commands/*.txt; do
+        while read -r cmd; do
+            test_builtin "$cmd"
+        done < "$test_file"
+    done
+elif [ "$1" == "no" ]; then
+    # Option "no" : tester toutes les commandes sans Valgrind
+    echo "Running all tests without Valgrind..."
+    for test_file in commands/*.txt; do
+        while read -r cmd; do
+            echo "Testing: $cmd"
+            echo "$cmd" | $MINISHELL > $TMP_MINISHELL_OUTPUT 2>&1
+            echo "$cmd" | bash --posix > $TMP_BASH_OUTPUT 2>&1
+            if diff $TMP_MINISHELL_OUTPUT $TMP_BASH_OUTPUT > $TMP_DIFF_OUTPUT; then
+                echo "[OK] $cmd"
+            else
+                echo "[FAIL] $cmd"
+                cat $TMP_DIFF_OUTPUT
+            fi
+        done < "$test_file"
+    done
+else
+    # Option spécifique : tester seulement les commandes d'un fichier
+    test_file="commands/$1.txt"
+    if [ -f "$test_file" ]; then
+        echo "Running tests for commands in $test_file..."
+        while read -r cmd; do
+            test_builtin "$cmd"
+        done < "$test_file"
+    else
+        echo "Test file $test_file not found."
+        exit 1
+    fi
+fi
 
 # Nettoyer les fichiers temporaires (mais garder les fichiers Valgrind)
 rm -f $TMP_MINISHELL_OUTPUT $TMP_BASH_OUTPUT $TMP_DIFF_OUTPUT
 
-echo "Tests finished. Valgrind logs are in the $VALGRIND_DIR directory"
+echo "Tests finished. Valgrind logs are in the $VALGRIND_DIR directory."
