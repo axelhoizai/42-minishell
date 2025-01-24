@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 09:37:51 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:10:11 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 {
 	if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv, data);
-	else if (ft_strcmp(argv[0], "cd") == 0)
+	else if (ft_strcmp(argv[0], "cd") == 0 && argc < 2)
 		change_dir(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
-		printf("%s\n", get_dir());
+		get_dir(data);
 	else if (ft_strcmp(argv[0], "export") == 0)
 		ft_export(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "unset") == 0)
@@ -46,7 +46,7 @@ void	ft_init(t_data	*data, char **envp)
 	data->envp = envp;
 }
 
-void	sh_tester(char *input, t_data *data)// probleme leak
+void	sh_tester(char *input, t_data *data)
 {
 	char	**argv;
 
@@ -61,7 +61,10 @@ void	sh_tester(char *input, t_data *data)// probleme leak
 			free(input);
 			continue ;
 		}
+		free(input);
 	}
+	// handle_exit(input, argv);
+	free(input);
 	exit (0);
 }
 
@@ -102,7 +105,7 @@ int	main(int ac, char **envp)
 
 	(void)ac;
 	signal(SIGINT, handle_sigint);
-	if (isatty(STDIN_FILENO))
+	if (ac > 1)
 		sh_tester(NULL, &data);
 	while (1)
 	{

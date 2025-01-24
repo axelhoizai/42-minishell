@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 23:05:54 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:04:35 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**get_argv(char *input, t_data *data);
 void	change_dir(int argc, char *dir);
 
 //utils_pwd
-char	*get_dir(void);
+void	get_dir(t_data *data);
 
 //builtins_exit
 void	handle_exit(char *input, char **argv);

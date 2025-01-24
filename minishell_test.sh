@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Chemin vers minishell
-MINISHELL="./minishell"
-MINISHELL_VALGRIND="valgrind --leak-check=full --track-origins=yes ./minishell"
+MINISHELL="./minishell test"
+MINISHELL_VALGRIND="valgrind --leak-check=full --track-origins=yes ./minishell test"
 
 # Répertoire pour les fichiers Valgrind
 VALGRIND_DIR="valgrind_logs"

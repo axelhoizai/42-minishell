@@ -6,16 +6,18 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/22 11:06:03 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:05:13 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*get_dir(void)
+void	get_dir(t_data *data)
 {
 	char	*currentpath;
 
 	currentpath = getcwd(NULL, 0);
-	return (currentpath);
+	printf("%s\n", currentpath);
+	free(currentpath);
+	data->exit_code = 0;
 }
