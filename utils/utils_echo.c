@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 22:19:09 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/24 17:25:52 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,16 @@ char	*process_arg(char **builtin_tab, char **argv, int i)
 {
 	char	*temp;
 
-	if (ft_strchr(argv[i], '"') || ft_strchr(argv[i], '\''))
-	{
-		free(builtin_tab[i]);
-		builtin_tab[i] = parse_quote(argv[i]);
-	}
-	temp = builtin_tab[i];
-	if (ft_strchr(builtin_tab[i], '"') || ft_strchr(builtin_tab[i], '\''))
-		builtin_tab[i] = parse_quote(builtin_tab[i]);
-	if (temp != builtin_tab[i])
-		free(temp);
+	// if (ft_strchr(argv[i], '"') || ft_strchr(argv[i], '\''))
+	// {
+	// 	free(builtin_tab[i]);
+	// 	builtin_tab[i] = parse_quote(argv[i]);
+	// }
+	builtin_tab[i] = ft_strdup(argv[i]);//builtin_tab[i];
+	// if (ft_strchr(builtin_tab[i], '"') || ft_strchr(builtin_tab[i], '\''))
+	// 	builtin_tab[i] = parse_quote(builtin_tab[i]);
+	// if (temp != builtin_tab[i])
+	// 	free(temp);
 	if (((i > 0 && (ft_strstr(builtin_tab[i - 1], "-n") != NULL)) || i == 1)
 		&& (ft_strcmp("-n", builtin_tab[i]) != 0 && builtin_tab[i][0] == '-'))
 	{

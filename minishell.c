@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 11:10:11 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/24 20:01:31 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,11 @@ char	**get_argv(char *input, t_data *data)
 		while (builtins != NULL)
 		{
 			//printf("builtins = %s\n", builtins);
-			argv = ft_split(builtins, ' ');
+			argv = utils_parse_args(builtins);
+			// argv = ft_split(builtins, ' ');
 			while (argv && argv[argc])
 				argc++;
+			print_tab(argv);
 			//netoyer
 			//ranger
 			handle_builtins(argc, argv, builtins, data);

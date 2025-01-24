@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/23 19:52:19 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/24 19:41:26 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ void	print_echo(char	**builtin_tab, t_data *data, int *i)
 	{
 		if (ft_strstr(builtin_tab[*i], "$?"))
 			builtin_tab[*i] = parse_dollar(builtin_tab[*i], data);
+		if (ft_strstr(builtin_tab[*i], "$$"))
+			printf("variable env found");
 		if (builtin_tab[*i] && builtin_tab[*i + 1])
 			printf("%s ", builtin_tab[*i]);
-		else if (builtin_tab[*i] && !builtin_tab[*i + 1])
+		else if (builtin_tab[*i])
 			printf("%s", builtin_tab[*i]);
 		(*i)++;
 	}

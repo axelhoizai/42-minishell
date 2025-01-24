@@ -1,5 +1,16 @@
 #!/bin/bash
 
+DEF_COLOR='\033[0;39m'
+BLACK='\033[0;30m'
+RED='\033[1;91m'
+GREEN='\033[1;92m'
+YELLOW='\033[0;93m'
+BLUE='\033[0;94m'
+MAGENTA='\033[0;95m'
+CYAN='\033[0;96m'
+GRAY='\033[0;90m'
+WHITE='\033[0;97m'
+
 # Chemin vers minishell
 MINISHELL="./minishell test"
 MINISHELL_VALGRIND="valgrind --leak-check=full --track-origins=yes ./minishell test"
@@ -29,7 +40,7 @@ test_builtin() {
     # Exécuter la commande dans minishell (sans Valgrind) et afficher le résultat dans le terminal
     echo "$cmd" | $MINISHELL > $TMP_MINISHELL_OUTPUT 2>&1
     if [ $? -ne 0 ]; then
-        echo "[ERROR] Minishell crashed on: $cmd"
+        printf "${RED}ERROR] Minishell crashed on: ✗${GRAY} ${cmd}${DEF_COLOR}\n";
         return
     fi
 
@@ -38,13 +49,13 @@ test_builtin() {
 
     # Comparer les résultats de sortie
     if diff $TMP_MINISHELL_OUTPUT $TMP_BASH_OUTPUT > $TMP_DIFF_OUTPUT; then
-        echo "[OK] $cmd"
+        printf "${GREEN}[GOOD] ✔${WHITE} ${cmd}${DEF_COLOR}\n";
     else
-        echo "[FAIL] $cmd"
-        echo "Diff between minishell and bash output:"
+        printf "${RED}[FAIL] ✗${WHITE} ${cmd}${DEF_COLOR}\n";
+        printf "${RED}Diff between minishell and bash output: ${GRAY}${DEF_COLOR}";
         cat $TMP_DIFF_OUTPUT
     fi
-    echo "$cmd" | $MINISHELL_VALGRIND 
+    echo "$cmd" | $MINISHELL_VALGRIND
     # Exécuter la commande dans minishell avec Valgrind pour capturer les informations sur la mémoire
     echo "$cmd" | valgrind --leak-check=full --log-file="$valgrind_log" $MINISHELL > /dev/null 2>&1
     echo "Valgrind log saved to $valgrind_log"
@@ -68,9 +79,10 @@ elif [ "$1" == "no" ]; then
             echo "$cmd" | $MINISHELL > $TMP_MINISHELL_OUTPUT 2>&1
             echo "$cmd" | bash --posix > $TMP_BASH_OUTPUT 2>&1
             if diff $TMP_MINISHELL_OUTPUT $TMP_BASH_OUTPUT > $TMP_DIFF_OUTPUT; then
-                echo "[OK] $cmd"
+                printf "${GREEN}[GOOD] ✔${WHITE} ${cmd}${DEF_COLOR}\n";
             else
-                echo "[FAIL] $cmd"
+                printf "${RED}[FAIL] ✗${WHITE} ${cmd}${DEF_COLOR}\n";
+                printf "${RED}Diff between minishell and bash output: ${GRAY}${DEF_COLOR}";
                 cat $TMP_DIFF_OUTPUT
             fi
         done < "$test_file"
