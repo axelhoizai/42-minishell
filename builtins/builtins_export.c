@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 14:39:46 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 15:14:58 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,17 @@ void	print_export(t_env_ms *lst)
 
 void	ft_export(char **argv)
 {
+	char	*key;
+
+	key = NULL;
 	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
 		print_export(data.env_ms);
 	else if (ft_strcmp(argv[0], "export") == 0 && argv[1] && argv[1][0] != '$')
 	{
-		if (!ms_find(data.env_ms, get_env_key(argv[1])))
-		{
+		key = get_env_key(argv[1]);
+		if (!ms_find(data.env_ms, key))
 			ms_lstadd_back(&(data.env_ms), ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1])));
-			// print_export(lst);
-		}
+		free(key);
 	}
 }
 
