@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:42:26 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:16:58 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <dirent.h>
+# include <stdbool.h>
 
 # include "pipex/pipex.h"
 
@@ -74,6 +75,8 @@ char		*process_arg(char **builtin_tab, char **argv, int i);
 char		**ft_echo_tab(int argc, char **argv);
 
 //builtins_export
+bool		is_key(t_env_ms *lst, char *var);
+t_env_ms	*ms_find(t_env_ms *lst, char *var);
 void		print_export(t_env_ms *lst);
 void		ft_export(char **argv);
 
