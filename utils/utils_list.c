@@ -3,22 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:28:38 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/24 19:41:25 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/25 10:31:40 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_env_ms	*ms_lstlast(t_env_ms *lst)
+t_env_ms	*ms_lstnew(char *env_var)
 {
-	if (!lst)
+	t_env_ms	*new_element;
+
+	new_element = (t_env_ms *)malloc(sizeof(t_env_ms));
+	if (!new_element)
 		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
+	new_element->env_var = ft_strdup(env_var);
+	if (!new_element->env_var)
+	{
+		free(new_element);
+		return (NULL);
+	}
+	new_element->next = NULL;
+	return (new_element);
 }
 
 void	ms_lstadd_back(t_env_ms **lst, t_env_ms *new)
@@ -37,19 +45,14 @@ void	ms_lstadd_back(t_env_ms **lst, t_env_ms *new)
 	}
 }
 
-t_env_ms	*ms_lstnew(char *env_var)
+t_env_ms	*ms_lstlast(t_env_ms *lst)
 {
-	t_env_ms	*new_element;
-
-	new_element = (t_env_ms *)malloc(sizeof(t_env_ms));
-	if (!new_element)
+	if (!lst)
 		return (NULL);
-	new_element->env_var = env_var;
-	new_element->next = NULL;
-	return (new_element);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }
-
-
 
 int	ms_lstsize(t_env_ms *lst)
 {

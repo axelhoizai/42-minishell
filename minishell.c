@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 01:12:20 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/25 10:29:06 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,15 @@ void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 		handle_exit(input, argv);
 }
 
-void	ft_init(t_data	*data, char **envp)
+void	ft_init(t_data	*data, char **envp, int is_start)
 {
-	data->exit_code = 0;
-	// data->envp = envp;
-	init_env_ms(data, envp);
+	if (is_start == 0)
+	{
+		data->exit_code = 0;
+		// data->envp = envp;
+		init_env_ms(data, envp);
+		is_start = 1;	
+	}
 }
 
 void	sh_tester(char *input, t_data *data)
@@ -104,11 +108,13 @@ int	main(int ac, char **av, char **envp)
 	char	**argv;
 	char	*prompt;
 	t_data	data;
+	int		is_start;
 
+	is_start = 0;
 	(void)ac;
 	(void)av;
 	argv = NULL;
-	ft_init(&data, envp);
+	ft_init(&data, envp, is_start);
 	signal(SIGINT, handle_sigint);
 	if (ac > 1)
 		sh_tester(NULL, &data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 19:48:52 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/25 10:30:21 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@
 // {
 	
 // }
+
+t_env_ms	*ms_find(t_env_ms *lst, char *var)
+{
+	while (lst)
+	{
+		if (ft_strncmp(lst->env_var, var, ft_strlen(var)) == 0)
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
+}
 
 void	print_export(t_env_ms *lst)
 {
@@ -34,9 +45,13 @@ void	ft_export(t_env_ms *lst, char **argv)
 {
 	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
 		print_export(lst);
-	// else if (ft_strcmp(argv[0], "export") == 0 && argv[1])
-	// {
-	// 	ms_lstadd_back(&lst, ms_lstnew(argv[1]));
-	// 	// print_export(lst);	
-	// }
+	else if (ft_strcmp(argv[0], "export") == 0 && argv[1])
+	{
+		if (!ms_find(lst, argv[1]))
+		{
+			ms_lstadd_back(&lst, ms_lstnew(argv[1]));
+			// print_export(lst);
+		}
+	}
 }
+
