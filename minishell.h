@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 15:46:56 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:30:37 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@ void		ft_print_error(char *builting, char *arg, char *msg, int exit_code);
 //utils_parsing
 char		*parse_quote(char *arg);
 char		*replace_double_ampersand(char *arg);
+
+//utils_parsing_echo
+char		*parse_dollar_double(char *arg);
 
 //utils_debug
 void		print_tab(char **tab);
