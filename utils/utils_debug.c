@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_debug.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:17:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 22:58:43 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/25 13:00:04 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_lst(t_env_ms *lst)
 	tmp = lst;
 	while (tmp)
 	{
-		ft_printf("%s\n", tmp->env_var);
+		ft_printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
 }

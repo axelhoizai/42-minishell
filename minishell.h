@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 23:36:35 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/25 13:26:27 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@
 
 typedef struct s_env_ms
 {
-	char			*env_var;
+	char			*key;
+	char			*value;
 	struct s_env_ms	*next;
 }			t_env_ms;
 
@@ -72,11 +73,14 @@ char		**ft_echo_tab(int argc, char **argv);
 
 //builtins_export
 void		print_export(t_env_ms *lst);
-void		ft_export(t_env_ms *lst, char **argv);
+void		ft_export(t_data *data, char **argv);
 
 //builtins_env
+char		*get_env_key(char *env);
+char		*get_env_value(char *env);
 void		init_env_ms(t_data *data, char **envp);
 void		ft_env(t_data *data);
+
 //builtins_unset
 void		ft_unset(int argc, char *argv);
 
@@ -96,7 +100,7 @@ void		print_lst(t_env_ms *lst);
 //utils_list
 int			ms_lstsize(t_env_ms *lst);
 void		ms_lstadd_back(t_env_ms **lst, t_env_ms *new);
-t_env_ms	*ms_lstnew(char *env_var);
+t_env_ms	*ms_lstnew(char *env_key, char *env_value);
 t_env_ms	*ms_lstlast(t_env_ms *lst);
 t_env_ms	*sort_list(t_env_ms *lst);
 
