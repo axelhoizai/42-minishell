@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 15:14:58 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:46:19 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // void	export_var(t_env_ms *lst, char **argv)
 // {
-	
+
 // }
 
 t_env_ms	*ms_find(t_env_ms *lst, char *var)
@@ -47,13 +47,13 @@ void	ft_export(char **argv)
 
 	key = NULL;
 	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
-		print_export(data.env_ms);
+		print_export(g_data.env_ms);
 	else if (ft_strcmp(argv[0], "export") == 0 && argv[1] && argv[1][0] != '$')
 	{
 		key = get_env_key(argv[1]);
-		if (!ms_find(data.env_ms, key))
-			ms_lstadd_back(&(data.env_ms), ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1])));
+		if (!ms_find(g_data.env_ms, key))
+			ms_lstadd_back(&(g_data.env_ms),
+				ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1])));
 		free(key);
 	}
 }
-

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:02:08 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:47:10 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ void	exec(char *cmd, char **envp)
 			execute(cmd, envp);
 		waitpid(pid[0], &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) >= 0)
-			data.exit_code = WEXITSTATUS(status);		
+			g_data.exit_code = WEXITSTATUS(status);
 	}
 }

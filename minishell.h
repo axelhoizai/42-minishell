@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:30:37 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:42:26 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_data
 	// int pip[2];
 }			t_data;
 
-extern t_data data;
+extern t_data	g_data;
 
 char		*get_promt(void);
 char		**get_argv(char *input);
@@ -58,7 +58,7 @@ char		**get_argv(char *input);
 void		change_dir(int argc, char *dir);
 
 //utils_pwd
-void		get_dir();
+void		get_dir(void);
 
 //builtins_exit
 void		handle_exit(char *input, char **argv);
@@ -81,7 +81,7 @@ void		ft_export(char **argv);
 char		*get_env_key(char *env);
 char		*get_env_value(char *env);
 void		init_env_ms(char **envp);
-void		ft_env();
+void		ft_env(void);
 
 //builtins_unset
 void		ft_unset(int argc, char *argv);

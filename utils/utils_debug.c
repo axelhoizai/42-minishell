@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:17:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 13:56:32 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:48:28 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ void	print_tab(char **tab)
 		i++;
 	}
 }
-void	print_lst()
+
+void	print_lst(t_env_ms *lst)
 {
 	t_env_ms	*tmp;
 
-	tmp = data.env_ms;
+	tmp = lst;
 	while (tmp)
 	{
 		ft_printf("%s=%s\n", tmp->key, tmp->value);

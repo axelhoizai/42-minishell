@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:13:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 12:50:02 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:38:36 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,8 @@ char	*replace_double_ampersand(char *arg)
 	i = 0;
 	while (arg[i])
 	{
-		if (i > 0 && arg[i + 1] && arg[i + 2] &&
-			arg[i - 1] == ' ' && arg[i] == '&' &&
-			arg[i + 1] == '&' && arg[i + 2] == ' ')
+		if (i > 0 && arg[i + 1] && arg[i + 2] && arg[i - 1] == ' '
+			&& arg[i] == '&' && arg[i + 1] == '&' && arg[i + 2] == ' ')
 			break ;
 		i++;
 	}
@@ -114,7 +113,6 @@ char	*replace_double_ampersand(char *arg)
 	free(tmp1);
 	free(tmp2);
 	free(tmp3);
-	// free(arg);
 	if (ft_strstr(arg, "$?"))
 		return (replace_double_ampersand(arg));
 	return (arg);

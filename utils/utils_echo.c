@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 13:42:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:48:38 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*parse_dollar(char *arg)
 		i++;
 	}
 	tmp1 = ft_substr(arg, 0, i);
-	tmp2 = ft_itoa(data.exit_code);
+	tmp2 = ft_itoa(g_data.exit_code);
 	tmp3 = ft_strjoin(tmp1, tmp2);
 	free(tmp1);
 	free(tmp2);

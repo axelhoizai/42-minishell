@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/25 16:30:08 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:46:01 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_echo(char	**builtin_tab, int *i, int is_n)
 		if (ft_strstr(builtin_tab[*i], "$?"))
 		{
 			builtin_tab[*i] = parse_dollar(builtin_tab[*i]);
-			data.exit_code = 0;
+			g_data.exit_code = 0;
 		}
 		if (ft_strstr(builtin_tab[*i], "$$"))
 			builtin_tab[*i] = parse_dollar_double(builtin_tab[*i]);
@@ -42,7 +42,7 @@ void	ft_echo(int argc, char **argv)
 	if (!builtin_tab || !builtin_tab[0])
 	{
 		free_tab(builtin_tab);
-		return;
+		return ;
 	}
 	if (ft_strcmp(builtin_tab[0], "echo") == 0)
 	{

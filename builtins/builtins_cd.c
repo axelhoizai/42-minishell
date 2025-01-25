@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 13:44:08 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:41:05 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,21 @@ void	free_change_dir(char *cwd, char *tmpdir, char *tmp)
 
 int	check_dir(char	*dir)
 {
-	int 	fd;
+	int		fd;
 	int		result;
 
 	result = 0;
 	fd = open(dir, O_RDONLY | __O_DIRECTORY);
 	if (fd == -1)
 		result = -1;
-	if (fd >=0)
+	if (fd >= 0)
 		close(fd);
 	return (result);
 }
 
 void	change_dir(int argc, char *dir)
 {
-	char 	*tmp;
+	char	*tmp;
 	char	*tmpdir;
 	char	*cwd;
 

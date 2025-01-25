@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:27 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 14:40:09 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:47:02 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	len_key(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
@@ -26,8 +26,8 @@ char	*get_env_key(char *env)
 {
 	int		len;
 	char	*key;
-	
-	len = len_key(env); 
+
+	len = len_key(env);
 	key = ft_substr(env, 0, len);
 	return (key);
 }
@@ -37,8 +37,8 @@ char	*get_env_value(char *env)
 	int		len_k;
 	int		len;
 	char	*value;
-	
-	len_k = len_key(env); 
+
+	len_k = len_key(env);
 	len = ft_strlen(env);
 	value = ft_substr(env, len_k + 1, len - len_k);
 	return (value);
@@ -49,15 +49,16 @@ void	init_env_ms(char **envp)
 	int	i;
 
 	i = 0;
-	data.env_ms = NULL;
+	g_data.env_ms = NULL;
 	while (envp[i])
 	{
-		ms_lstadd_back(&data.env_ms, ms_lstnew(get_env_key(envp[i]), get_env_value(envp[i])));
+		ms_lstadd_back(&g_data.env_ms,
+			ms_lstnew(get_env_key(envp[i]), get_env_value(envp[i])));
 		i++;
 	}
 }
 
-void	ft_env(t_data *data)
+void	ft_env(void)
 {
-	print_lst(data->env_ms);
+	print_lst(g_data.env_ms);
 }

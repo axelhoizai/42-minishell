@@ -6,17 +6,17 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:29:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:30:47 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:33:52 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char *pid()
+static char	*pid(void)
 {
-	int pid;
-	char *pid_str;
-	
+	int		pid;
+	char	*pid_str;
+
 	pid = getpid();
 	pid_str = ft_itoa(pid);
 	return (pid_str);

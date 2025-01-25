@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 15:38:47 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:45:15 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	handle_builtins(int argc, char **argv, char *input)
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
 	else
-		exec(input, data.envp);
+		exec(input, g_data.envp);
 }
 
 void	sh_tester(char *input)
@@ -49,10 +49,8 @@ void	sh_tester(char *input)
 	char	**argv;
 
 	argv = NULL;
-
 	while ((input = get_next_line(STDIN_FILENO)) != NULL)
 	{
-		// printf("input = %s\n", input);
 		if (input)
 			argv = get_argv(input);
 		if (!argv)
@@ -63,8 +61,6 @@ void	sh_tester(char *input)
 		free(input);
 	}
 	handle_exit(input, argv);
-	// free(input);
-	// exit (0);
 }
 
 char	**get_argv(char *input)
@@ -80,19 +76,15 @@ char	**get_argv(char *input)
 	argc = 0;
 	if (input)
 	{
-
 		tmp = replace_double_ampersand(input);
 		builtins = ft_split(tmp, '\n');
 		while (builtins[i])
 		{
-			// printf("builtins = %s\n", builtins[i]);
 			argv = parse_args(builtins[i]);
 			while (argv && argv[argc])
 				argc++;
-			// print_tab(argv);
 			if (argc > 0)
 				handle_builtins(argc, argv, builtins[i]);
-			// builtins = ft_strtok(NULL, "\n");
 			argc = 0;
 			free_tab(argv);
 			i++;
@@ -127,16 +119,11 @@ int	main(int ac, char **av, char **envp)
 		if (!input)
 		{
 			handle_exit(input, argv);
-			break;
+			break ;
 		}
 		if (*input)
 			add_history(input);
 		argv = get_argv(input);
-		// if (input)
-		// 	free(input);
-		// if (argv)
-		// 	free_tab(argv);
 	}
 	return (0);
 }
-
