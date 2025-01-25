@@ -4,66 +4,15 @@ echo '   with space' $?
 echo    with space $?
 echo    with space
 echo "   with space"
-
 echo Hello, World!
 echo -n No new line
 echo
 echo "    With spaces"
 echo $?
-
+echo -nnnnnnnnnnnnnnnn -nnnnnnnnnnnnhn une      phrase complexe es’pace’ autre ‘es’pace’
+echo -n une      phrase complexe es’pace’ autre ‘es’pace’
+echo une      phrase complexe es’pace’ autre ‘es    ’pace’
+echo une      phrase complexe es’pace’ autre ‘es’pace
+echo une      phrase complexe es’pace’ autre ‘es’pace’
 echo -nnnnnnnnnnnnnnnnnnnnn '   w'ith space $?
-
-echo -nnnnnnnnnnnnnnnnnnnnn '   w'ith space $? result attendu =    with space 0
-obtenue =    withspace0
-
-echo -nnnnnnnnnnnnnnnnnnnnn '   w'ith space' $? result attendu =    w'ith space 0
-obtenue = ==2746407== Invalid read of size 8
-==2746407==    at 0x40137B: handle_builtins (minishell.c:27)
-==2746407==    by 0x40166D: get_argv (minishell.c:91)
-==2746407==    by 0x401761: main (minishell.c:124)
-==2746407==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
-==2746407== 
-==2746407== 
-==2746407== Process terminating with default action of signal 11 (SIGSEGV)
-==2746407==  Access not within mapped region at address 0x0
-==2746407==    at 0x40137B: handle_builtins (minishell.c:27)
-==2746407==    by 0x40166D: get_argv (minishell.c:91)
-==2746407==    by 0x401761: main (minishell.c:124)
-
-echo '   with space' $? result attendu =    with space 0
-obtenue =    with space 0
-
-echo    with space $? result attendu = with space 130
-obtenue = with space 0
-
-echo    with space result attendu = with space
-obtenue = with space
-
-echo "   with space" result attendu =    with space
-obtenue =    with space
-
-echo "   with space $?" result attendu =    with space 0
-obtenue =    with space 0
-
-echo    with space $? result attendu = with space 0
-obtenue = with space 0
-
-
-
-*argv = './minishell'
-*argv = 'echo'
-*argv = '-nnnnnnnnnnnnnnnnnnnnn'
-*argv = '   with'
-*argv = 'space'
-*argv = '0'
-
-[0] : 'echo'
-[1] : ' '
-[2] : '-nnnnnnnnnnnnnnnnnnnnn'
-[3] : ' '
-[4] : '   w'
-[5] : 'ith'
-[6] : ' '
-[7] : 'space'
-[8] : ' '
-[9] : '$?'
+echo "   with space" $?

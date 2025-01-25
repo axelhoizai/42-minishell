@@ -1,36 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_debug.c                                      :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 19:17:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 22:58:43 by kalicem          ###   ########.fr       */
+/*   Created: 2025/01/24 22:24:44 by mdemare           #+#    #+#             */
+/*   Updated: 2025/01/24 22:27:28 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../libft.h"
 
-void	print_tab(char **tab)
+int	ft_isspace(int c)
 {
-	int	i;
-
-	i = 0;
-	while (tab && tab[i])
-	{
-		printf("[%d] : \'%s\'\n", i, tab[i]);
-		i++;
-	}
-}
-void	print_lst(t_env_ms *lst)
-{
-	t_env_ms	*tmp;
-
-	tmp = lst;
-	while (tmp)
-	{
-		ft_printf("%s\n", tmp->env_var);
-		tmp = tmp->next;
-	}
+	if (c == ' ' || c == '\t' || c == '\n' ||
+		c == '\v' || c == '\f' || c == '\r')
+		return (1);
+	return (0);
 }

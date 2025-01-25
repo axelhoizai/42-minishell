@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/24 19:41:26 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 00:31:08 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,24 @@ void	ft_echo(int argc, char **argv, t_data *data)
 	char	**builtin_tab;
 
 	builtin_tab = ft_echo_tab(argc, argv);
+	if (!builtin_tab || !builtin_tab[0])
+	{
+		free_tab(builtin_tab);
+		return;
+	}
 	if (ft_strcmp(builtin_tab[0], "echo") == 0)
 	{
-		if (!builtin_tab[1] || (ft_strcmp("-n", builtin_tab[1])) != 0)
+		i = 1;
+		if (builtin_tab[1] && ft_strcmp("-n", builtin_tab[1]) == 0)
 		{
-			i = 1;
-			print_echo(builtin_tab, data, &i);
-			printf("\n");
-		}
-		else if (ft_strcmp(builtin_tab[0], "echo") == 0
-			&& (ft_strcmp("-n", builtin_tab[1])) == 0)
-		{
-			i = 1;
-			while (builtin_tab[i] && (ft_strcmp("-n", builtin_tab[i])) == 0)
+			while (builtin_tab[i] && ft_strcmp("-n", builtin_tab[i]) == 0)
 				i++;
 			print_echo(builtin_tab, data, &i);
+		}
+		else
+		{
+			print_echo(builtin_tab, data, &i);
+			printf("\n");
 		}
 	}
 	free_tab(builtin_tab);

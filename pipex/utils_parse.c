@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 19:58:25 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/24 23:19:50 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,43 @@
 
 static int	handle_quote(const char *str, char quote)
 {
-	int	count;
+	int	i;
 
-	count = 0;
-	while (str[count] && str[count] != quote)
-		count++;
-	if (str[count] == quote)
-		return (count + 1);
-	return (-1);
+	i = 0;
+	while (str[i] && str[i] != quote)
+		i++;
+	if (str[i] == quote)
+		i++;
+	return (i);
 }
 
 static int	count_words(const char *str)
 {
-	int	count = 0;
-	int	words = 0;
-	int	len;
+	int	i;
+	int	word_count;
 
-	while (str[count])
+	i = 0;
+	word_count = 0;
+	while (str[i])
 	{
-		while (str[count] == ' ' || str[count] == '\t')
-			count++;
-		if (str[count] == '\'' || str[count] == '"')
+		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+			i++;
+		if (str[i] != '\0')
+			word_count++;
+		if (str[i] == '\'' || str[i] == '\"')
 		{
-			len = handle_quote(&str[count + 1], str[count]);
-			if (len == -1)
-				return (-1);
-			count += len + 1;
-			words++;
+			i++;
+			i += handle_quote(&str[i], str[i - 1]);
 		}
-		else if (str[count])
+		else
 		{
-			while (str[count] && !(str[count] == ' ' || str[count] == '\t'
-					|| str[count] == '\'' || str[count] == '"'))
-				count++;
-			words++;
+			while (str[i] && !(str[i] == ' '
+					|| str[i] == '\t' || str[i] == '\n')
+				&& str[i] != '\'' && str[i] != '\"')
+				i++;
 		}
 	}
-	return (words);
+	return (word_count);
 }
 
 static void	handle_quoted_word(const char *str, char **result, int *i, int *j)
@@ -58,18 +58,24 @@ static void	handle_quoted_word(const char *str, char **result, int *i, int *j)
 	char	quote;
 	int		start;
 	int		len;
+	int		k;
 
+	k = 0;
 	quote = str[*i];
 	start = *i + 1;
-	len = handle_quote(&str[*i + 1], quote);
-	if (len == -1)
-		return ;
-	result[*j] = malloc(sizeof(char) * len);
-	if (!result[*j])
-		return ;
-	ft_memcpy(result[*j], &str[start], len - 1);
-	result[*j][len - 1] = '\0';
-	*i += len + 1;
+	(*i)++;
+	len = handle_quote(&str[*i], quote);
+	result[*j] = (char *)malloc(sizeof(char) * len + 1);
+	if (result[*j])
+	{
+		while (k < len - 1)
+		{
+			result[*j][k] = str[start + k];
+			k++;
+		}
+		result[*j][k] = '\0';
+	}
+	(*i) += len;
 	(*j)++;
 }
 
@@ -77,64 +83,48 @@ static void	handle_unquoted_word(const char *str, char **result, int *i, int *j)
 {
 	int	start;
 	int	len;
+	int	k;
 
+	k = 0;
 	start = *i;
-	while (str[*i] && !(str[*i] == ' ' || str[*i] == '\t'
-			|| str[*i] == '\'' || str[*i] == '"'))
+	while (str[*i] && !(str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\n')
+		&& str[*i] != '\'' && str[*i] != '\"')
 		(*i)++;
 	len = *i - start;
-	result[*j] = malloc(sizeof(char) * (len + 1));
-	if (!result[*j])
-		return ;
-	ft_memcpy(result[*j], &str[start], len);
-	result[*j][len] = '\0';
+	result[*j] = (char *)malloc(sizeof(char) * (len + 1));
+	if (result[*j])
+	{
+		while (k < len)
+		{
+			result[*j][k] = str[start + k];
+			k++;
+		}
+		result[*j][k] = '\0';
+	}
 	(*j)++;
 }
 
 char	**utils_parse_args(const char *str)
 {
 	char	**result;
-	int		count;
-	int		i = 0;
-	int		j = 0;
-	char	*tmp;
-	int		end_quote = 0;
+	int		i;
+	int		j;
 
-	if (!str)
+	if (str == NULL)
 		return (NULL);
-	count = count_words(str);
-	if (count == -1)
+	result = malloc(sizeof(char *) * (count_words(str) + 1));
+	if (result == NULL)
 		return (NULL);
-	result = malloc(sizeof(char *) * (count + 1));
-	if (!result)
-		return (NULL);
+	i = 0;
+	j = 0;
 	while (str[i])
 	{
-		while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
 			i++;
-		if (str[i] == '\'' || str[i] == '"')
-		{
+		if ((str[i] == '\'' || str[i] == '\"'))
 			handle_quoted_word(str, result, &i, &j);
-			end_quote = 1;
-			tmp = ft_strdup(result[j - 1]);
-			free(result[j - 1]);
-			
-		}
-		else if (str[i])
-		{
-			if (end_quote == 1)
-			{
-				end_quote = 0;
-				handle_unquoted_word(str, result, &i, &j);
-				tmp = ft_strjoin(tmp, result[j - 1]);
-				free(result[j - 1]);
-				result[j - 2] = ft_strdup(tmp);
-				free(tmp);
-				j -=1;
-			}
-			else
-				handle_unquoted_word(str, result, &i, &j);
-		}
+		else if (str[i] != '\0')
+			handle_unquoted_word(str, result, &i, &j);
 	}
 	result[j] = NULL;
 	return (result);

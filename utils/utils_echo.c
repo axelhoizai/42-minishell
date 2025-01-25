@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 17:25:52 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 00:25:22 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,12 @@ char	*parse_dollar(char *arg, t_data *data)
 	return (arg);
 }
 
+
 char	*process_arg(char **builtin_tab, char **argv, int i)
 {
 	char	*temp;
 
-	// if (ft_strchr(argv[i], '"') || ft_strchr(argv[i], '\''))
-	// {
-	// 	free(builtin_tab[i]);
-	// 	builtin_tab[i] = parse_quote(argv[i]);
-	// }
-	builtin_tab[i] = ft_strdup(argv[i]);//builtin_tab[i];
-	// if (ft_strchr(builtin_tab[i], '"') || ft_strchr(builtin_tab[i], '\''))
-	// 	builtin_tab[i] = parse_quote(builtin_tab[i]);
-	// if (temp != builtin_tab[i])
-	// 	free(temp);
+	builtin_tab[i] = ft_strdup(argv[i]);
 	if (((i > 0 && (ft_strstr(builtin_tab[i - 1], "-n") != NULL)) || i == 1)
 		&& (ft_strcmp("-n", builtin_tab[i]) != 0 && builtin_tab[i][0] == '-'))
 	{
@@ -90,10 +82,16 @@ char	**ft_echo_tab(int argc, char **argv)
 	if (!builtin_tab)
 		return (NULL);
 	i = 0;
-	while (argv[i])
+	while (i < argc)
 	{
-		builtin_tab[i] = ft_strdup(argv[i]);
 		builtin_tab[i] = process_arg(builtin_tab, argv, i);
+		if (!builtin_tab[i])
+		{
+			while (i > 0)
+				free(builtin_tab[--i]);
+			free(builtin_tab);
+			return (NULL);
+		}
 		i++;
 	}
 	builtin_tab[i] = NULL;

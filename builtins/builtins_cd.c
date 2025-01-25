@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 19:52:27 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 01:20:21 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,23 @@ char	*parse_dir(char *dir)
 
 void	change_dir(int argc, char *dir)
 {
+	char 	*tmp;
 	char	*tmpdir;
 	char	*cwd;
+	int 	fd;
 
+	fd = open(dir, O_RDONLY | __O_DIRECTORY);
 	tmpdir = NULL;
 	if (dir)
-		dir = parse_dir(dir);
+		tmp = ft_strdup(dir);
+	printf("dir = %s\n", tmp);
 	cwd = getcwd(NULL, 0);
-	tmpdir = ft_strjoin(cwd, dir);
+	tmpdir = ft_strjoin(cwd, tmp);
 	if (argc > 2)
 		ft_print_error("cd", NULL, "too many arguments", 1);
 	else if (!dir)
 		chdir(getenv("HOME"));
-	else if (open(dir, O_RDONLY | __O_DIRECTORY) == -1)
+	else if (fd == -1)
 		ft_print_error("cd", dir, "Not a directory", 1);
 	else if (access(dir, F_OK) == 0)
 		chdir(dir);
@@ -54,6 +58,8 @@ void	change_dir(int argc, char *dir)
 		chdir(tmpdir);
 	else
 		ft_print_error("cd", dir, "No such file or directory", 1);
-	free (dir);
+	if (fd >=0)
+		close(fd);
+	free (tmp);
 	free_change_dir(cwd, tmpdir);
 }

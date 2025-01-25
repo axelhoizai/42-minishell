@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 20:04:00 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 01:12:20 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 {
 	if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv, data);
-	else if (ft_strcmp(argv[0], "cd") == 0 && argc < 2)
+	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		get_dir(data);
@@ -42,8 +42,6 @@ void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 
 void	ft_init(t_data	*data, char **envp)
 {
-	// (void)envp;
-	
 	data->exit_code = 0;
 	// data->envp = envp;
 	init_env_ms(data, envp);
@@ -58,7 +56,8 @@ void	sh_tester(char *input, t_data *data)
 	while ((input = get_next_line(STDIN_FILENO)) != NULL)
 	{
 		// printf("input = %s\n", input);
-		argv = get_argv(input, data);
+		if (input)
+			argv = get_argv(input, data);
 		if (!argv)
 		{
 			free(input);
@@ -66,9 +65,9 @@ void	sh_tester(char *input, t_data *data)
 		}
 		free(input);
 	}
-	// handle_exit(input, argv);
-	free(input);
-	exit (0);
+	handle_exit(input, argv);
+	// free(input);
+	// exit (0);
 }
 
 char	**get_argv(char *input, t_data *data)
@@ -85,14 +84,12 @@ char	**get_argv(char *input, t_data *data)
 		while (builtins != NULL)
 		{
 			//printf("builtins = %s\n", builtins);
-			argv = utils_parse_args(builtins);
-			// argv = ft_split(builtins, ' ');
+			argv = parse_args(builtins);
 			while (argv && argv[argc])
 				argc++;
-			print_tab(argv);
-			//netoyer
-			//ranger
-			handle_builtins(argc, argv, builtins, data);
+			// print_tab(argv);
+			if (argc > 0)
+				handle_builtins(argc, argv, builtins, data);
 			builtins = ft_strtok(NULL, "\n");
 			argc = 0;
 			free_tab(argv);
@@ -101,21 +98,17 @@ char	**get_argv(char *input, t_data *data)
 	return (argv);
 }
 
-int	main(int ac, char** av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	char	*input;
-	(void)av;
 	char	**argv;
 	char	*prompt;
 	t_data	data;
-	int start = 0;
 
 	(void)ac;
-	if (start == 0)
-	{
-		start = 1;
-		ft_init(&data, envp);
-	}
+	(void)av;
+	argv = NULL;
+	ft_init(&data, envp);
 	signal(SIGINT, handle_sigint);
 	if (ac > 1)
 		sh_tester(NULL, &data);
@@ -127,12 +120,15 @@ int	main(int ac, char** av, char **envp)
 		if (!input)
 		{
 			handle_exit(input, argv);
-			break ;
+			break;
 		}
 		if (*input)
 			add_history(input);
 		argv = get_argv(input, &data);
 		free(input);
+		// if (argv)
+		// 	free_tab(argv);
 	}
 	return (0);
 }
+

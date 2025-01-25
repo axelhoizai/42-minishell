@@ -1,0 +1,9 @@
+{
+   readline_malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:xrealloc
+   fun:???
+   fun:rl_expand_prompt
+   fun:readline
+}

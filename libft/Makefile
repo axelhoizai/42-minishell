@@ -6,7 +6,7 @@ CFLAGS += -c -g -Wall -Wextra -Werror -I$(INCLUDES_DIR)
 SRCS_DIR = src/
 
 SRCS_IS_DIR = ft_is/
-SRCS_IS = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
+SRCS_IS = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_isspace.c \
 
 SRCS_STR_DIR = ft_str/
 SRCS_STR = ft_strchr.c ft_strdup.c ft_striteri.c ft_strjoin.c \
