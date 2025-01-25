@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_pwd.c                                     :+:      :+:    :+:   */
+/*   utils_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 13:43:05 by mdemare          ###   ########.fr       */
+/*   Created: 2025/01/25 14:32:16 by mdemare           #+#    #+#             */
+/*   Updated: 2025/01/25 14:35:49 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	get_dir()
-{
-	char	*currentpath;
+t_data data;
 
-	currentpath = getcwd(NULL, 0);
-	printf("%s\n", currentpath);
-	free(currentpath);
-	data.exit_code = 0;
+void	ft_init(char **envp, int is_start)
+{
+	if (is_start == 0)
+	{
+		data.exit_code = 0;
+		// data->envp = envp;
+		init_env_ms(envp);
+		is_start = 1;	
+	}
 }

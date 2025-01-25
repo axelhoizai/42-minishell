@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 11:13:33 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 14:45:03 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,38 +22,27 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	handle_builtins(int argc, char **argv, char *input, t_data *data)
+void	handle_builtins(int argc, char **argv, char *input)
 {
 	if (ft_strcmp(argv[0], "echo") == 0)
-		ft_echo(argc, argv, data);
+		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
-		get_dir(data);
+		get_dir();
 	else if (ft_strcmp(argv[0], "export") == 0)
-		ft_export(data->env_ms, argv);
+		ft_export(argv);
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		ft_unset(argc, argv[1]);
 	else if (ft_strcmp(argv[0], "env") == 0)
-		ft_env(data);
+		ft_env();
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		handle_exit(input, argv);
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
 }
 
-void	ft_init(t_data	*data, char **envp, int is_start)
-{
-	if (is_start == 0)
-	{
-		data->exit_code = 0;
-		// data->envp = envp;
-		init_env_ms(data, envp);
-		is_start = 1;	
-	}
-}
-
-void	sh_tester(char *input, t_data *data)
+void	sh_tester(char *input)
 {
 	char	**argv;
 
@@ -63,7 +52,7 @@ void	sh_tester(char *input, t_data *data)
 	{
 		// printf("input = %s\n", input);
 		if (input)
-			argv = get_argv(input, data);
+			argv = get_argv(input);
 		if (!argv)
 		{
 			free(input);
@@ -76,30 +65,39 @@ void	sh_tester(char *input, t_data *data)
 	// exit (0);
 }
 
-char	**get_argv(char *input, t_data *data)
+char	**get_argv(char *input)
 {
 	char	**argv;
 	int		argc;
-	char	*builtins;
+	char	**builtins;
+	int		i;
+	char	*tmp;
 
+	i = 0;
 	argv = NULL;
 	argc = 0;
 	if (input)
 	{
-		builtins = ft_strtok(input, "\n");
-		while (builtins != NULL)
+
+		tmp = replace_double_ampersand(input);
+		builtins = ft_split(tmp, '\n');
+		while (builtins[i])
 		{
-			//printf("builtins = %s\n", builtins);
-			argv = parse_args(builtins);
+			// printf("builtins = %s\n", builtins[i]);
+			argv = parse_args(builtins[i]);
 			while (argv && argv[argc])
 				argc++;
 			// print_tab(argv);
 			if (argc > 0)
-				handle_builtins(argc, argv, builtins, data);
-			builtins = ft_strtok(NULL, "\n");
+				handle_builtins(argc, argv, builtins[i]);
+			// builtins = ft_strtok(NULL, "\n");
 			argc = 0;
 			free_tab(argv);
+			i++;
 		}
+		if (tmp)
+			free(tmp);
+		free_tab(builtins);
 	}
 	return (argv);
 }
@@ -109,17 +107,16 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	char	**argv;
 	char	*prompt;
-	t_data	data;
 	int		is_start;
 
 	is_start = 0;
 	(void)ac;
 	(void)av;
 	argv = NULL;
-	ft_init(&data, envp, is_start);
+	ft_init(envp, is_start);
 	signal(SIGINT, handle_sigint);
 	if (ac > 1)
-		sh_tester(NULL, &data);
+		sh_tester(NULL);
 	while (1)
 	{
 		prompt = get_promt();
@@ -132,8 +129,9 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (*input)
 			add_history(input);
-		argv = get_argv(input, &data);
-		free(input);
+		argv = get_argv(input);
+		// if (input)
+		// 	free(input);
 		// if (argv)
 		// 	free_tab(argv);
 	}

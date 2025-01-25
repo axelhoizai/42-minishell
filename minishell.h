@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 13:26:27 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/25 14:39:17 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,49 +49,49 @@ typedef struct s_data
 	// int pip[2];
 }			t_data;
 
+extern t_data data;
+
 char		*get_promt(void);
-char		**get_argv(char *input, t_data *data);
+char		**get_argv(char *input);
 
 //utils_cd
 void		change_dir(int argc, char *dir);
 
 //utils_pwd
-void		get_dir(t_data *data);
+void		get_dir();
 
 //builtins_exit
 void		handle_exit(char *input, char **argv);
 
 //builtins_echo
 char		**ft_echo_tab(int argc, char **argv);
-void		ft_echo(int argc, char **argv, t_data *data);
+void		ft_echo(int argc, char **argv);
 
 //utils_echo
 char		*handle_n(char *flag);
-char		*parse_dollar(char *arg, t_data *data);
+char		*parse_dollar(char *arg);
 char		*process_arg(char **builtin_tab, char **argv, int i);
 char		**ft_echo_tab(int argc, char **argv);
 
 //builtins_export
 void		print_export(t_env_ms *lst);
-void		ft_export(t_data *data, char **argv);
+void		ft_export(char **argv);
 
 //builtins_env
 char		*get_env_key(char *env);
 char		*get_env_value(char *env);
-void		init_env_ms(t_data *data, char **envp);
-void		ft_env(t_data *data);
+void		init_env_ms(char **envp);
+void		ft_env();
 
 //builtins_unset
 void		ft_unset(int argc, char *argv);
-
-//debug
-void		print_tab(char **tab);
 
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg, int exit_code);
 
 //utils_parsing
 char		*parse_quote(char *arg);
+char		*replace_double_ampersand(char *arg);
 
 //utils_debug
 void		print_tab(char **tab);
@@ -110,5 +110,8 @@ char		*merge_args(char *current, const char *str, int start, int end);
 int			handle_quotes(const char *str, int *index, char quote);
 int			parse_quoted_arg(const char *str, int *i, char **current_arg);
 int			parse_unquoted_arg(const char *str, int *i, char **current_arg);
+
+//utils_data
+void		ft_init(char **envp, int is_start);
 
 #endif

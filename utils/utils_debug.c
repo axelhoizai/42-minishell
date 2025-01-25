@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_debug.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:17:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 13:00:04 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/25 13:56:32 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	print_tab(char **tab)
 		i++;
 	}
 }
-void	print_lst(t_env_ms *lst)
+void	print_lst()
 {
 	t_env_ms	*tmp;
 
-	tmp = lst;
+	tmp = data.env_ms;
 	while (tmp)
 	{
 		ft_printf("%s=%s\n", tmp->key, tmp->value);

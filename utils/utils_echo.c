@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 00:25:22 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/25 13:42:29 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*handle_n(char *flag)
 	return (NULL);
 }
 
-char	*parse_dollar(char *arg, t_data *data)
+char	*parse_dollar(char *arg)
 {
 	char	*tmp1;
 	char	*tmp2;
@@ -42,7 +42,7 @@ char	*parse_dollar(char *arg, t_data *data)
 		i++;
 	}
 	tmp1 = ft_substr(arg, 0, i);
-	tmp2 = ft_itoa(data->exit_code);
+	tmp2 = ft_itoa(data.exit_code);
 	tmp3 = ft_strjoin(tmp1, tmp2);
 	free(tmp1);
 	free(tmp2);
@@ -52,10 +52,9 @@ char	*parse_dollar(char *arg, t_data *data)
 	free(tmp1);
 	free(tmp3);
 	if (ft_strstr(arg, "$?"))
-		return (parse_dollar(arg, data));
+		return (parse_dollar(arg));
 	return (arg);
 }
-
 
 char	*process_arg(char **builtin_tab, char **argv, int i)
 {

@@ -45,7 +45,7 @@ test_builtin() {
     fi
 
     # Exécuter la commande dans bash pour comparaison
-    echo "$cmd" | bash --posix > $TMP_BASH_OUTPUT 2>&1
+    echo "$cmd" | bash > $TMP_BASH_OUTPUT 2>&1
 
     # Comparer les résultats de sortie
     if diff $TMP_MINISHELL_OUTPUT $TMP_BASH_OUTPUT > $TMP_DIFF_OUTPUT; then
@@ -77,7 +77,7 @@ elif [ "$1" == "no" ]; then
         while read -r cmd; do
             echo "Testing: $cmd"
             echo "$cmd" | $MINISHELL > $TMP_MINISHELL_OUTPUT 2>&1
-            echo "$cmd" | bash --posix > $TMP_BASH_OUTPUT 2>&1
+            echo "$cmd" | bash > $TMP_BASH_OUTPUT 2>&1
             if diff $TMP_MINISHELL_OUTPUT $TMP_BASH_OUTPUT > $TMP_DIFF_OUTPUT; then
                 printf "${GREEN}[GOOD] ✔${WHITE} ${cmd}${DEF_COLOR}\n";
             else

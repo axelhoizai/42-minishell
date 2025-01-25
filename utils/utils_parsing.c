@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:13:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 19:48:52 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 12:50:02 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,41 @@ char	*parse_quote(char *arg)
 			str[j++] = *arg++;
 	}
 	return (str);
+}
+
+char	*replace_double_ampersand(char *arg)
+{
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
+	int		i;
+
+	if (!arg)
+		return (NULL);
+	i = 0;
+	while (arg[i])
+	{
+		if (i > 0 && arg[i + 1] && arg[i + 2] &&
+			arg[i - 1] == ' ' && arg[i] == '&' &&
+			arg[i + 1] == '&' && arg[i + 2] == ' ')
+			break ;
+		i++;
+	}
+	if (!arg[i])
+		return (arg);
+	tmp1 = ft_substr(arg, 0, i);
+	tmp2 = ft_strdup("\n");
+	tmp3 = ft_strjoin(tmp1, tmp2);
+	free(tmp1);
+	free(tmp2);
+	tmp1 = ft_substr(arg, i + 3, ft_strlen(arg) - (i + 3));
+	tmp2 = ft_strjoin(tmp3, tmp1);
+	arg = ft_strdup(tmp2);
+	free(tmp1);
+	free(tmp2);
+	free(tmp3);
+	// free(arg);
+	if (ft_strstr(arg, "$?"))
+		return (replace_double_ampersand(arg));
+	return (arg);
 }

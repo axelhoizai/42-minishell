@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/25 00:31:08 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/25 13:43:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_echo(char	**builtin_tab, t_data *data, int *i)
+void	print_echo(char	**builtin_tab, int *i, int is_n)
 {
 	while (builtin_tab[*i])
 	{
 		if (ft_strstr(builtin_tab[*i], "$?"))
-			builtin_tab[*i] = parse_dollar(builtin_tab[*i], data);
+			builtin_tab[*i] = parse_dollar(builtin_tab[*i]);
 		if (ft_strstr(builtin_tab[*i], "$$"))
 			printf("variable env found");
 		if (builtin_tab[*i] && builtin_tab[*i + 1])
@@ -26,9 +26,11 @@ void	print_echo(char	**builtin_tab, t_data *data, int *i)
 			printf("%s", builtin_tab[*i]);
 		(*i)++;
 	}
+	if (is_n == 1)
+		printf("\n");
 }
 
-void	ft_echo(int argc, char **argv, t_data *data)
+void	ft_echo(int argc, char **argv)
 {
 	int		i;
 	char	**builtin_tab;
@@ -46,13 +48,10 @@ void	ft_echo(int argc, char **argv, t_data *data)
 		{
 			while (builtin_tab[i] && ft_strcmp("-n", builtin_tab[i]) == 0)
 				i++;
-			print_echo(builtin_tab, data, &i);
+			print_echo(builtin_tab, &i, 0);
 		}
 		else
-		{
-			print_echo(builtin_tab, data, &i);
-			printf("\n");
-		}
+			print_echo(builtin_tab, &i, 1);
 	}
 	free_tab(builtin_tab);
 }

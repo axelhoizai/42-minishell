@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/22 10:54:41 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 14:43:53 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@ void	handle_exit(char *input, char **argv)
 		free(input);
 	if (argv && input)
 		free_tab(argv);
+	if (data.envp)
+		free_tab(data.envp);
 	exit (0);
 }
