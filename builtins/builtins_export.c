@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 15:14:58 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:12:14 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@
 // {
 	
 // }
+bool	is_key(t_env_ms *lst, char *var)
+{
+	while (lst)
+	{
+		if (ft_strcmp(lst->key, var) == 0)
+			return (true);
+		lst = lst->next;
+	}
+	return (false);
+}
 
 t_env_ms	*ms_find(t_env_ms *lst, char *var)
 {
@@ -36,7 +46,7 @@ void	print_export(t_env_ms *lst)
 	while (tmp)
 	{
 		if (strcmp(tmp->key, "_") != 0)
-			ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+			ft_printf("export %s=\"%s\"\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
 }

@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/25 14:52:17 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:06:37 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+//TODO : Recheck the 'echo $VAR' logic
+char	*parse_var(char *arg)
+{
+	t_env_ms	*to_find;
+	char		*tmp;
+	
+	tmp = arg;
+	to_find = NULL;
+	if (is_key(data.env_ms, tmp + 1))
+	{
+		to_find = ms_find(data.env_ms, tmp + 1);
+		free (tmp);
+		return (to_find->value);
+	}
+	return (tmp);
+}
 
 void	print_echo(char	**builtin_tab, int *i, int is_n)
 {
@@ -23,6 +40,8 @@ void	print_echo(char	**builtin_tab, int *i, int is_n)
 		}
 		if (ft_strstr(builtin_tab[*i], "$$"))
 			printf("variable env found");
+		if (builtin_tab[*i][0] == '$')
+			builtin_tab[*i] = parse_var(builtin_tab[*i]);
 		if (builtin_tab[*i] && builtin_tab[*i + 1])
 			printf("%s ", builtin_tab[*i]);
 		else if (builtin_tab[*i])
