@@ -8,7 +8,7 @@ PIPEX = pipex/pipex.c pipex/utils.c pipex/utils_error.c \
 PARSING = parsing/argv_parser.c parsing/expansions_parsing.c 
 
 BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exit.c builtins/builtins_echo.c \
-			builtins/builtins_export.c builtins/builtins_unset.c  builtins/builtins_env.c 
+			builtins/builtins_export.c builtins/builtins_unset.c  builtins/builtins_env.c builtins/builtins_exec.c
 
 UTILS = utils/utils_prompt.c utils/utils_error.c utils/utils_parsing.c utils/utils_debug.c utils/utils_echo.c \
 		utils/utils_list.c utils/utils_data.c

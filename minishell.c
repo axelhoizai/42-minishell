@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 14:45:03 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/25 15:38:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	handle_builtins(int argc, char **argv, char *input)
 		handle_exit(input, argv);
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
+	else
+		exec(input, data.envp);
 }
 
 void	sh_tester(char *input)
