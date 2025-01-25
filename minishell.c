@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 10:29:06 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/25 11:13:33 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	handle_builtins(int argc, char **argv, char *input, t_data *data)
 		ft_env(data);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		handle_exit(input, argv);
+	else if (ft_strcmp(argv[0], "clear") == 0)
+		printf("\033[H\033[J");
 }
 
 void	ft_init(t_data	*data, char **envp, int is_start)

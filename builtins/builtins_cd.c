@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 01:20:21 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/25 11:14:27 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	change_dir(int argc, char *dir)
 
 	fd = open(dir, O_RDONLY | __O_DIRECTORY);
 	tmpdir = NULL;
+	tmp = NULL;
 	if (dir)
 		tmp = ft_strdup(dir);
 	printf("dir = %s\n", tmp);
