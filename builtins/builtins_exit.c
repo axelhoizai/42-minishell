@@ -3,22 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/25 16:06:25 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/26 20:48:51 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_exit(char *input, char **argv)
+void	handle_exit(char **argv)
 {
+	int exit_code;
+	int	tmp;
+
+	tmp = 0;
+	if (argv && argv[1])
+		tmp = ft_atoi(argv[1]);
+	exit_code = g_data.exit_code;
 	printf("exit\n");
+	if (tmp > 0)
+		exit_code = tmp;
+	else if (argv && argv[1])
+	{
+		ft_print_error("exit", argv[1], "numeric argument required", 2);
+		exit_code = 2;
+	}
 	rl_clear_history();
-	if (input)
-		free(input);
-	if (argv && input)
+	if (argv)
 		free_tab(argv);
-	exit (0);
+	exit (exit_code);
 }

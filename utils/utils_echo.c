@@ -3,58 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:48:38 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/26 02:17:26 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*handle_n(char *flag)
-{
-	int		i;
-
-	i = 1;
-	if (ft_strcmp("-n", flag) != 0 && flag[0] == '-')
-	{
-		while (flag[i] && flag[i] == 'n')
-			i++;
-		if (flag[i] == '\0')
-			return (ft_strdup("-n"));
-	}
-	return (NULL);
-}
-
-char	*parse_dollar(char *arg)
-{
-	char	*tmp1;
-	char	*tmp2;
-	char	*tmp3;
-	int		i;
-
-	i = 0;
-	while (arg)
-	{
-		if (arg[i] == '$' && arg[i + 1] == '?')
-			break ;
-		i++;
-	}
-	tmp1 = ft_substr(arg, 0, i);
-	tmp2 = ft_itoa(g_data.exit_code);
-	tmp3 = ft_strjoin(tmp1, tmp2);
-	free(tmp1);
-	free(tmp2);
-	tmp1 = ft_substr(arg, i + 2, ft_strlen(arg));
-	free(arg);
-	arg = ft_strjoin(tmp3, tmp1);
-	free(tmp1);
-	free(tmp3);
-	if (ft_strstr(arg, "$?"))
-		return (parse_dollar(arg));
-	return (arg);
-}
 
 char	*process_arg(char **builtin_tab, char **argv, int i)
 {

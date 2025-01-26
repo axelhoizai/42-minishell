@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:45:15 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/26 21:02:55 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_builtins(int argc, char **argv, char *input)
 	else if (ft_strcmp(argv[0], "env") == 0)
 		ft_env();
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		handle_exit(input, argv);
+		handle_exit(argv);
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
 	else
@@ -60,10 +60,10 @@ void	sh_tester(char *input)
 		}
 		free(input);
 	}
-	handle_exit(input, argv);
+	handle_exit(argv);
 }
 
-char	**get_argv(char *input)
+char	**get_argv(const char *input)
 {
 	char	**argv;
 	int		argc;
@@ -76,7 +76,8 @@ char	**get_argv(char *input)
 	argc = 0;
 	if (input)
 	{
-		tmp = replace_double_ampersand(input);
+		tmp = ft_strdup(input);
+		tmp = replace_double_ampersand(tmp);
 		builtins = ft_split(tmp, '\n');
 		while (builtins[i])
 		{
@@ -88,12 +89,14 @@ char	**get_argv(char *input)
 			argc = 0;
 			free_tab(argv);
 			i++;
+			if (g_data.exit_code > 0)
+				break ;
 		}
 		if (tmp)
 			free(tmp);
 		free_tab(builtins);
 	}
-	return (argv);
+	return (NULL);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -102,6 +105,7 @@ int	main(int ac, char **av, char **envp)
 	char	**argv;
 	char	*prompt;
 	int		is_start;
+	char	exit_code;
 
 	is_start = 0;
 	(void)ac;
@@ -115,15 +119,17 @@ int	main(int ac, char **av, char **envp)
 	{
 		prompt = get_promt();
 		input = readline(prompt);
+		exit_code = g_data.exit_code;
 		free(prompt);
 		if (!input)
 		{
-			handle_exit(input, argv);
+			handle_exit(argv);
 			break ;
 		}
 		if (*input)
 			add_history(input);
 		argv = get_argv(input);
+		free(input);
 	}
-	return (0);
+	return (exit_code);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:13:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:38:36 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/26 17:09:56 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ char	*replace_double_ampersand(char *arg)
 	free(tmp2);
 	tmp1 = ft_substr(arg, i + 3, ft_strlen(arg) - (i + 3));
 	tmp2 = ft_strjoin(tmp3, tmp1);
+	free(arg);
 	arg = ft_strdup(tmp2);
 	free(tmp1);
 	free(tmp2);

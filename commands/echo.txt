@@ -9,10 +9,38 @@ echo -n No new line
 echo
 echo "    With spaces"
 echo $?
-echo -nnnnnnnnnnnnnnnn -nnnnnnnnnnnnhn une      phrase complexe es’pace’ autre ‘es’pace’
-echo -n une      phrase complexe es’pace’ autre ‘es’pace’
-echo une      phrase complexe es’pace’ autre ‘es    ’pace’
-echo une      phrase complexe es’pace’ autre ‘es’pace
-echo une      phrase complexe es’pace’ autre ‘es’pace’
-echo -nnnnnnnnnnnnnnnnnnnnn '   w'ith space $?
+echo -nnnnnnnnnnnnnnnn -nnnnnnnnnnnnhn une      phrase complexe es'pace' autre 'es'pace'
+echo -n une      phrase complexe es'pace' autre 'es'pace'
+echo une      phrase complexe es'pace' autre 'es    'pace'
+echo une      phrase complexe es'pace' autre 'es'pace
+echo une      phrase complexe es'pace' autre 'es'pace'
 echo "   with space" $?
+
+echo Hello World $USER
+echo "Hello $USER, welcome!"
+echo 'Hello $USER, welcome!'
+echo "Hello" '$USER,' "welcome!"
+echo "Hello World
+echo 'Hello $USER
+echo "Variable: $UNSET_VAR" 'Variable: $UNSET_VAR'
+echo "Hello $USER' welcome!
+echo "Hello $USER" 'welcome
+echo "Special \$USER" '\$USER' \$USER
+echo Hello   World   $USER //a revoir
+echo "Hello   World   $USER"
+echo 'Hello   World   $USER'
+echo "Hello" '   World   ' "$USER"
+echo    Hello     World     $USER
+echo "Hello   World   $USER
+echo 'Hello   World   $USER
+echo "   Hello World   "
+echo "$USER is logged in"
+echo '$USER is logged in'
+echo " $USER is logged in"
+echo ' $USER is logged in'
+echo "   Multi    spaces   preserved   " '   And these spaces too   '
+echo "Unset: $UNSET_VAR" 'Unset: $UNSET_VAR'
+echo "Special \$USER" '\$USER' \$USER
+echo    "Hello  $USER"  'and literal $HOME'  \$PATH
+ls -la   "My Documents"  '$UNSET_VAR'
+echo un text     "avec'  espace "'

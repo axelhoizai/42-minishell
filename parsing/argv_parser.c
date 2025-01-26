@@ -6,72 +6,82 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 23:35:53 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:42:11 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	add_argument(char **args, int *argc, char *arg)
+char	*parse_var(const char *token, int *index)
 {
-	args[*argc] = ft_strdup(arg);
-	if (!args[*argc])
-		return (-1);
-	(*argc)++;
-	return (0);
+	char		var_name[256];
+	const char	*value;
+	int			j;
+	t_env_ms	*to_find;
+
+	(*index)++;
+	j = 0;
+	to_find = NULL;
+	value = NULL;
+	while (ft_isalnum(token[*index]))
+		var_name[j++] = token[(*index)++];
+	var_name[j] = '\0';
+	if (is_key(g_data.env_ms, var_name))
+	{
+		to_find = ms_find(g_data.env_ms, var_name);
+		if (to_find && to_find->value)
+			value = to_find->value;
+	}
+	if (!value)
+		return (ft_strdup(""));
+	(*index)--;
+	return (ft_strdup(value));
 }
 
-static int	add_current_arg(char **args, int *argc, char **current_arg)
+void	skip_whitespace(const char *str, int *i)
 {
-	if (add_argument(args, argc, *current_arg) == -1)
-		return (-1);
-	free(*current_arg);
-	*current_arg = NULL;
-	return (0);
-}
-
-static int	process_argument(const char *str, char **args, int *i, int *argc)
-{
-	char	*current_arg;
-
-	current_arg = NULL;
 	while (str[*i] && ft_isspace(str[*i]))
 		(*i)++;
-	if (!str[*i])
-		return (0);
-	if (str[*i] == '\'' || str[*i] == '"')
-	{
-		if (parse_quoted_arg(str, i, &current_arg) == -1)
-			return (-1);
-	}
-	else
-	{
-		if (parse_unquoted_arg(str, i, &current_arg) == -1)
-			return (-1);
-	}
-	if ((!str[*i] || ft_isspace(str[*i])) && current_arg)
-	{
-		if (add_current_arg(args, argc, &current_arg) == -1)
-			return (-1);
-	}
-	return (0);
 }
 
+// Ajoute un token au tableau
+int	add_token(const char *str, int *i, char **tokens, int token_count)
+{
+	char	*token;
+
+	token = parse_token(str, i);
+	if (!token)
+		return (-1);
+	tokens[token_count] = token;
+	return (token_count + 1);
+}
+
+// Fonction principale pour parser les arguments
 char	**parse_args(const char *str)
 {
-	char	**args;
-	int		argc;
+	char	**tokens;
 	int		i;
+	int		token_count;
 
-	args = ft_calloc(ft_strlen(str) + 1, sizeof(char *));
-	if (!args)
+	if (!str || check_unclosed_quotes(str))
+	{
+		write(2, "Error: unclosed quotes\n", 23);
 		return (NULL);
-	argc = 0;
+	}
+	tokens = malloc(sizeof(char *) * 256);
+	if (!tokens)
+		return (NULL);
 	i = 0;
+	token_count = 0;
 	while (str[i])
 	{
-		if (process_argument(str, args, &i, &argc) == -1)
-			return (free_tab(args), NULL);
+		skip_whitespace(str, &i);
+		if (str[i])
+		{
+			token_count = add_token(str, &i, tokens, token_count);
+			if (token_count == -1)
+				return (free_tokens(tokens), NULL);
+		}
 	}
-	return (args);
+	return (tokens[token_count] = NULL, tokens);
 }
