@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/26 17:07:16 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/26 23:32:43 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,8 @@ t_env_ms	*sort_list(t_env_ms *lst);
 
 //utils_data
 void		ft_init(char **envp, int is_start);
+
+//exit_tester
+void		handle_exit_tester(char **argv);
 
 #endif

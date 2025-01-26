@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/26 19:53:37 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/26 23:32:01 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	handle_variable(const char *line, int *i, t_parse *parse)
 		var = ft_itoa(getpid());
 		(*i)++;
 	}
-	else if (ft_isalnum(line[*i + 1]))
+	else if (ft_isalnum(line[*i + 1]) || line[*i] == '_')
 		var = parse_var(line, i);// Cas de $VAR
 	k = 0;
 	while (var[k])

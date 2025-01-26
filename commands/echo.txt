@@ -44,3 +44,13 @@ echo "Special \$USER" '\$USER' \$USER
 echo    "Hello  $USER"  'and literal $HOME'  \$PATH
 ls -la   "My Documents"  '$UNSET_VAR'
 echo un text     "avec'  espace "'
+echo un \test "\test" \"test\" \"test" '\test' \'test'
+echo \test
+echo "\test\"
+echo \"test
+echo \"test\"
+echo \'test\'
+echo \"test //afficher la "
+echo \'test //afficher la '
+echo \'test' //mettre erreur non fermé
+echo \"test" //mettre erreur non fermé

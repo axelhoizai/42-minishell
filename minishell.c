@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/26 21:02:55 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/26 23:06:07 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	sh_tester(char *input)
 		}
 		free(input);
 	}
-	handle_exit(argv);
+	handle_exit_tester(argv);
 }
 
 char	**get_argv(const char *input)

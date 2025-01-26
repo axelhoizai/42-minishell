@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/26 19:42:11 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/26 23:29:11 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*parse_var(const char *token, int *index)
 	j = 0;
 	to_find = NULL;
 	value = NULL;
-	while (ft_isalnum(token[*index]))
+	while (ft_isalnum(token[*index]) || token[*index] == '_')
 		var_name[j++] = token[(*index)++];
 	var_name[j] = '\0';
 	if (is_key(g_data.env_ms, var_name))
@@ -32,9 +32,9 @@ char	*parse_var(const char *token, int *index)
 		if (to_find && to_find->value)
 			value = to_find->value;
 	}
+	(*index)--;
 	if (!value)
 		return (ft_strdup(""));
-	(*index)--;
 	return (ft_strdup(value));
 }
 
