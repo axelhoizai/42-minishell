@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_exit_tester.c                             :+:      :+:    :+:   */
+/*   ft_isnumeric.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/27 00:43:07 by kalicem          ###   ########.fr       */
+/*   Created: 2025/01/26 23:59:22 by mdemare           #+#    #+#             */
+/*   Updated: 2025/01/27 00:00:47 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-void	handle_exit_tester(char **argv)
+int	ft_isnumeric(const char *str)
 {
-	int exit_code;
+	int	i;
 
-	exit_code = g_data.exit_code;
-	if (argv && argv[1] && ft_isnumeric(argv[1]) == 1)
-		exit_code = ft_atoi(argv[1]);
-	else if (argv && argv[1])
+	if (!str || *str == '\0')
+		return (0);
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
 	{
-		ft_print_error("exit", argv[1], "numeric argument required", 2);
-		exit_code = 2;
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
 	}
-	rl_clear_history();
-	if (argv)
-		free_tab(argv);
-	ms_lstclear(&g_data.env_ms); 
-	exit(exit_code);
+	return (1);
 }
-

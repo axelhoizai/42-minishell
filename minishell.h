@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/26 23:32:43 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/27 00:23:26 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void		ms_lstadd_back(t_env_ms **lst, t_env_ms *new);
 t_env_ms	*ms_lstnew(char *env_key, char *env_value);
 t_env_ms	*ms_lstlast(t_env_ms *lst);
 t_env_ms	*sort_list(t_env_ms *lst);
+void		ms_lstclear(t_env_ms **lst);
 
 //utils_data
 void		ft_init(char **envp, int is_start);

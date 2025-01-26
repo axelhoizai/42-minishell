@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 14:04:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/24 22:28:10 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/27 00:01:43 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int				ft_isascii(int c);
 int				ft_isdigit(int c);
 int				ft_isprint(int c);
 int				ft_isspace(int c);
+int				ft_isnumeric(const char *str);
 
 //ft_lst
 typedef struct s_list
