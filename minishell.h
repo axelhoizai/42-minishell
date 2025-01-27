@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 17:18:03 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 18:25:13 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_env_ms
 typedef struct s_data
 {
 	int			exit_code;
-	char		**envp;
+	char		**my_envp;
 	t_env_ms	*env_ms;
 	// pid_t pid;
 	// int pip[2];
@@ -127,6 +127,8 @@ t_env_ms	*ms_lstnew(char *env_key, char *env_value);
 t_env_ms	*ms_lstlast(t_env_ms *lst);
 t_env_ms	*sort_list(t_env_ms *lst);
 void		ms_lstclear(t_env_ms **lst);
+void		ms_lstdelone(t_env_ms **lst, char *env_key);
+void		lst_to_tab(t_env_ms *lst);
 
 //utils_data
 void		ft_init(char **envp, int is_start);

@@ -6,16 +6,12 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 17:12:39 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/27 17:54:04 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	export_var(t_env_ms *lst, char **argv)
-// {
-
-// }
 bool	is_key(t_env_ms *lst, char *var)
 {
 	while (lst)
@@ -65,5 +61,6 @@ void	ft_export(char **argv)
 			ms_lstadd_back(&(g_data.env_ms),
 				ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1])));
 		free(key);
+		lst_to_tab(g_data.env_ms);
 	}
 }

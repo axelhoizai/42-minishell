@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 17:22:40 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 18:24:29 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	handle_builtins(int argc, char **argv, char *input)
 	else if (ft_strchr(input, '|'))
 		pipe_test(argc, argv, input);
 	else
-		exec(argv, input, g_data.envp);
+		exec(argv, input, g_data.my_envp);
 }
 
 void	sh_tester(char *input)
