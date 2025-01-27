@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/26 23:32:01 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/27 10:56:08 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	handle_variable(const char *line, int *i, t_parse *parse)
 	char	*var;
 	int		k;
 
+	var = NULL;
 	if (line[*i + 1] == '?') // Cas de $?
 	{
 		var = ft_itoa(g_data.exit_code);
