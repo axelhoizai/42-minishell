@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 10:54:33 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 14:04:36 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	check_unclosed_quotes(const char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\\' && (line[i + 1] == '\'' || line[i + 1] == '"'))
+		// if (line[i] == '\\' && (line[i + 1] == '\'' || line[i + 1] == '"')) //suppressiom gestion backslash
+		if ((line[i + 1] == '\'' || line[i + 1] == '"'))
 		{
 			i += 2;
 			continue ;
@@ -45,6 +46,8 @@ void	init_parse(t_parse *parse, int size)
 	parse->len = 0;
 	parse->capacity = size;
 	parse->buffer[0] = '\0';
+	parse->in_single = 0;
+	parse->in_double = 0;
 }
 
 void	append_char(t_parse *parse, char c)

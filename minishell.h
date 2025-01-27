@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 10:54:44 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 13:49:51 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_parse
 	char	*buffer;
 	int		len;
 	int		capacity;
+	int		in_single;
+	int		in_double;
 }	t_parse;
 
 typedef struct s_env_ms

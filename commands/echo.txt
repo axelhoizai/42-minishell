@@ -54,3 +54,5 @@ echo \"test //afficher la "
 echo \'test //afficher la '
 echo \'test' //mettre erreur non fermé
 echo \"test" //mettre erreur non fermé
+echo "sd'sd"dsdsds'' //Must display the first single quote ex : sd'sddsdsds
+
