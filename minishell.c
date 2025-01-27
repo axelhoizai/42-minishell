@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 10:54:40 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 17:26:45 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	handle_builtins(int argc, char **argv, char *input)
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
 	else
-		exec(input, g_data.envp);
+		exec(input, g_data.my_envp);
 }
 
 void	sh_tester(char *input)

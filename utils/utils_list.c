@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:28:38 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/27 10:55:04 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 16:28:01 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,23 +92,4 @@ t_env_ms	*sort_list(t_env_ms *lst)
 			lst = lst->next;
 	}
 	return (tmp);
-}
-
-void	ms_lstclear(t_env_ms **lst)
-{
-	t_env_ms	*temp;
-
-	if (!lst || !*lst)
-		return;
-	while (*lst)
-	{
-		temp = (*lst)->next;
-		if ((*lst)->key)
-			free((*lst)->key);
-		if ((*lst)->value)
-			free((*lst)->value);
-		free(*lst);
-		*lst = temp;
-	}
-	*lst = NULL;
 }
