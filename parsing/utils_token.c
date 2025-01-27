@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/26 18:57:25 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/27 10:05:04 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ int	check_unclosed_quotes(const char *line)
 	i = 0;
 	while (line[i])
 	{
+		if (line[i] == '\\' && (line[i + 1] == '\'' || line[i + 1] == '"'))
+		{
+			i += 2;
+			continue ;
+		}
 		if (line[i] == '\'' && double_quote == 0)
 			single_quote = !single_quote;
 		else if (line[i] == '"' && single_quote == 0)
