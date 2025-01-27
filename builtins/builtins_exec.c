@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:47:10 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 18:20:38 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,35 @@ static void	execute(char *cmd, char **envp)
 	}
 }
 
-void	exec(char *cmd, char **envp)
+static char	*parse_cmd(char **argv, char *cmd)
+{
+	char	*tmp;
+	
+	if (argv && argv[0] && ft_strcmp(argv[0], "<") == 0)
+	{
+		tmp = ft_strjoin(argv[2], " ");
+		cmd = ft_strjoin(tmp, argv[1]);
+		free(tmp);
+		return (cmd);
+	}
+	return (ft_strdup(cmd));
+}
+
+void	exec(char **argv, char *cmd, char **envp)
 {
 	int		status;
 	pid_t	pid[2];
+	char	*tmp;
 
 	if (cmd)
 	{
+		tmp = parse_cmd(argv, cmd);
 		pid[0] = fork();
 		if (pid[0] == -1)
 			exit(1);
 		if (pid[0] == 0)
-			execute(cmd, envp);
+			execute(tmp, envp);
+		free(tmp);
 		waitpid(pid[0], &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) >= 0)
 			g_data.exit_code = WEXITSTATUS(status);

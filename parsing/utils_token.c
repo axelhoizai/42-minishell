@@ -6,12 +6,14 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 14:04:36 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 14:14:33 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// for add backslash escape :
+// if (line[i] == '\\' && (line[i + 1] == '\'' || line[i + 1] == '"'))
 int	check_unclosed_quotes(const char *line)
 {
 	int	single_quote;
@@ -23,7 +25,6 @@ int	check_unclosed_quotes(const char *line)
 	i = 0;
 	while (line[i])
 	{
-		// if (line[i] == '\\' && (line[i + 1] == '\'' || line[i + 1] == '"')) //suppressiom gestion backslash
 		if ((line[i + 1] == '\'' || line[i + 1] == '"'))
 		{
 			i += 2;

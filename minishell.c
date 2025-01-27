@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 10:54:40 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 17:22:40 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,38 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	pipe_test(int argc, char **argv, char *input)
+{
+	int	i;
+
+	i = 0;
+	(void)argc;
+	(void)input;
+	// < << > >> |
+	while (argv[i])
+	{
+		if (ft_strtok(argv[i], "<>|"))
+			printf("tok argv[i] = %s\n", argv[i]);
+		else if (ft_strcmp(argv[i], "<") == 0)
+			printf("< found, i = %d\n", i);
+		else if (ft_strcmp(argv[i], ">") == 0)
+			printf("> found, i = %d\n", i);
+		else if (ft_strcmp(argv[i], "<<") == 0)
+			printf("<< found, i = %d\n", i);
+		else if (ft_strcmp(argv[i], ">>") == 0)
+			printf(">> found, i = %d\n", i);
+		else if (ft_strcmp(argv[i], "|") == 0)
+			printf("| found, i = %d\n", i);
+		// printf("argv[i] = %s\n", argv[i]);
+		i++;
+	}
+	ft_strtok(NULL, "<>|");
+	// < infile cmd
+	// | cmd |
+	// cmd
+	// > outfile
 }
 
 void	handle_builtins(int argc, char **argv, char *input)
@@ -40,8 +72,10 @@ void	handle_builtins(int argc, char **argv, char *input)
 		handle_exit(argv);
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
+	else if (ft_strchr(input, '|'))
+		pipe_test(argc, argv, input);
 	else
-		exec(input, g_data.envp);
+		exec(argv, input, g_data.envp);
 }
 
 void	sh_tester(char *input)

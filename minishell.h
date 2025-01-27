@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 13:49:51 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/27 17:18:03 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void		ft_env(void);
 void		ft_unset(int argc, char *argv);
 
 //builtin_exec
-void		exec(char *arg, char **envp);
+void		exec(char **argv, char *cmd, char **envp);
 
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg, int exit_code);
