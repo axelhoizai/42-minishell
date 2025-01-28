@@ -1,0 +1,90 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
+/*   Updated: 2025/01/28 14:38:33 by mdemare          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+
+int	is_redirection(char *token)
+{
+	if (ft_strcmp(token, "<") == 0)
+		return (1);
+	if (ft_strcmp(token, ">") == 0)
+		return (1);
+	if (ft_strcmp(token, ">>") == 0)
+		return (1);
+	if (ft_strcmp(token, "<<") == 0)
+		return (1);
+	return (0);
+}
+
+void	handle_redirection(char **tokens, int *i, t_command *cmd)
+{
+	if (ft_strcmp(tokens[*i], "<") == 0 && tokens[*i + 1])
+		cmd->input_file = ft_strdup(tokens[++(*i)]);
+	else if (ft_strcmp(tokens[*i], ">") == 0 && tokens[*i + 1])
+	{
+		cmd->output_file = ft_strdup(tokens[++(*i)]);
+		cmd->append = 0;
+	}
+	else if (ft_strcmp(tokens[*i], ">>") == 0 && tokens[*i + 1])
+	{
+		cmd->output_file = ft_strdup(tokens[++(*i)]);
+		cmd->append = 1;
+	}
+	else if (ft_strcmp(tokens[*i], "<<") == 0 && tokens[*i + 1])
+	{
+		cmd->input_file = ft_strdup(tokens[++(*i)]);
+		cmd->heredoc = 1;
+	}
+}
+
+t_command	*parse_command(char **tokens, int *i)
+{
+	t_command	*cmd;
+
+	cmd = init_command();
+	if (!cmd)
+		return (NULL);
+	while (tokens[*i] && ft_strcmp(tokens[*i], "|") != 0)
+	{
+		if (is_redirection(tokens[*i]))
+			handle_redirection(tokens, i, cmd);
+		else
+			cmd->args = add_to_tab(cmd->args, tokens[*i]);
+		(*i)++;
+	}
+	return (cmd);
+}
+
+t_pipeline	*parse_pipeline(char **tokens)
+{
+	t_pipeline	*pipeline;
+	t_command	*cmd;
+	int			i;
+
+	pipeline = init_pipeline();
+	if (!pipeline)
+		return (NULL);
+	i = 0;
+	while (tokens[i])
+	{
+		cmd = parse_command(tokens, &i);
+		if (!cmd)
+		{
+			free_pipeline(pipeline);
+			return (NULL);
+		}
+		add_command_to_pipeline(pipeline, cmd);
+		if (tokens[i] && ft_strcmp(tokens[i], "|") == 0)
+			i++;
+	}
+	return (pipeline);
+}

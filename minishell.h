@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 18:25:13 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 15:39:52 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,20 @@ typedef struct s_data
 	// pid_t pid;
 	// int pip[2];
 }	t_data;
+
+typedef struct s_command
+{
+	char	**args;
+	char	*input_file;
+	char	*output_file;
+	int		append;
+	int		heredoc;
+}	t_command;
+
+typedef struct s_pipeline
+{
+	t_command	**commands;
+}	t_pipeline;
 
 extern t_data	g_data;
 
@@ -135,5 +149,23 @@ void		ft_init(char **envp, int is_start);
 
 //exit_tester
 void		handle_exit_tester(char **argv);
+
+////parsing_pipe
+//parse_init
+t_pipeline	*init_pipeline(void);
+t_command	*init_command(void);
+
+//parser_add
+char		**add_to_tab(char **tab, const char *arg);
+void		add_command_to_pipeline(t_pipeline *pipeline, t_command *cmd);
+
+//parser_free
+void	free_resources(t_pipeline *pipeline, char **tokens, char *line);
+
+//parser
+int			is_redirection(char *token);
+void		handle_redirection(char **tokens, int *i, t_command *cmd);
+t_command	*parse_command(char **tokens, int *i);
+t_pipeline	*parse_pipeline(char **tokens);
 
 #endif
