@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 10:55:06 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 13:10:50 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*process_arg(char **builtin_tab, char **argv, int i)
 	char	*temp;
 
 	builtin_tab[i] = ft_strdup(argv[i]);
-	if (((i > 0 && (ft_strstr(builtin_tab[i - 1], "-n") != NULL)) || i == 1)
+	if (((i > 0 && (ft_strcmp(builtin_tab[i - 1], "-n") == 0)) || i == 1)
 		&& (ft_strcmp("-n", builtin_tab[i]) != 0 && builtin_tab[i][0] == '-'))
 	{
 		temp = builtin_tab[i];
