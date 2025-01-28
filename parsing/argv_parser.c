@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 10:54:28 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:03:25 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*parse_var(const char *token, int *index)
 			value = to_find->value;
 	}
 	(*index)--;
+	if (!value && ft_strcmp(var_name, "UID") == 0)
+		return (get_uid());
 	if (!value)
 		return (ft_strdup(""));
 	return (ft_strdup(value));

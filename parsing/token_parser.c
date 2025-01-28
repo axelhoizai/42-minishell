@@ -6,31 +6,11 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 16:55:12 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:59:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	get_process_id(void)
-{
-	int		fd;
-	char	buffer[32];
-	int		pid;
-
-	fd = open("/proc/self/stat", O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	if (read(fd, buffer, 31) <= 0)
-	{
-		close(fd);
-		return (-1);
-	}
-	buffer[31] = '\0';
-	pid = ft_atoi(buffer);
-	close(fd);
-	return (pid);
-}
 
 // Gère les états des quotes (simple et double)
 void	update_quote_state(const char *line, int *in_s, int *in_d, int i)

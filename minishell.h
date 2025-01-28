@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 17:09:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:01:09 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,10 @@ void		lst_to_tab(t_env_ms *lst);
 
 //utils_data
 void		ft_init(char **envp, int is_start);
+
+//utils_get
+int		get_process_id(void);
+char	*get_uid(void);
 
 //exit_tester
 void		handle_exit_tester(char **argv);
