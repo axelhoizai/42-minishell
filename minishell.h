@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 19:32:15 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 21:08:12 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ void		print_export(t_env_ms *lst);
 void		ft_export(char **argv);
 
 //builtins_env
-char		*get_env_key(char *env);
-char		*get_env_value(char *env);
+char		*get_envkey(char *env);
+char		*get_envval(char *env);
 void		init_env_ms(char **envp);
 void		ft_env(void);
 
@@ -118,11 +118,20 @@ void		exec(char **argv, char *cmd, char **envp);
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg, int exit_code);
 
+//utils_parsing
+char		*join_argv(char **argv);
+
 // utils_parse.c
 void		skip_whitespace(const char *str, int *i);
 int			check_unclosed_quotes(const char *line);
 void		init_parse(t_parse *parse, int size);
 void		append_char(t_parse *parse, char c);
+
+//utils
+char		**get_argv(const char *input);
+void		handle_sigint(int sig);
+void		handle_pipe(int argc, char **argv);
+void		handle_builtins(int argc, char **argv);
 
 // token_utils.c
 char		*parse_var(const char *token, int *index);

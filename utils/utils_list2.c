@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:27:45 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/27 17:52:37 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 20:47:00 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ms_lstclear(t_env_ms **lst)
 	t_env_ms	*temp;
 
 	if (!lst || !*lst)
-		return;
+		return ;
 	while (*lst)
 	{
 		temp = (*lst)->next;
@@ -60,7 +60,6 @@ void	lst_to_tab(t_env_ms *lst)
 
 	i = 0;
 	tmp = lst;
-	// key = NULL;
 	if (g_data.my_envp)
 		free_tab(g_data.my_envp);
 	g_data.my_envp = NULL;

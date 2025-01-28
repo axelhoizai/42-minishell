@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:27 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 11:21:20 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 20:54:01 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	len_key(char *str)
 	return (i);
 }
 
-char	*get_env_key(char *env)
+char	*get_envkey(char *env)
 {
 	int		len;
 	char	*key;
@@ -32,7 +32,7 @@ char	*get_env_key(char *env)
 	return (key);
 }
 
-char	*get_env_value(char *env)
+char	*get_envval(char *env)
 {
 	int		len_k;
 	int		len;
@@ -53,7 +53,7 @@ void	init_env_ms(char **envp)
 	while (envp[i])
 	{
 		ms_lstadd_back(&g_data.env_ms,
-			ms_lstnew(get_env_key(envp[i]), get_env_value(envp[i]), true));
+			ms_lstnew(get_envkey(envp[i]), get_envval(envp[i]), true));
 		i++;
 	}
 	lst_to_tab(g_data.env_ms);

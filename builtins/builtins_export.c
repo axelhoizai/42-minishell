@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 12:37:12 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 20:48:37 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,18 @@ void	ft_export(char **argv)
 		print_export(g_data.env_ms);
 	else if (ft_strcmp(argv[0], "export") == 0 && argv[1] && argv[1][0] != '$')
 	{
-		key = get_env_key(argv[1]);
+		key = get_envkey(argv[1]);
 		if (!ms_find(g_data.env_ms, key))
 		{
 			if (ft_strchr(argv[1], '='))
 			{
 				ms_lstadd_back(&(g_data.env_ms),
-					ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1]), true));
+					ms_lstnew(get_envkey(argv[1]), get_envval(argv[1]), true));
 			}
 			else
 			{
 				ms_lstadd_back(&(g_data.env_ms),
-					ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1]), false));
+					ms_lstnew(get_envkey(argv[1]), get_envval(argv[1]), false));
 			}
 		}
 		free(key);

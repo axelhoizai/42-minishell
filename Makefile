@@ -5,7 +5,7 @@ SRCS = 	minishell.c \
 PIPEX = pipex/pipex.c pipex/utils.c pipex/utils_error.c \
 		pipex/utils_files.c pipex/ft_here_doc.c pipex/utils_parse.c 
 
-PARSING = parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c 
+PARSING = parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c parsing/ampersand_parse.c
 
 PARSING_PIPE = pipe_parsing/parser_add.c pipe_parsing/parser_free.c pipe_parsing/parser_init.c pipe_parsing/parser.c
 
@@ -14,8 +14,8 @@ BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exi
 			builtins/builtins_exit_tester.c
 
 UTILS = utils/utils_prompt.c utils/utils_print_error.c utils/utils_parsing.c utils/utils_debug.c utils/utils_echo.c \
-		utils/utils_list.c utils/utils_list2.c utils/utils_data.c utils/utils_parsing_echo.c utils/utils_get.c
-
+		utils/utils_list.c utils/utils_list2.c utils/utils_data.c utils/utils_parsing_echo.c utils/utils_get.c \
+		utils/utils.c 
 SRCS_BONUS = \
 
 ALL_SRCS = $(SRCS) $(PIPEX) $(PARSING_PIPE) $(PARSING) $(BUILTINS) $(UTILS)

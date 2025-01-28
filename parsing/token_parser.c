@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 19:28:55 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 20:37:46 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
 		*in_d = !(*in_d);
 }
 
-// Ajoute une variable développée au buffer
-void	handle_variable(const char *line, int *i, t_parse *parse)
+static char	*handle_special_var(const char *line, int *i)
 {
 	char	*var;
-	int		k;
 
 	var = NULL;
 	if (line[*i + 1] == '?') // for $?
@@ -34,21 +32,33 @@ void	handle_variable(const char *line, int *i, t_parse *parse)
 		g_data.exit_code = 0;
 		(*i) += 2;
 	}
-	else if (line[*i + 1] == '$') //for $$
+	else if (line[*i + 1] == '$') // for $$
 	{
 		var = ft_itoa(get_process_id());
 		(*i) += 2;
 	}
-	else if (ft_isdigit(line[*i + 1]))
+	else if (ft_isdigit(line[*i + 1])) //for $ and digit 
 	{
 		(*i) += 2;
-		return ;
+		return (NULL);
 	}
-	else if (ft_isalnum(line[*i + 1]) || line[*i] == '_')
+	return (var);
+}
+
+// Ajoute une variable développée au buffer
+void	handle_variable(const char *line, int *i, t_parse *parse)
+{
+	char	*var;
+	int		k;
+
+	var = handle_special_var(line, i);
+	if (!var && (ft_isalnum(line[*i + 1]) || line[*i + 1] == '_'))
 	{
-		var = parse_var(line, i);// for $VAR
+		var = parse_var(line, i); // for $VAR
 		(*i)++;
 	}
+	if (!var)
+		return ;
 	k = 0;
 	while (var[k])
 		append_char(parse, var[k++]);
