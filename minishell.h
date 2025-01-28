@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 21:08:12 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/28 21:41:18 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,43 +77,11 @@ typedef struct s_pipeline
 extern t_data	g_data;
 
 char		*get_promt(void);
-char		**get_argv(const char *input);
+
+//-------------------------------UTILS-------------------------------
 
 //utils_cd
 void		change_dir(int argc, char *dir);
-
-//utils_pwd
-void		get_dir(void);
-
-//builtins_exit
-void		handle_exit(char **argv);
-
-//builtins_echo
-char		**ft_echo_tab(int argc, char **argv);
-void		ft_echo(int argc, char **argv);
-
-//utils_echo
-char		*handle_n(char *flag);
-char		*process_arg(char **builtin_tab, char **argv, int i);
-char		**ft_echo_tab(int argc, char **argv);
-
-//builtins_export
-bool		is_key(t_env_ms *lst, char *var);
-t_env_ms	*ms_find(t_env_ms *lst, char *var);
-void		print_export(t_env_ms *lst);
-void		ft_export(char **argv);
-
-//builtins_env
-char		*get_envkey(char *env);
-char		*get_envval(char *env);
-void		init_env_ms(char **envp);
-void		ft_env(void);
-
-//builtins_unset
-void		ft_unset(int argc, char *argv);
-
-//builtin_exec
-void		exec(char **argv, char *cmd, char **envp);
 
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg, int exit_code);
@@ -127,19 +95,19 @@ int			check_unclosed_quotes(const char *line);
 void		init_parse(t_parse *parse, int size);
 void		append_char(t_parse *parse, char c);
 
-//utils
-char		**get_argv(const char *input);
-void		handle_sigint(int sig);
-void		handle_pipe(int argc, char **argv);
-void		handle_builtins(int argc, char **argv);
-
-// token_utils.c
+// parsing_token.c
 char		*parse_var(const char *token, int *index);
 char		*parse_token(const char *line, int *i);
 char		**parse_args(const char *line);
 void		free_tokens(char **tokens);
 
 char		*replace_double_ampersand(char *arg);
+
+//utils
+char		**get_argv(const char *input);
+void		handle_sigint(int sig);
+void		handle_pipe(int argc, char **argv);
+void		handle_builtins(int argc, char **argv);
 
 //utils_debug
 void		print_tab(char **tab);
@@ -161,6 +129,45 @@ void		ft_init(char **envp, int is_start);
 //utils_get
 int			get_process_id(void);
 char		*get_uid(void);
+
+//utils_pwd
+void		get_dir(void);
+
+//utils_echo
+char		*handle_n(char *flag);
+char		*process_arg(char **builtin_tab, char **argv, int i);
+char		**ft_echo_tab(int argc, char **argv);
+
+//-------------------------------UTILS-END---------------------------
+
+//-------------------------------BUILTINS----------------------------
+
+//builtins_exit
+void		handle_exit(char **argv);
+
+//builtins_echo
+char		**ft_echo_tab(int argc, char **argv);
+void		ft_echo(int argc, char **argv);
+
+//builtins_export
+bool		is_key(t_env_ms *lst, char *var);
+t_env_ms	*ms_find(t_env_ms *lst, char *var);
+void		print_export(t_env_ms *lst);
+void		ft_export(char **argv);
+
+//builtins_env
+char		*get_envkey(char *env);
+char		*get_envval(char *env);
+void		init_env_ms(char **envp);
+void		ft_env(void);
+
+//builtins_unset
+void		ft_unset(int argc, char *argv);
+
+//builtin_exec
+void		exec(char **argv, char *cmd, char **envp);
+
+//----------------------------BUILTINS-END---------------------------
 
 //exit_tester
 void		handle_exit_tester(char **argv);
