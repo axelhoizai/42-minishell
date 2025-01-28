@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 17:59:59 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 19:19:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ void	handle_variable(const char *line, int *i, t_parse *parse)
 	{
 		var	= ft_itoa(get_process_id());
 		(*i)+= 2;
+	}
+	else if (ft_isdigit(line[*i + 1]))
+	{
+		(*i)+= 2;
+		return ;
 	}
 	else if (ft_isalnum(line[*i + 1]) || line[*i] == '_')
 	{
