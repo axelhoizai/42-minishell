@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 17:54:04 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 12:37:12 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,12 @@ void	print_export(t_env_ms *lst)
 	while (tmp)
 	{
 		if (strcmp(tmp->key, "_") != 0)
-			ft_printf("export %s=\"%s\"\n", tmp->key, tmp->value);
+		{
+			if (tmp->equal_sign == true)
+				ft_printf("export %s=\"%s\"\n", tmp->key, tmp->value);
+			else
+				ft_printf("export %s\n", tmp->key);
+		}
 		tmp = tmp->next;
 	}
 }
@@ -58,8 +63,18 @@ void	ft_export(char **argv)
 	{
 		key = get_env_key(argv[1]);
 		if (!ms_find(g_data.env_ms, key))
-			ms_lstadd_back(&(g_data.env_ms),
-				ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1])));
+		{
+			if (ft_strchr(argv[1], '='))
+			{
+				ms_lstadd_back(&(g_data.env_ms),
+					ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1]), true));
+			}
+			else
+			{
+				ms_lstadd_back(&(g_data.env_ms),
+					ms_lstnew(get_env_key(argv[1]), get_env_value(argv[1]), false));
+			}
+		}
 		free(key);
 		lst_to_tab(g_data.env_ms);
 	}

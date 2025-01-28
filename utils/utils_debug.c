@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:17:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 17:13:18 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 11:31:37 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	print_lst(t_env_ms *lst)
 	tmp = lst;
 	while (tmp)
 	{
-		ft_printf("%s=%s\n", tmp->key, tmp->value);
+		if (tmp->equal_sign == true)
+			ft_printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
 }

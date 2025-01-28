@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:27 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 17:39:23 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 11:21:20 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	init_env_ms(char **envp)
 	while (envp[i])
 	{
 		ms_lstadd_back(&g_data.env_ms,
-			ms_lstnew(get_env_key(envp[i]), get_env_value(envp[i])));
+			ms_lstnew(get_env_key(envp[i]), get_env_value(envp[i]), true));
 		i++;
 	}
 	lst_to_tab(g_data.env_ms);

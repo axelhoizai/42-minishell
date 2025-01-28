@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 18:25:13 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 14:20:06 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_env_ms
 {
 	char			*key;
 	char			*value;
+	bool			equal_sign;
 	struct s_env_ms	*next;
 }	t_env_ms;
 
@@ -104,6 +105,7 @@ void		exec(char **argv, char *cmd, char **envp);
 void		ft_print_error(char *builting, char *arg, char *msg, int exit_code);
 
 // utils_parse.c
+void	skip_whitespace(const char *str, int *i);
 int		check_unclosed_quotes(const char *line);
 void	init_parse(t_parse *parse, int size);
 void	append_char(t_parse *parse, char c);
@@ -123,7 +125,7 @@ void		print_lst(t_env_ms *lst);
 //utils_list
 int			ms_lstsize(t_env_ms *lst);
 void		ms_lstadd_back(t_env_ms **lst, t_env_ms *new);
-t_env_ms	*ms_lstnew(char *env_key, char *env_value);
+t_env_ms	*ms_lstnew(char *env_key, char *env_value, bool equal_sign);
 t_env_ms	*ms_lstlast(t_env_ms *lst);
 t_env_ms	*sort_list(t_env_ms *lst);
 void		ms_lstclear(t_env_ms **lst);
