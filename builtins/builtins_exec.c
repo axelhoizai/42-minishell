@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 18:20:38 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 15:34:19 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	execute(char *cmd, char **envp)
 	if (!cmd_args || !cmd_args[0])
 	{
 		free_tab(cmd_args);
-		print_error("Invalid command", NULL, CMD_NOT_FOUND);
+		print_error("minishell: Invalid command", NULL, CMD_NOT_FOUND);
 		return ;
 	}
 	cmd_path = get_path(cmd_args[0], envp);
@@ -32,7 +32,8 @@ static void	execute(char *cmd, char **envp)
 	if (execve(cmd_path, cmd_args, envp) == -1)
 	{
 		free_tab(cmd_args);
-		print_error("command not found : ", ft_strtok(cmd, " "), CMD_NOT_FOUND);
+		ft_print_error(ft_strtok(cmd, " "), NULL, "command not found", CMD_NOT_FOUND);
+		exit(CMD_NOT_FOUND);
 	}
 }
 

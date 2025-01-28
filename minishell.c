@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 18:24:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 15:38:18 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,40 @@ void	pipe_test(int argc, char **argv, char *input)
 	// > outfile
 }
 
-void	handle_builtins(int argc, char **argv, char *input)
+char	*join_argv(char **argv)
 {
+	int		i;
+	char	*tmp0;
+	char	*tmp1;
+	char	*cmd;
+	
+	i = 0;
+	while (argv[i])
+	{
+		tmp0 = ft_strdup(" ");
+		if (argv[i] && argv[i + 1])
+		{
+			free(cmd);
+			tmp0 = ft_strjoin(argv[i], " ");
+			cmd = ft_strdup(tmp0);
+		}
+		else if (argv[i])
+		{
+			tmp1 = ft_strjoin(tmp0, argv[i]);
+			cmd = ft_strdup(tmp1);
+			free(tmp1);
+		}
+		free(tmp0);
+		(i)++;
+	}
+	return (cmd);
+}
+
+void	handle_builtins(int argc, char **argv)
+{
+	char	*cmd;
+
+	cmd = join_argv(argv);
 	if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
@@ -72,10 +104,11 @@ void	handle_builtins(int argc, char **argv, char *input)
 		handle_exit(argv);
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
-	else if (ft_strchr(input, '|'))
-		pipe_test(argc, argv, input);
-	else
-		exec(argv, input, g_data.my_envp);
+	else if (ft_strchr(cmd, '|'))
+		pipe_test(argc, argv, cmd);
+	else if (argc >= 1)
+		exec(argv, cmd, g_data.my_envp);
+	free(cmd);
 }
 
 void	sh_tester(char *input)
@@ -119,7 +152,7 @@ char	**get_argv(const char *input)
 			while (argv && argv[argc])
 				argc++;
 			if (argc > 0)
-				handle_builtins(argc, argv, builtins[i]);
+				handle_builtins(argc, argv);
 			argc = 0;
 			free_tab(argv);
 			i++;
