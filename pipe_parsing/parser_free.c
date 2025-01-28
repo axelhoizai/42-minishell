@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:07:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 17:15:31 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 19:31:07 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 static void	free_command(t_command *cmd)
 {
@@ -54,4 +53,3 @@ void	free_pipeline(t_pipeline *pipeline)
 	}
 	free(pipeline);
 }
-

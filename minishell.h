@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 19:18:30 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 19:32:15 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,18 +119,18 @@ void		exec(char **argv, char *cmd, char **envp);
 void		ft_print_error(char *builting, char *arg, char *msg, int exit_code);
 
 // utils_parse.c
-void	skip_whitespace(const char *str, int *i);
-int		check_unclosed_quotes(const char *line);
-void	init_parse(t_parse *parse, int size);
-void	append_char(t_parse *parse, char c);
+void		skip_whitespace(const char *str, int *i);
+int			check_unclosed_quotes(const char *line);
+void		init_parse(t_parse *parse, int size);
+void		append_char(t_parse *parse, char c);
 
 // token_utils.c
-char	*parse_var(const char *token, int *index);
-char	*parse_token(const char *line, int *i);
-char	**parse_args(const char *line);
-void	free_tokens(char **tokens);
+char		*parse_var(const char *token, int *index);
+char		*parse_token(const char *line, int *i);
+char		**parse_args(const char *line);
+void		free_tokens(char **tokens);
 
-char	*replace_double_ampersand(char *arg);
+char		*replace_double_ampersand(char *arg);
 
 //utils_debug
 void		print_tab(char **tab);
@@ -150,8 +150,8 @@ void		lst_to_tab(t_env_ms *lst);
 void		ft_init(char **envp, int is_start);
 
 //utils_get
-int		get_process_id(void);
-char	*get_uid(void);
+int			get_process_id(void);
+char		*get_uid(void);
 
 //exit_tester
 void		handle_exit_tester(char **argv);
@@ -165,7 +165,7 @@ char		**add_to_tab(char **tab, const char *arg);
 void		add_command_to_pipeline(t_pipeline *pipeline, t_command *cmd);
 
 //parser_free
-void	free_pipeline(t_pipeline *pipeline);
+void		free_pipeline(t_pipeline *pipeline);
 
 //parser
 int			is_redirection(char *token);

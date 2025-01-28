@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit_tester.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/27 00:43:07 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/28 19:29:29 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_exit_tester(char **argv)
 {
-	int exit_code;
+	int	exit_code;
 
 	exit_code = g_data.exit_code;
 	if (argv && argv[1] && ft_isnumeric(argv[1]) == 1)
@@ -27,7 +27,6 @@ void	handle_exit_tester(char **argv)
 	rl_clear_history();
 	if (argv)
 		free_tab(argv);
-	ms_lstclear(&g_data.env_ms); 
+	ms_lstclear(&g_data.env_ms);
 	exit(exit_code);
 }
-

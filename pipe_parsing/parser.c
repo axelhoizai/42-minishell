@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/01/28 17:53:04 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 19:31:15 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ void	print_pipeline(t_pipeline *pipeline)
 		i++;
 	}
 }
-
 
 // ./pipex file1 cmd1   cmd2   cmd3 ...   cmdn   file2
 //     <   file1 cmd1 | cmd2 | cmd3 ... | cmdn > file2

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 15:34:19 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 19:30:07 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static void	execute(char *cmd, char **envp)
 	if (execve(cmd_path, cmd_args, envp) == -1)
 	{
 		free_tab(cmd_args);
-		ft_print_error(ft_strtok(cmd, " "), NULL, "command not found", CMD_NOT_FOUND);
+		ft_print_error(ft_strtok(cmd, " "),
+			NULL, "command not found", CMD_NOT_FOUND);
 		exit(CMD_NOT_FOUND);
 	}
 }
@@ -40,7 +41,7 @@ static void	execute(char *cmd, char **envp)
 static char	*parse_cmd(char **argv, char *cmd)
 {
 	char	*tmp;
-	
+
 	if (argv && argv[0] && ft_strcmp(argv[0], "<") == 0)
 	{
 		tmp = ft_strjoin(argv[2], " ");
