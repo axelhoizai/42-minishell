@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 15:38:18 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 16:28:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,26 @@ void	pipe_test(int argc, char **argv, char *input)
 char	*join_argv(char **argv)
 {
 	int		i;
-	char	*tmp0;
-	char	*tmp1;
 	char	*cmd;
-	
-	i = 0;
+	char	*tmp;
+
+	if (!argv || !argv[0])
+		return (NULL);
+	cmd = ft_strdup(argv[0]);
+	if (!cmd)
+		return (NULL);
+	i = 1;
 	while (argv[i])
 	{
-		tmp0 = ft_strdup(" ");
-		if (argv[i] && argv[i + 1])
-		{
-			free(cmd);
-			tmp0 = ft_strjoin(argv[i], " ");
-			cmd = ft_strdup(tmp0);
-		}
-		else if (argv[i])
-		{
-			tmp1 = ft_strjoin(tmp0, argv[i]);
-			cmd = ft_strdup(tmp1);
-			free(tmp1);
-		}
-		free(tmp0);
-		(i)++;
+		tmp = ft_strjoin(cmd, " ");
+		free(cmd);
+		if (!tmp)
+			return (NULL);
+		cmd = ft_strjoin(tmp, argv[i]);
+		free(tmp);
+		if (!cmd)
+			return (NULL);
+		i++;
 	}
 	return (cmd);
 }
