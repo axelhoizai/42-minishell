@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/01/28 14:38:33 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:09:15 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,35 @@ t_pipeline	*parse_pipeline(char **tokens)
 			i++;
 	}
 	return (pipeline);
+}
+
+void	print_pipeline(t_pipeline *pipeline)
+{
+	int			i;
+	int			j;
+	t_command	*cmd;
+
+	if (!pipeline)
+		return ;
+	i = 0;
+	while (pipeline->commands && pipeline->commands[i])
+	{
+		cmd = pipeline->commands[i];
+		printf("Command %d:\n", i + 1);
+		if (cmd->args)
+		{
+			j = 0;
+			printf("  Arguments: ");
+			while (cmd->args[j])
+				printf("'%s' ", cmd->args[j++]);
+			printf("\n");
+		}
+		if (cmd->input_file)
+			printf("  Input file: %s\n", cmd->input_file);
+		if (cmd->output_file)
+			printf("  Out: %s (append: %d)\n", cmd->output_file, cmd->append);
+		if (cmd->heredoc)
+			printf("  Heredoc: enabled\n");
+		i++;
+	}
 }

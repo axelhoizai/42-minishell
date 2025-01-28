@@ -3,9 +3,11 @@ NAME = minishell
 SRCS = 	minishell.c \
 
 PIPEX = pipex/pipex.c pipex/utils.c pipex/utils_error.c \
-		pipex/utils_files.c pipex/ft_here_doc.c pipex/utils_parse.c \
+		pipex/utils_files.c pipex/ft_here_doc.c pipex/utils_parse.c 
 
 PARSING = parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c 
+
+PARSING_PIPE = pipe_parsing/parser_add.c pipe_parsing/parser_free.c pipe_parsing/parser_init.c pipe_parsing/parser.c
 
 BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exit.c builtins/builtins_echo.c \
 			builtins/builtins_export.c builtins/builtins_unset.c  builtins/builtins_env.c builtins/builtins_exec.c \
@@ -16,7 +18,7 @@ UTILS = utils/utils_prompt.c utils/utils_print_error.c utils/utils_parsing.c uti
 
 SRCS_BONUS = \
 
-ALL_SRCS = $(SRCS) $(PIPEX) $(PARSING) $(BUILTINS) $(UTILS)
+ALL_SRCS = $(SRCS) $(PIPEX) $(PARSING_PIPE) $(PARSING) $(BUILTINS) $(UTILS)
 
 OBJS = $(ALL_SRCS:.c=.o)
 

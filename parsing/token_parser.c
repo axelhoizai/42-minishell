@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 14:22:24 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/28 16:55:12 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@ void	handle_variable(const char *line, int *i, t_parse *parse)
 	free(var);
 }
 
-//replace
-// while (line[*i] == '\\')
-// 	(*i)++;
 //to use \ escape char
 // if (line[*i] == '\\' && parse->in_single == 0)
 // {
@@ -89,8 +86,6 @@ void	handle_parse_token(const char *line, int *i, t_parse *parse)
 		append_char(parse, line[*i]);
 		(*i)++;
 	}
-	while (line[*i] == '\\')
-		(*i)++;
 }
 
 char	*parse_token(const char *line, int *i)

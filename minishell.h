@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/01/28 15:39:52 by mdemare          ###   ########.fr       */
-=======
-/*   Updated: 2025/01/28 14:20:06 by ahoizai          ###   ########.fr       */
->>>>>>> 9383b40bc3e2ffd8311d505636ba5a615ab39e55
+/*   Updated: 2025/01/28 17:09:29 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +162,7 @@ char		**add_to_tab(char **tab, const char *arg);
 void		add_command_to_pipeline(t_pipeline *pipeline, t_command *cmd);
 
 //parser_free
+void	free_pipeline(t_pipeline *pipeline);
 void	free_resources(t_pipeline *pipeline, char **tokens, char *line);
 
 //parser
@@ -173,5 +170,6 @@ int			is_redirection(char *token);
 void		handle_redirection(char **tokens, int *i, t_command *cmd);
 t_command	*parse_command(char **tokens, int *i);
 t_pipeline	*parse_pipeline(char **tokens);
+void		print_pipeline(t_pipeline *pipeline);
 
 #endif

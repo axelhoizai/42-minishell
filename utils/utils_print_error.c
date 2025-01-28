@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 12:33:31 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 10:54:54 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 16:33:33 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,45 @@
 /// @param arg ex :src
 /// @param msg ex :Not a directory
 /// @param exit_code ex :1
-void	ft_print_error(char *builting, char *arg, char *msg, int exit_code)
+
+char	*ft_construct_error_msg(char *builting, char *arg, char *msg)
 {
 	char	*result;
-	char	*tmp1;
-	char	*tmp2;
+	char	*tmp;
 
-	tmp2 = NULL;
 	result = ft_strdup("minishell: ");
 	if (builting)
 	{
-		tmp1 = ft_strjoin(result, builting);
-		tmp2 = ft_strjoin(tmp1, ": ");
-		free(tmp1);
+		tmp = ft_strjoin(result, builting);
+		free(result);
+		result = ft_strjoin(tmp, ": ");
+		free(tmp);
 	}
 	if (arg)
 	{
-		tmp1 = ft_strjoin(tmp2, arg);
-		free(tmp2);
-		tmp2 = ft_strjoin(tmp1, ": ");
-		free(tmp1);
+		tmp = ft_strjoin(result, arg);
+		free(result);
+		result = ft_strjoin(tmp, ": ");
+		free(tmp);
 	}
 	if (msg)
 	{
+		tmp = ft_strjoin(result, msg);
 		free(result);
-		result = ft_strjoin(tmp2, msg);
+		result = tmp;
 	}
-	free(tmp2);
-	printf("%s\n", result);
-	free(result);
+	return (result);
+}
+
+void	ft_print_error(char *builting, char *arg, char *msg, int exit_code)
+{
+	char	*result;
+
+	result = ft_construct_error_msg(builting, arg, msg);
+	if (result)
+	{
+		printf("%s\n", result);
+		free(result);
+	}
 	g_data.exit_code = exit_code;
 }

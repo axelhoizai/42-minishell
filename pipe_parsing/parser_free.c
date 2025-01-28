@@ -6,24 +6,12 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:07:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 14:38:26 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:09:58 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (tab)
-	{
-		while (tab[i])
-			free(tab[i++]);
-		free(tab);
-	}
-}
 
 static void	free_command(t_command *cmd)
 {
@@ -48,7 +36,7 @@ static void	free_command(t_command *cmd)
 	free(cmd);
 }
 
-static void	free_pipeline(t_pipeline *pipeline)
+void	free_pipeline(t_pipeline *pipeline)
 {
 	int	i;
 
