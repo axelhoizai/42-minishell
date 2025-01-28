@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 16:29:20 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 10:53:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,17 @@ void	handle_variable(const char *line, int *i, t_parse *parse)
 	free(var);
 }
 
+//replace
+// while (line[*i] == '\\')
+// 	(*i)++;
+//to use \ escape char
+// if (line[*i] == '\\' && parse->in_single == 0)
+// {
+// 	(*i)++;
+// 	if (line[*i])
+// 		append_char(parse, line[*i]);
+// 	(*i)++;
+// }
 void	handle_parse_token(const char *line, int *i, t_parse *parse)
 {
 	if ((line[*i] == '\'' && parse->in_double)
@@ -78,13 +89,8 @@ void	handle_parse_token(const char *line, int *i, t_parse *parse)
 		append_char(parse, line[*i]);
 		(*i)++;
 	}
-	if (line[*i] == '\\' && parse->in_single == 0)
-	{
+	while (line[*i] == '\\')
 		(*i)++;
-		if (line[*i])
-			append_char(parse, line[*i]);
-		(*i)++;
-	}
 }
 
 char	*parse_token(const char *line, int *i)
