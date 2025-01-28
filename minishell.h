@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 17:09:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:37:58 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <dirent.h>
 # include <stdbool.h>
 
-# include "pipex/pipex.h"
+# include "./pipex/pipex.h"
 
 # define INPUT		1	//"<"
 # define HEREDOC	2	//"<<"
@@ -152,7 +152,6 @@ void		ft_init(char **envp, int is_start);
 //exit_tester
 void		handle_exit_tester(char **argv);
 
-////parsing_pipe
 //parse_init
 t_pipeline	*init_pipeline(void);
 t_command	*init_command(void);
@@ -163,7 +162,6 @@ void		add_command_to_pipeline(t_pipeline *pipeline, t_command *cmd);
 
 //parser_free
 void	free_pipeline(t_pipeline *pipeline);
-void	free_resources(t_pipeline *pipeline, char **tokens, char *line);
 
 //parser
 int			is_redirection(char *token);

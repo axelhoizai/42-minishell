@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 17:42:15 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 19:02:53 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static int	last_pipe(t_arg args, int *p_fd, char **envp, int *fd_files)
 		close(p_fd[0]);
 		close(p_fd[1]);
 		close(fd_files[1]);
-		execute(args.argv[args.argc - 2], envp);
+		execute(args.argv[args.argc - 3], envp);
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
@@ -132,9 +132,12 @@ int	pipex(int argc, char **argv, char **envp)
 	else
 		i = 2;
 	first_pipe(argv[i], p_fd, envp, fd_files);
-	i++;
-	while (i < argc - 2)
-		multi_pipe(argv[i++], p_fd, envp);
+	i += 2;
+	while (i < argc - 3)
+	{
+		multi_pipe(argv[i], p_fd, envp);
+		i += 2;
+	}
 	args.argv = argv;
 	args.argc = argc;
 	status = last_pipe(args, p_fd, envp, fd_files);

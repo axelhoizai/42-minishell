@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:56:43 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 19:49:26 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:39:28 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ void	open_outfile(char **argv, int argc, int *fd_files, int *p_fd);
 void	here_doc_checker(int *fd_files, char **argv);
 
 char	**utils_parse_args(const char *str);
+int	pipex(int argc, char **argv, char **envp);
 
 #endif

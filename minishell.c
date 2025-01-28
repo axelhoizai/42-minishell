@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 16:28:59 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:40:01 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,38 +20,6 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-}
-
-void	pipe_test(int argc, char **argv, char *input)
-{
-	int	i;
-
-	i = 0;
-	(void)argc;
-	(void)input;
-	// < << > >> |
-	while (argv[i])
-	{
-		if (ft_strtok(argv[i], "<>|"))
-			printf("tok argv[i] = %s\n", argv[i]);
-		else if (ft_strcmp(argv[i], "<") == 0)
-			printf("< found, i = %d\n", i);
-		else if (ft_strcmp(argv[i], ">") == 0)
-			printf("> found, i = %d\n", i);
-		else if (ft_strcmp(argv[i], "<<") == 0)
-			printf("<< found, i = %d\n", i);
-		else if (ft_strcmp(argv[i], ">>") == 0)
-			printf(">> found, i = %d\n", i);
-		else if (ft_strcmp(argv[i], "|") == 0)
-			printf("| found, i = %d\n", i);
-		// printf("argv[i] = %s\n", argv[i]);
-		i++;
-	}
-	ft_strtok(NULL, "<>|");
-	// < infile cmd
-	// | cmd |
-	// cmd
-	// > outfile
 }
 
 char	*join_argv(char **argv)
@@ -84,9 +52,17 @@ char	*join_argv(char **argv)
 void	handle_builtins(int argc, char **argv)
 {
 	char	*cmd;
+	t_pipeline	*pipeline;
 
 	cmd = join_argv(argv);
-	if (ft_strcmp(argv[0], "echo") == 0)
+	if (ft_strchr(cmd, '|'))
+	{
+		pipeline = parse_pipeline(argv);
+		g_data.exit_code = pipex(argc, argv, g_data.my_envp);
+		print_pipeline(pipeline);
+		free_pipeline(pipeline);
+	}
+	else if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1]);
@@ -102,8 +78,6 @@ void	handle_builtins(int argc, char **argv)
 		handle_exit(argv);
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
-	else if (ft_strchr(cmd, '|'))
-		pipe_test(argc, argv, cmd);
 	else if (argc >= 1)
 		exec(argv, cmd, g_data.my_envp);
 	free(cmd);

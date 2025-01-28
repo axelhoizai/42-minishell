@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:07:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 17:09:58 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:15:31 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,3 @@ void	free_pipeline(t_pipeline *pipeline)
 	free(pipeline);
 }
 
-void	free_resources(t_pipeline *pipeline, char **tokens, char *line)
-{
-	if (pipeline)
-		free_pipeline(pipeline);
-	if (tokens)
-		free_tab(tokens);
-	if (line)
-		free(line);
-}
