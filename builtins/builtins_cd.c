@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 17:18:54 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:46:25 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,26 @@ int	check_dir(char	*dir)
 	return (result);
 }
 
-void	handle_cd_error(int argc, char *dir, t_data *data)
+int	handle_cd_error(int argc, char *dir, t_data *data)
 {
 	if (argc > 2)
 	{
 		data->exit_code = 1;
 		ft_print_error("cd", NULL, "too many arguments");
+		return (0);
 	}
 	else if (!dir)
+	{
 		chdir(getenv("HOME"));
+		return (0);
+	}
 	else if (check_dir(dir) == -1)
 	{
 		data->exit_code = 1;
 		ft_print_error("cd", dir, "Not a directory");
+		return (0);
 	}
+	return (1);
 }
 
 void	change_dir(int argc, char *dir, t_data *data)
@@ -63,8 +69,7 @@ void	change_dir(int argc, char *dir, t_data *data)
 		tmp = ft_strdup(dir);
 	cwd = getcwd(NULL, 0);
 	tmpdir = ft_strjoin(cwd, tmp);
-	handle_cd_error(argc, dir, data);
-	if (data->exit_code != 1)
+	if (data->exit_code != 1 && handle_cd_error(argc, dir, data) == 1)
 	{
 		if (access(dir, F_OK) == 0)
 			chdir(dir);
