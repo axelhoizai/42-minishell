@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 20:37:46 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/29 11:24:06 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,17 @@ void	handle_variable(const char *line, int *i, t_parse *parse)
 	char	*var;
 	int		k;
 
-	var = handle_special_var(line, i);
-	if (!var && (ft_isalnum(line[*i + 1]) || line[*i + 1] == '_'))
+	var = NULL;
+	if (line[*i + 1] == '?' || line[*i + 1] == '$' || ft_isdigit(line[*i + 1]))
 	{
-		var = parse_var(line, i); // for $VAR
+		var = handle_special_var(line, i);
+		return ;
+	}
+	else if ((ft_isalnum(line[*i + 1]) || line[*i] == '_'))
+	{
+		var = parse_var(line, i);// for $VAR
 		(*i)++;
 	}
-	if (!var)
-		return ;
 	k = 0;
 	while (var[k])
 		append_char(parse, var[k++]);

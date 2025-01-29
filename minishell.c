@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 01:19:14 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/29 11:22:55 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	main(int ac, char **av, char **envp)
 	argv = NULL;
 	ft_init(envp, is_start);
 	signal(SIGINT, handle_sigint);
-	sh_tester(av);
+	if (ac > 1)
+		sh_tester(NULL);
 	exit_code = main_loop(argv);
 	return (exit_code);
 }

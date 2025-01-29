@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tester.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 01:20:11 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/29 11:26:10 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ char	*join_argv2(char **argv)
 	return (cmd);
 }
 
- void	handle_av_commands(char **av)
+void	handle_av_commands(char **av)
 {
 	char	**argv;
-	
+
 	if (av && av[2])
 	{
 		printf("Usage tester: ./minishell \"cmds\"\n");
@@ -91,20 +91,19 @@ void	sh_tester(char **av)
 	argv = NULL;
 	if (!isatty(STDIN_FILENO))
 	{
-	input = get_next_line(STDIN_FILENO);
-	while (input != NULL)
-	{
-		argv = get_argv(input);
-		if (!argv)
+		input = get_next_line(STDIN_FILENO);
+		while (input != NULL)
 		{
+			argv = get_argv(input);
+			if (!argv)
+			{
+				free(input);
+				input = get_next_line(STDIN_FILENO);
+				continue ;
+			}
 			free(input);
 			input = get_next_line(STDIN_FILENO);
-			continue ;
 		}
-		free(input);
-		input = get_next_line(STDIN_FILENO);
-	}
-		
 	}
 	else
 		handle_av_commands(av);
