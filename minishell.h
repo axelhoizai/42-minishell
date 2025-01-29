@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 01:18:44 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:11:15 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,15 @@ typedef struct s_pipeline
 	t_command	**commands;
 }	t_pipeline;
 
-extern t_data	g_data;
-
 char		*get_promt(void);
 
 //-------------------------------UTILS-------------------------------
 
 //utils_cd
-void		change_dir(int argc, char *dir);
+void		change_dir(int argc, char *dir, t_data *data);
 
 //utils_error
-void		ft_print_error(char *builting, char *arg, char *msg, int exit_code);
+void		ft_print_error(char *builting, char *arg, char *msg);
 
 //utils_parsing
 char		*join_argv(char **argv);
@@ -96,18 +94,18 @@ void		init_parse(t_parse *parse, int size);
 void		append_char(t_parse *parse, char c);
 
 // parsing_token.c
-char		*parse_var(const char *token, int *index);
-char		*parse_token(const char *line, int *i);
-char		**parse_args(const char *line);
+char		*parse_var(const char *token, int *index, t_data *data);
+char		*parse_token(const char *line, int *i, t_data *data);
+char		**parse_args(const char *line, t_data *data);
 void		free_tokens(char **tokens);
 
 char		*replace_double_ampersand(char *arg);
 
 //utils
-char		**get_argv(const char *input);
+char		**get_argv(const char *input, t_data *data);
 void		handle_sigint(int sig);
-void		handle_pipe(int argc, char **argv);
-void		handle_builtins(int argc, char **argv);
+void		handle_pipe(int argc, char **argv, t_data *data);
+void		handle_builtins(int argc, char **argv, t_data *data);
 
 //utils_debug
 void		print_tab(char **tab);
@@ -121,17 +119,17 @@ t_env_ms	*ms_lstlast(t_env_ms *lst);
 t_env_ms	*sort_list(t_env_ms *lst);
 void		ms_lstclear(t_env_ms **lst);
 void		ms_lstdelone(t_env_ms **lst, char *env_key);
-void		lst_to_tab(t_env_ms *lst);
+void		lst_to_tab(t_env_ms *lst, t_data *data);
 
 //utils_data
-void		ft_init(char **envp, int is_start);
+void		ft_init(char **envp, int *is_start, t_data *data);
 
 //utils_get
 int			get_process_id(void);
 char		*get_uid(void);
 
 //utils_pwd
-void		get_dir(void);
+void		get_dir(t_data *data);
 
 //utils_echo
 char		*handle_n(char *flag);
@@ -143,7 +141,7 @@ char		**ft_echo_tab(int argc, char **argv);
 //-------------------------------BUILTINS----------------------------
 
 //builtins_exit
-void		handle_exit(char **argv);
+void		handle_exit(char **argv, t_data	*data);
 
 //builtins_echo
 char		**ft_echo_tab(int argc, char **argv);
@@ -153,19 +151,19 @@ void		ft_echo(int argc, char **argv);
 bool		is_key(t_env_ms *lst, char *var);
 t_env_ms	*ms_find(t_env_ms *lst, char *var);
 void		print_export(t_env_ms *lst);
-void		ft_export(char **argv);
+void		ft_export(char **argv, t_data *data);
 
 //builtins_env
 char		*get_envkey(char *env);
 char		*get_envval(char *env);
-void		init_env_ms(char **envp);
-void		ft_env(void);
+void		init_env_ms(char **envp, t_data *data);
+void		ft_env(t_data *data);
 
 //builtins_unset
-void		ft_unset(int argc, char *argv);
+void		ft_unset(int argc, char *argv, t_data *data);
 
 //builtin_exec
-void		exec(char **argv, char *cmd, char **envp);
+void		exec(char **argv, char *cmd, t_data *data);
 
 //----------------------------BUILTINS-END---------------------------
 
@@ -188,6 +186,6 @@ t_pipeline	*parse_pipeline(char **tokens);
 void		print_pipeline(t_pipeline *pipeline);
 
 //tester
-void		sh_tester(char **av);
+void		sh_tester(char **av, t_data *data);
 
 #endif

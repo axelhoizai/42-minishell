@@ -6,13 +6,13 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 19:30:07 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:08:08 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	execute(char *cmd, char **envp)
+static void	execute(char *cmd, t_data *data)
 {
 	char	**cmd_args;
 	char	*cmd_path;
@@ -26,14 +26,14 @@ static void	execute(char *cmd, char **envp)
 		print_error("minishell: Invalid command", NULL, CMD_NOT_FOUND);
 		return ;
 	}
-	cmd_path = get_path(cmd_args[0], envp);
+	cmd_path = get_path(cmd_args[0], data->my_envp);
 	if (ft_strstr(cmd_args[0], "./"))
 		cmd_path = cmd_args[0];
-	if (execve(cmd_path, cmd_args, envp) == -1)
+	if (execve(cmd_path, cmd_args, data->my_envp) == -1)
 	{
 		free_tab(cmd_args);
-		ft_print_error(ft_strtok(cmd, " "),
-			NULL, "command not found", CMD_NOT_FOUND);
+		ft_print_error(ft_strtok(cmd, " "), NULL, "command not found");
+		data->exit_code = CMD_NOT_FOUND;
 		exit(CMD_NOT_FOUND);
 	}
 }
@@ -52,7 +52,7 @@ static char	*parse_cmd(char **argv, char *cmd)
 	return (ft_strdup(cmd));
 }
 
-void	exec(char **argv, char *cmd, char **envp)
+void	exec(char **argv, char *cmd, t_data *data)
 {
 	int		status;
 	pid_t	pid[2];
@@ -65,10 +65,10 @@ void	exec(char **argv, char *cmd, char **envp)
 		if (pid[0] == -1)
 			exit(1);
 		if (pid[0] == 0)
-			execute(tmp, envp);
+			execute(tmp, data);
 		free(tmp);
 		waitpid(pid[0], &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) >= 0)
-			g_data.exit_code = WEXITSTATUS(status);
+			data->exit_code = WEXITSTATUS(status);
 	}
 }

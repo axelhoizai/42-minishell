@@ -6,13 +6,12 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 11:24:06 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:19:23 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// Gère les états des quotes (simple et double)
 void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
 {
 	if (line[i] == '\'' && *in_d == 0)
@@ -21,45 +20,41 @@ void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
 		*in_d = !(*in_d);
 }
 
-static char	*handle_special_var(const char *line, int *i)
+static char	*handle_special_var(const char *line, int *i, t_data *data)
 {
 	char	*var;
 
 	var = NULL;
-	if (line[*i + 1] == '?') // for $?
+	if (line[*i + 1] == '?')
 	{
-		var = ft_itoa(g_data.exit_code);
-		g_data.exit_code = 0;
+		var = ft_itoa(data->exit_code);
+		data->exit_code = 0;
 		(*i) += 2;
 	}
-	else if (line[*i + 1] == '$') // for $$
+	else if (line[*i + 1] == '$')
 	{
 		var = ft_itoa(get_process_id());
 		(*i) += 2;
 	}
-	else if (ft_isdigit(line[*i + 1])) //for $ and digit 
-	{
-		(*i) += 2;
-		return (NULL);
-	}
 	return (var);
 }
 
-// Ajoute une variable développée au buffer
-void	handle_variable(const char *line, int *i, t_parse *parse)
+static void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 {
 	char	*var;
 	int		k;
 
 	var = NULL;
-	if (line[*i + 1] == '?' || line[*i + 1] == '$' || ft_isdigit(line[*i + 1]))
+	if (line[*i + 1] == '?' || line[*i + 1] == '$')
+		var = handle_special_var(line, i, data);
+	else if (ft_isdigit(line[*i + 1]))
 	{
-		var = handle_special_var(line, i);
+		(*i) += 2;
 		return ;
 	}
 	else if ((ft_isalnum(line[*i + 1]) || line[*i] == '_'))
 	{
-		var = parse_var(line, i);// for $VAR
+		var = parse_var(line, i, data);
 		(*i)++;
 	}
 	k = 0;
@@ -86,7 +81,7 @@ void	handle_parse_token(const char *line, int *i, t_parse *parse)
 	}
 }
 
-char	*parse_token(const char *line, int *i)
+char	*parse_token(char *line, int *i, t_data *data)
 {
 	t_parse	parse;
 
@@ -106,7 +101,7 @@ char	*parse_token(const char *line, int *i)
 			&& (ft_isalnum(line[*i + 1])
 				|| line[*i + 1] == '?' || line[*i + 1] == '$'))
 		{
-			handle_variable(line, i, &parse);
+			handle_variable(line, i, &parse, data);
 			continue ;
 		}
 		append_char(&parse, line[*i]);

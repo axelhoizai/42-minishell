@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 12:33:31 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 16:33:33 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:00:05 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*ft_construct_error_msg(char *builting, char *arg, char *msg)
 	return (result);
 }
 
-void	ft_print_error(char *builting, char *arg, char *msg, int exit_code)
+void	ft_print_error(char *builting, char *arg, char *msg)
 {
 	char	*result;
 
@@ -57,5 +57,4 @@ void	ft_print_error(char *builting, char *arg, char *msg, int exit_code)
 		printf("%s\n", result);
 		free(result);
 	}
-	g_data.exit_code = exit_code;
 }

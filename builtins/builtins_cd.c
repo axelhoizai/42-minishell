@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/25 16:41:05 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:18:54 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,46 @@ int	check_dir(char	*dir)
 	return (result);
 }
 
-void	change_dir(int argc, char *dir)
+void	handle_cd_error(int argc, char *dir, t_data *data)
+{
+	if (argc > 2)
+	{
+		data->exit_code = 1;
+		ft_print_error("cd", NULL, "too many arguments");
+	}
+	else if (!dir)
+		chdir(getenv("HOME"));
+	else if (check_dir(dir) == -1)
+	{
+		data->exit_code = 1;
+		ft_print_error("cd", dir, "Not a directory");
+	}
+}
+
+void	change_dir(int argc, char *dir, t_data *data)
 {
 	char	*tmp;
 	char	*tmpdir;
 	char	*cwd;
 
-	tmpdir = NULL;
 	tmp = NULL;
 	if (dir)
 		tmp = ft_strdup(dir);
 	cwd = getcwd(NULL, 0);
 	tmpdir = ft_strjoin(cwd, tmp);
-	if (argc > 2)
-		ft_print_error("cd", NULL, "too many arguments", 1);
-	else if (!dir)
-		chdir(getenv("HOME"));
-	else if (check_dir(dir) == -1)
-		ft_print_error("cd", dir, "Not a directory", 1);
-	else if (access(dir, F_OK) == 0)
-		chdir(dir);
-	else if (!ft_strnstr(tmpdir, "//", ft_strlen(tmpdir))
-		&& access(tmpdir, F_OK) == 0)
-		chdir(tmpdir);
-	else
-		ft_print_error("cd", dir, "No such file or directory", 1);
+	handle_cd_error(argc, dir, data);
+	if (data->exit_code != 1)
+	{
+		if (access(dir, F_OK) == 0)
+			chdir(dir);
+		else if (!ft_strnstr(tmpdir, "//", ft_strlen(tmpdir))
+			&& access(tmpdir, F_OK) == 0)
+			chdir(tmpdir);
+		else
+		{
+			data->exit_code = 1;
+			ft_print_error("cd", dir, "No such file or directory");
+		}
+	}
 	free_change_dir(cwd, tmpdir, tmp);
 }

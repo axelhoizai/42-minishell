@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:27:45 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/28 20:47:00 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:32:11 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ms_lstdelone(t_env_ms **lst, char *env_key)
 	tmp->next = NULL;
 }
 
-void	lst_to_tab(t_env_ms *lst)
+void	lst_to_tab(t_env_ms *lst, t_data *data)
 {
 	int			i;
 	t_env_ms	*tmp;
@@ -60,19 +60,19 @@ void	lst_to_tab(t_env_ms *lst)
 
 	i = 0;
 	tmp = lst;
-	if (g_data.my_envp)
-		free_tab(g_data.my_envp);
-	g_data.my_envp = NULL;
-	g_data.my_envp = malloc (sizeof (char *) * (ms_lstsize(lst) + 1));
-	if (!g_data.my_envp)
+	if (data->my_envp)
+		free_tab(data->my_envp);
+	data->my_envp = NULL;
+	data->my_envp = malloc (sizeof (char *) * (ms_lstsize(lst) + 1));
+	if (!data->my_envp)
 		return ;
 	while (tmp)
 	{
 		key = ft_strjoin(tmp->key, "=");
-		g_data.my_envp[i] = ft_strjoin(key, tmp->value);
+		data->my_envp[i] = ft_strjoin(key, tmp->value);
 		free (key);
 		tmp = tmp->next;
 		i++;
 	}
-	g_data.my_envp[i] = NULL;
+	data->my_envp[i] = NULL;
 }

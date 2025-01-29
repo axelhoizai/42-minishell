@@ -6,28 +6,29 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 11:26:10 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 16:10:49 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	handle_exit_tester(char **argv)
+static void	handle_exit_tester(char **argv, t_data *data)
 {
 	int	exit_code;
 
-	exit_code = g_data.exit_code;
+	exit_code = data->exit_code;
 	if (argv && argv[1] && ft_isnumeric(argv[1]) == 1)
 		exit_code = ft_atoi(argv[1]);
 	else if (argv && argv[1])
 	{
-		ft_print_error("exit", argv[1], "numeric argument required", 2);
+		data->exit_code = 2;
+		ft_print_error("exit", argv[1], "numeric argument required");
 		exit_code = 2;
 	}
 	rl_clear_history();
 	if (argv)
 		free_tab(argv);
-	ms_lstclear(&g_data.env_ms);
+	ms_lstclear(&data->env_ms);
 	exit(exit_code);
 }
 
@@ -68,22 +69,22 @@ char	*join_argv2(char **argv)
 	return (cmd);
 }
 
-void	handle_av_commands(char **av)
+void	handle_av_commands(char **av, t_data *data)
 {
 	char	**argv;
 
 	if (av && av[2])
 	{
 		printf("Usage tester: ./minishell \"cmds\"\n");
-		handle_exit_tester(NULL);
+		handle_exit_tester(NULL, data);
 		return ;
 	}
-	argv = get_argv(av[1]);
-	handle_exit_tester(argv);
+	argv = get_argv(av[1], data);
+	handle_exit_tester(argv, data);
 	free_tab(argv);
 }
 
-void	sh_tester(char **av)
+void	sh_tester(char **av, t_data	*data)
 {
 	char	**argv;
 	char	*input;
@@ -94,7 +95,7 @@ void	sh_tester(char **av)
 		input = get_next_line(STDIN_FILENO);
 		while (input != NULL)
 		{
-			argv = get_argv(input);
+			argv = get_argv(input, data);
 			if (!argv)
 			{
 				free(input);
@@ -106,6 +107,6 @@ void	sh_tester(char **av)
 		}
 	}
 	else
-		handle_av_commands(av);
-	handle_exit_tester(argv);
+		handle_av_commands(av, data);
+	handle_exit_tester(argv, data);
 }
