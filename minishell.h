@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 17:11:15 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 18:10:36 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <dirent.h>
 # include <stdbool.h>
 
-# include "./pipex/pipex.h"
+# include "pipex/pipex.h"
 
 # define INPUT		1	//"<"
 # define HEREDOC	2	//"<<"
@@ -60,19 +60,20 @@ typedef struct s_data
 	// int pip[2];
 }	t_data;
 
-typedef struct s_command
-{
-	char	**args;
-	char	*input_file;
-	char	*output_file;
-	int		append;
-	int		heredoc;
-}	t_command;
+// typedef struct s_command
+// {
+// 	char	**args;
+// 	char	*input_file;
+// 	char	*output_file;
+// 	int		append;
+// 	int		heredoc;
+// }	t_command;
 
-typedef struct s_pipeline
-{
-	t_command	**commands;
-}	t_pipeline;
+// typedef struct s_pipeline
+// {
+// 	t_command	**commands;
+// 	int			cmd_count;
+// }	t_pipeline;
 
 char		*get_promt(void);
 
@@ -95,8 +96,8 @@ void		append_char(t_parse *parse, char c);
 
 // parsing_token.c
 char		*parse_var(const char *token, int *index, t_data *data);
-char		*parse_token(const char *line, int *i, t_data *data);
-char		**parse_args(const char *line, t_data *data);
+char		*parse_token(char *line, int *i, t_data *data);
+char		**parse_args(char *line, t_data *data);
 void		free_tokens(char **tokens);
 
 char		*replace_double_ampersand(char *arg);
@@ -104,7 +105,7 @@ char		*replace_double_ampersand(char *arg);
 //utils
 char		**get_argv(const char *input, t_data *data);
 void		handle_sigint(int sig);
-void		handle_pipe(int argc, char **argv, t_data *data);
+void		handle_pipe(char **argv, t_data *data);
 void		handle_builtins(int argc, char **argv, t_data *data);
 
 //utils_debug
