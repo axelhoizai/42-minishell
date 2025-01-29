@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   double_ampersand_parse.c                           :+:      :+:    :+:   */
+/*   ampersand_parse.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:41:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 20:43:46 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/28 23:24:55 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*replace_double_ampersand(char *arg)
 	free(arg);
 	arg = ft_strdup(tmp);
 	free(tmp);
-	if (ft_strstr(arg, "$?"))
+	if (ft_strstr(arg, "&&"))
 		return (replace_double_ampersand(arg));
 	return (arg);
 }

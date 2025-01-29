@@ -6,32 +6,11 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 21:07:48 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/29 01:19:14 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	sh_tester(char *input)
-{
-	char	**argv;
-
-	argv = NULL;
-	input = get_next_line(STDIN_FILENO);
-	while (input != NULL)
-	{
-		argv = get_argv(input);
-		if (!argv)
-		{
-			free(input);
-			input = get_next_line(STDIN_FILENO);
-			continue ;
-		}
-		free(input);
-		input = get_next_line(STDIN_FILENO);
-	}
-	handle_exit_tester(argv);
-}
 
 char	main_loop(char **argv)
 {
@@ -71,8 +50,7 @@ int	main(int ac, char **av, char **envp)
 	argv = NULL;
 	ft_init(envp, is_start);
 	signal(SIGINT, handle_sigint);
-	if (ac > 1)
-		sh_tester(NULL);
+	sh_tester(av);
 	exit_code = main_loop(argv);
 	return (exit_code);
 }

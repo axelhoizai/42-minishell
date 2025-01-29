@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 21:41:18 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/01/29 01:18:44 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,9 +169,6 @@ void		exec(char **argv, char *cmd, char **envp);
 
 //----------------------------BUILTINS-END---------------------------
 
-//exit_tester
-void		handle_exit_tester(char **argv);
-
 //parse_init
 t_pipeline	*init_pipeline(void);
 t_command	*init_command(void);
@@ -189,5 +186,8 @@ void		handle_redirection(char **tokens, int *i, t_command *cmd);
 t_command	*parse_command(char **tokens, int *i);
 t_pipeline	*parse_pipeline(char **tokens);
 void		print_pipeline(t_pipeline *pipeline);
+
+//tester
+void		sh_tester(char **av);
 
 #endif
