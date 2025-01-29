@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 17:11:15 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:31:00 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void		append_char(t_parse *parse, char c);
 
 // parsing_token.c
 char		*parse_var(const char *token, int *index, t_data *data);
-char		*parse_token(const char *line, int *i, t_data *data);
-char		**parse_args(const char *line, t_data *data);
+char		*parse_token(char *line, int *i, t_data *data);
+char		**parse_args(char *line, t_data *data);
 void		free_tokens(char **tokens);
 
 char		*replace_double_ampersand(char *arg);

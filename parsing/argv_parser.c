@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 17:17:31 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:30:50 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	skip_whitespace(const char *str, int *i)
 		(*i)++;
 }
 
-char	**parse_args(const char *str, t_data *data)
+char	**parse_args(char *str, t_data *data)
 {
 	char	**tokens;
 	char	*token;
