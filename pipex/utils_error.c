@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 17:41:09 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 19:24:45 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 void	print_error(char *mgs, char *arg, int exit_code)
 {
@@ -27,30 +27,31 @@ void	print_error(char *mgs, char *arg, int exit_code)
 	}
 }
 
-int	args_checker(int argc, char **argv)
+int	args_checker(t_pipeline *pip)
 {
-	if (argc < 5)
+	printf("%d\n", pip->cmd_count);
+	if (pip->cmd_count < 2)
 	{
 		print_error("Usage: ./pipex filein \"cmd1\" \"cmd2\" fileout",
 			NULL, INVALID_INPUT);
 		return (-1);
 	}
-	else if (argc < 6 && ft_strstr(argv[1], "here_doc"))
+	else if (pip->cmd_count < 2 && pip->commands[0]->heredoc)
 	{
 		print_error("Usage: ./pipex here_doc LIMITER \"cmd1\" \"cmd2\" fileout",
 			NULL, INVALID_INPUT);
 		return (-1);
 	}
-	else if (argc < 5 && !ft_strstr(argv[1], "here_doc"))
+	else if (pip->cmd_count < 2 && !pip->commands[0]->heredoc)
 	{
 		print_error("Usage: ./pipex filein \"cmd1\" \"cmd2\" fileout",
 			NULL, INVALID_INPUT);
 		return (-1);
 	}
-	if (ft_strstr(argv[3], "./"))
-		script_checker(argv[3]);
-	if (ft_strstr(argv[2], "./"))
-		script_checker(argv[2]);
+	// if (ft_strstr(argv[3], "./"))
+	// 	script_checker(argv[3]);
+	// if (ft_strstr(argv[2], "./"))
+	// 	script_checker(argv[2]);
 	return (1);
 }
 
