@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 17:45:04 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:13:24 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*ft_get_currentpath(t_env_ms *lst, char *currentpath)
 	{
 		result = (char *)malloc(strlen(currentpath) - strlen(home) + 2);
 		if (!result)
-			return (free(currentpath) ,NULL);
+			return (free(currentpath), NULL);
 		result[0] = '~';
 		strcpy(result + 1, currentpath + strlen(home));
 		free(currentpath);

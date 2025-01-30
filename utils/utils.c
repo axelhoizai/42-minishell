@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 17:49:35 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:16:46 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ void	handle_builtins(int argc, char **argv, t_data *data)
 	// if (ft_strchr(cmd, '|'))
 		// handle_pipe(argc, argv, data);
 	// else 
-	// if (ft_strcmp(argv[0], "echo") == 0)
-	// if (ft_strchr(cmd, '|'))
-	// 	handle_pipe(argv, data);
 	if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
