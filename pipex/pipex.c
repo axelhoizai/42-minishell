@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 19:24:49 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 10:22:36 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,15 @@ int	pipex(t_pipeline *pip, t_data *data)
 	while (i < pip->cmd_count - 1)
 	{
 		multi_pipe(pip->commands[i], p_fd, data->my_envp);
-		i++;;
+		i++;
 	}
 	status = last_pipe(pip, p_fd, data->my_envp, fd_files);
-	while (--i > 0)
+	i = 0;
+	while (i < pip->cmd_count)
+	{
 		waitpid(-1, NULL, 0);
+		i++;
+	}
 	// free_pipeline(pip);
 	return (status);
 }

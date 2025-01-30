@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 19:36:16 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 15:16:48 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	handle_pipe(char **argv, t_data *data)
 	t_pipeline	*pipeline;
 
 	pipeline = parse_pipeline(argv);
+	free_tab(argv);
 	print_pipeline(pipeline);
 	data->exit_code = pipex(pipeline, data);
 	free_pipeline(pipeline);
@@ -34,10 +35,19 @@ void	handle_pipe(char **argv, t_data *data)
 
 void	handle_builtins(int argc, char **argv, t_data *data)
 {
-	char		*cmd;
+	int			is_pipe = 0;
+	int 		i = 0;
 
-	cmd = join_argv(argv);
-	if (ft_strchr(cmd, '|'))
+	while (argv[i])
+	{
+		if (ft_strchr(argv[i], '|'))
+		{
+			is_pipe = 1;
+			break ;
+		}
+		i++;
+	}
+	if (is_pipe == 1)
 		handle_pipe(argv, data);
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv);
@@ -56,47 +66,60 @@ void	handle_builtins(int argc, char **argv, t_data *data)
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
 	else if (argc >= 1)
-		exec(argv, cmd, data);
-	free(cmd);
+		exec(argv, data);
+	// if (cmd)
+	// 	free(cmd);
 }
 
-static void	process_builtins(char **builtins, t_data *data)
+static void	process_builtins(char *builtins, t_data *data)
 {
 	char	**argv;
 	int		argc;
-	int		i;
 
 	argv = NULL;
 	argc = 0;
-	i = 0;
-	while (builtins && builtins[i])
-	{
-		argv = parse_args(builtins[i], data);
-		data->argv = argv;
+	// while (builtins && builtins[i])
+	// {
+		argv = parse_args(builtins, data);
+		free(builtins);
 		while (argv && argv[argc])
 			argc++;
 		if (argc > 0)
 			handle_builtins(argc, argv, data);
-		free_tab(argv);
+		// free_tab(argv);
 		argc = 0;
-		if (data->exit_code > 0)
-			break ;
-		i++;
-	}
+	// 	if (data->exit_code > 0)
+	// 		break ;
+	// 	i++;
+	// }
 }
 
 char	**get_argv(const char *input, t_data *data)
 {
 	char	**builtins;
 	char	*tmp;
+	int		i;
 
+	i = 0;
 	if (!input)
 		return (NULL);
 	tmp = ft_strdup(input);
-	tmp = replace_double_ampersand(tmp);
-	builtins = ft_split(tmp, '\n');
-	free(tmp);
-	process_builtins(builtins, data);
-	free_tab(builtins);
+	if (ft_strstr(tmp, "&&"))
+		tmp = replace_double_ampersand(tmp);
+	if (!ft_strchr(tmp, '\n'))
+		process_builtins(tmp, data);
+	else
+	{
+		builtins = ft_split(tmp, '\n');
+		free(tmp);
+		while (builtins && builtins[i])
+		{
+			process_builtins(builtins[i], data);
+			if (data->exit_code > 0)
+				break ;
+			i++;
+		}
+		free_tab (builtins);
+	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 19:33:25 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 15:14:04 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void		ft_env(t_data *data);
 void		ft_unset(int argc, char *argv, t_data *data);
 
 //builtin_exec
-void		exec(char **argv, char *cmd, t_data *data);
+void		exec(char **argv, t_data *data);
 
 //----------------------------BUILTINS-END---------------------------
 

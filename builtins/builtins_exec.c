@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 16:08:08 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 15:26:26 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static char	*parse_cmd(char **argv, char *cmd)
 	if (argv && argv[0] && ft_strcmp(argv[0], "<") == 0)
 	{
 		tmp = ft_strjoin(argv[2], " ");
+		free (cmd);
 		cmd = ft_strjoin(tmp, argv[1]);
 		free(tmp);
 		return (cmd);
@@ -52,15 +53,18 @@ static char	*parse_cmd(char **argv, char *cmd)
 	return (ft_strdup(cmd));
 }
 
-void	exec(char **argv, char *cmd, t_data *data)
+void	exec(char **argv, t_data *data)
 {
 	int		status;
 	pid_t	pid[2];
 	char	*tmp;
+	char	*cmd;
 
+	cmd = join_argv(argv);
 	if (cmd)
 	{
 		tmp = parse_cmd(argv, cmd);
+		free (cmd);
 		pid[0] = fork();
 		if (pid[0] == -1)
 			exit(1);

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 19:33:47 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 13:44:30 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	main_loop(char **argv, t_data *data)
 	char	*input;
 	char	*prompt;
 	char	exit_code;
+	(void)argv;
 
 	while (1)
 	{
@@ -27,13 +28,13 @@ char	main_loop(char **argv, t_data *data)
 		if (!input)
 		{
 			free(input);
-			handle_exit(argv, data);
+			handle_exit(NULL, data);
 			break ;
 		}
 		if (*input)
 			add_history(input);
-		argv = get_argv(input, data);
-		data->argv = argv;
+		get_argv(input, data);
+		// data->argv = argv;
 		free(input);
 	}
 	return (exit_code);
@@ -41,7 +42,6 @@ char	main_loop(char **argv, t_data *data)
 
 int	main(int ac, char **av, char **envp)
 {
-	char	**argv;
 	int		is_start;
 	char	exit_code;
 	t_data	data;
@@ -50,13 +50,12 @@ int	main(int ac, char **av, char **envp)
 	exit_code = 0;
 	(void)ac;
 	(void)av;
-	argv = NULL;
 	ft_bzero(&data, sizeof(t_data));
 	ft_init(envp, &is_start, &data);
 	signal(SIGINT, handle_sigint);
 	if (ac > 1)
 		sh_tester(NULL, &data);
-	exit_code = main_loop(argv, &data);
+	exit_code = main_loop(NULL, &data);
 	return (exit_code);
 }
 
