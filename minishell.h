@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 15:14:04 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:06:26 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_data
 // 	int			cmd_count;
 // }	t_pipeline;
 
-char		*get_promt(void);
+char		*get_prompt(t_env_ms *lst);
 
 //-------------------------------UTILS-------------------------------
 

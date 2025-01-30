@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 15:16:48 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:08:13 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,48 +78,38 @@ static void	process_builtins(char *builtins, t_data *data)
 
 	argv = NULL;
 	argc = 0;
-	// while (builtins && builtins[i])
-	// {
-		argv = parse_args(builtins, data);
-		free(builtins);
-		while (argv && argv[argc])
-			argc++;
-		if (argc > 0)
-			handle_builtins(argc, argv, data);
-		// free_tab(argv);
-		argc = 0;
-	// 	if (data->exit_code > 0)
-	// 		break ;
-	// 	i++;
-	// }
+	argv = parse_args(builtins, data);
+	while (argv && argv[argc])
+		argc++;
+	if (argc > 0)
+		handle_builtins(argc, argv, data);
+	free_tab(argv);
+	argc = 0;
 }
 
 char	**get_argv(const char *input, t_data *data)
 {
-	char	**builtins;
 	char	*tmp;
-	int		i;
+	char	*token;
 
 	i = 0;
 	if (!input)
 		return (NULL);
 	tmp = ft_strdup(input);
-	if (ft_strstr(tmp, "&&"))
-		tmp = replace_double_ampersand(tmp);
-	if (!ft_strchr(tmp, '\n'))
-		process_builtins(tmp, data);
-	else
+	tmp = replace_double_ampersand(tmp);
+	if (strchr(tmp, '\n'))
 	{
-		builtins = ft_split(tmp, '\n');
-		free(tmp);
-		while (builtins && builtins[i])
+		token = strtok(tmp, "\n");
+		while (token)
 		{
-			process_builtins(builtins[i], data);
+			process_builtins(token, data);
 			if (data->exit_code > 0)
 				break ;
-			i++;
+			token = strtok(NULL, "\n");
 		}
-		free_tab (builtins);
 	}
+	else
+		process_builtins(tmp, data);
+	free(tmp);
 	return (NULL);
 }

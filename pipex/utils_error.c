@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 19:24:45 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 17:49:46 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,17 @@ int	args_checker(t_pipeline *pip)
 
 void	free_tab(char **tab)
 {
-	int		i;
+	int i;
 
+	if (!tab)
+		return;
 	i = 0;
-	if (tab)
+	while (tab[i])
 	{
-		while (tab[i])
-			free(tab[i++]);
-		free(tab);
+		free(tab[i]);
+		i++;
 	}
+	free(tab);
 }
 
 void	script_checker(char *cmd)

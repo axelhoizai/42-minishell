@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:27 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 16:31:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 17:31:21 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*get_envkey(char *env)
 
 	len = len_key(env);
 	key = ft_substr(env, 0, len);
+	if (!key)
+		return (NULL);
 	return (key);
 }
 
