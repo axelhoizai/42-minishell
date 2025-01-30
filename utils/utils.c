@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:33:32 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 19:18:45 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,20 @@ void	handle_pipe(char **argv, t_data *data)
 
 void	handle_builtins(int argc, char **argv, t_data *data)
 {
-	char		*cmd;
+	int			is_pipe = 0;
+	int 		i = 0;
 
-	cmd = join_argv(argv);
-	// if (ft_strchr(cmd, '|'))
-		// handle_pipe(argc, argv, data);
-	// else 
+	while (argv[i])
+	{
+		if (ft_strchr(argv[i], '|'))
+		{
+			is_pipe = 1;
+			break ;
+		}
+		i++;
+	}
+	if (is_pipe == 1)
+		handle_pipe(argv, data);
 	if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
@@ -71,11 +79,12 @@ static void	process_builtins(char *builtins, t_data *data)
 	argv = NULL;
 	argc = 0;
 	argv = parse_args(builtins, data);
+	free(builtins);
 	while (argv && argv[argc])
 		argc++;
 	if (argc > 0)
 		handle_builtins(argc, argv, data);
-	free_tab(argv);
+	// free_tab(argv);
 	argc = 0;
 }
 
@@ -87,6 +96,7 @@ char	**get_argv(const char *input, t_data *data)
 	if (!input)
 		return (NULL);
 	tmp = ft_strdup(input);
+	// free(input);
 	tmp = replace_double_ampersand(tmp);
 	if (strchr(tmp, '\n'))
 	{
@@ -101,6 +111,6 @@ char	**get_argv(const char *input, t_data *data)
 	}
 	else
 		process_builtins(tmp, data);
-	free(tmp);
+	// free(tmp);
 	return (NULL);
 }

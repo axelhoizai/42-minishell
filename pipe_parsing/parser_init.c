@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:06:04 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 14:38:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:13:23 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_command	*init_command(void)
 	cmd->args = NULL;
 	cmd->input_file = NULL;
 	cmd->output_file = NULL;
+	cmd->limiter = NULL;
 	cmd->append = 0;
 	cmd->heredoc = 0;
 	return (cmd);
