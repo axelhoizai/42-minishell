@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 17:41:12 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 19:36:38 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 int	open_file(char *file, int mode, int *p_fd)
 {
@@ -41,12 +41,12 @@ int	open_file(char *file, int mode, int *p_fd)
 	return (fd);
 }
 
-void	open_outfile(char **argv, int argc, int *fd_files, int *p_fd)
+void	open_outfile(t_pipeline *pip, int argc, int *fd_files, int *p_fd)
 {
-	if (ft_strcmp(argv[1], "here_doc") == 0)
-		fd_files[1] = open_file(argv[argc - 1], 0, p_fd);
+	if (pip->commands[0]->heredoc)
+		fd_files[1] = open_file(pip->commands[argc - 1]->output_file, 0, p_fd);
 	else
-		fd_files[1] = open_file(argv[argc - 1], 2, p_fd);
+		fd_files[1] = open_file(pip->commands[argc - 1]->output_file, 2, p_fd);
 	if (fd_files[1] == -1)
 	{
 		close(p_fd[0]);
@@ -59,19 +59,23 @@ void	open_outfile(char **argv, int argc, int *fd_files, int *p_fd)
 	}
 }
 
-void	here_doc_checker(int *fd_files, char **argv)
+void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 {
 	int	p_fd[2];
 
-	if (ft_strcmp(argv[1], "here_doc") == 0)
+	if (pip->commands[0]->heredoc)
 	{
 		if (pipe(p_fd) == -1)
 			exit(PIPE_ERROR);
 		if (fork() == 0)
 		{
 			close(p_fd[0]);
-			here_doc(argv, p_fd);
+			here_doc(pip, p_fd, data);
 			close(p_fd[1]);
+			ms_lstclear(&data->env_ms);
+			free_tab(data->my_envp);
+			free_pipeline(pip);
+			handle_exit(data->argv, data);
 			exit(0);
 		}
 		close(p_fd[1]);
@@ -79,5 +83,5 @@ void	here_doc_checker(int *fd_files, char **argv)
 		wait(NULL);
 	}
 	else
-		fd_files[0] = open_file(argv[1], 1, p_fd);
+		fd_files[0] = open_file(pip->commands[0]->input_file, 1, p_fd);
 }

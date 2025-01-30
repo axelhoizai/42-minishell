@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 17:07:27 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 17:49:35 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	handle_pipe(int argc, char **argv, t_data *data)
+void	handle_pipe(char **argv, t_data *data)
 {
 	t_pipeline	*pipeline;
 
 	pipeline = parse_pipeline(argv);
-	data->exit_code = pipex(argc, argv, data->my_envp);
 	print_pipeline(pipeline);
+	data->exit_code = pipex(pipeline, data);
 	free_pipeline(pipeline);
 }
 
@@ -40,6 +40,9 @@ void	handle_builtins(int argc, char **argv, t_data *data)
 	// if (ft_strchr(cmd, '|'))
 		// handle_pipe(argc, argv, data);
 	// else 
+	// if (ft_strcmp(argv[0], "echo") == 0)
+	// if (ft_strchr(cmd, '|'))
+	// 	handle_pipe(argv, data);
 	if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)

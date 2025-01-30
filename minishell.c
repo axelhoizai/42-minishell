@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 17:22:03 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 17:50:34 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	main_loop(char **argv, t_data *data)
 			break ;
 		}
 		argv = get_argv(input, data);
+		data->argv = argv;
 		free(input);
 		exit_code = data->exit_code;
 	}
@@ -111,3 +112,12 @@ int	main(int ac, char **av, char **envp)
 	exit_code = main_loop(argv, &data);
 	return (exit_code);
 }
+
+// ==490092== 3,474 bytes in 54 blocks are still reachable in loss record 40 of 65
+// ==490092==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+// ==490092==    by 0x406DD8: ft_strjoin (ft_strjoin.c:23)
+// ==490092==    by 0x405E38: lst_to_tab (utils_list2.c:72)
+// ==490092==    by 0x404CA3: init_env_ms (builtins_env.c:59)
+// ==490092==    by 0x405EC7: ft_init (utils_data.c:20)
+// ==490092==    by 0x40140B: main (minishell.c:54)
+// ==490092== 

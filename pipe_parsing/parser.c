@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/01/28 19:31:15 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/29 18:59:03 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,25 +101,27 @@ void	print_pipeline(t_pipeline *pipeline)
 	while (pipeline->commands && pipeline->commands[i])
 	{
 		cmd = pipeline->commands[i];
-		printf("Command %d:\n", i + 1);
+		printf("[%d] : Command %d:\n", i, i + 1);
 		if (cmd->args)
 		{
 			j = 0;
-			printf("  Arguments: ");
+			printf("[%d] : Arguments: ", i);;
 			while (cmd->args[j])
 				printf("'%s' ", cmd->args[j++]);
 			printf("\n");
 		}
 		if (cmd->input_file)
-			printf("  Input file: %s\n", cmd->input_file);
+			printf("[%d] : Input file: %s\n", i, cmd->input_file);
 		if (cmd->output_file)
-			printf("  Out: %s (append: %d)\n", cmd->output_file, cmd->append);
+			printf("[%d] : Out: %s (append: %d)\n", i, cmd->output_file, cmd->append);
 		if (cmd->heredoc)
-			printf("  Heredoc: enabled\n");
+			printf("[%d] : Heredoc: enabled\n", i);
 		i++;
 	}
+	pipeline->cmd_count = i;
 }
 
+//<< . cat | rev >> outfile
 // ./pipex file1 cmd1   cmd2   cmd3 ...   cmdn   file2
 //     <   file1 cmd1 | cmd2 | cmd3 ... | cmdn > file2
 
