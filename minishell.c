@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:05:33 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:27:58 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ char	main_loop(char **argv, t_data *data)
 			break ;
 		}
 		argv = get_argv(input, data);
-		data->argv = argv;
+		// free_tab(argv);
+		// data->argv = argv;
 		free(input);
 		exit_code = data->exit_code;
 	}

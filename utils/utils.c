@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:08:13 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 19:07:17 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,12 @@ static void	process_builtins(char *builtins, t_data *data)
 	argv = NULL;
 	argc = 0;
 	argv = parse_args(builtins, data);
+	free(builtins);
 	while (argv && argv[argc])
 		argc++;
 	if (argc > 0)
 		handle_builtins(argc, argv, data);
-	free_tab(argv);
+	// free_tab(argv);
 	argc = 0;
 }
 
@@ -92,10 +93,10 @@ char	**get_argv(const char *input, t_data *data)
 	char	*tmp;
 	char	*token;
 
-	i = 0;
 	if (!input)
 		return (NULL);
 	tmp = ft_strdup(input);
+	// free(input);
 	tmp = replace_double_ampersand(tmp);
 	if (strchr(tmp, '\n'))
 	{
@@ -110,6 +111,6 @@ char	**get_argv(const char *input, t_data *data)
 	}
 	else
 		process_builtins(tmp, data);
-	free(tmp);
+	// free(tmp);
 	return (NULL);
 }

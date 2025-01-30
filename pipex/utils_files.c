@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 19:36:38 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:17:08 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 			ms_lstclear(&data->env_ms);
 			free_tab(data->my_envp);
 			free_pipeline(pip);
-			handle_exit(data->argv, data);
+			// handle_exit(data->argv, data);
 			exit(0);
 		}
 		close(p_fd[1]);

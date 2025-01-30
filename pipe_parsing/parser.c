@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/01/29 18:59:03 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:53:36 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd)
 	}
 	else if (ft_strcmp(tokens[*i], "<<") == 0 && tokens[*i + 1])
 	{
-		cmd->input_file = ft_strdup(tokens[++(*i)]);
+		cmd->limiter = ft_strdup(tokens[++(*i)]);
 		cmd->heredoc = 1;
 	}
 }
@@ -116,6 +116,8 @@ void	print_pipeline(t_pipeline *pipeline)
 			printf("[%d] : Out: %s (append: %d)\n", i, cmd->output_file, cmd->append);
 		if (cmd->heredoc)
 			printf("[%d] : Heredoc: enabled\n", i);
+		if (cmd->limiter)
+			printf("[%d] : limiter: %s\n", i, cmd->limiter);
 		i++;
 	}
 	pipeline->cmd_count = i;

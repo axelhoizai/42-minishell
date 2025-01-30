@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/30 17:50:11 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:20:52 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	handle_exit(char **argv, t_data	*data)
 			free_tab(argv);
 		free_tab(data->my_envp);
 		ms_lstclear(&data->env_ms);
-		free_tab(data->my_envp);
+		// free_tab(data->my_envp);
 		exit(exit_code);
 	}
 }

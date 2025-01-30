@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:06:26 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:12:23 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ typedef struct s_command
 	char	**args;
 	char	*input_file;
 	char	*output_file;
+	char	*limiter;
 	int		append;
 	int		heredoc;
 }	t_command;
