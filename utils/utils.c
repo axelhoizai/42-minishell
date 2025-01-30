@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 19:18:45 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 19:21:46 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_builtins(int argc, char **argv, t_data *data)
 	}
 	if (is_pipe == 1)
 		handle_pipe(argv, data);
-	if (ft_strcmp(argv[0], "echo") == 0)
+	else if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1], data);
