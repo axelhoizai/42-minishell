@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:27:45 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/29 16:32:11 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 17:11:32 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	ms_lstclear(t_env_ms **lst)
 		free(*lst);
 		*lst = temp;
 	}
-	*lst = NULL;
 }
 
 void	ms_lstdelone(t_env_ms **lst, char *env_key)
@@ -71,8 +70,8 @@ void	lst_to_tab(t_env_ms *lst, t_data *data)
 		key = ft_strjoin(tmp->key, "=");
 		data->my_envp[i] = ft_strjoin(key, tmp->value);
 		free (key);
-		tmp = tmp->next;
 		i++;
+		tmp = tmp->next;
 	}
 	data->my_envp[i] = NULL;
 }

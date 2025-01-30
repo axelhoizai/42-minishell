@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/23 19:47:21 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 17:45:04 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,27 @@ static char	*ft_get_hostname(void)
 	return (hostname);
 }
 
-static char	*ft_get_currentpath(void)
+static char	*ft_get_currentpath(t_env_ms *lst, char *currentpath)
 {
-	char	*currentpath;
-	char	*home;
-	char	*result;
+	char		*home;
+	char		*result;
+	t_env_ms	*tmp;
+	char		*tmp_env_key;
 
-	currentpath = getcwd(NULL, 0);
-	if (!currentpath)
-		return (strdup("~"));
-	home = getenv("HOME");
+	home = NULL;
+	tmp_env_key = get_envkey("HOME");
+	if (tmp_env_key)
+	{
+		tmp = ms_find(lst, tmp_env_key);
+		if (tmp && tmp->value)
+			home = tmp->value;
+		free(tmp_env_key);
+	}
 	if (home && strncmp(currentpath, home, strlen(home)) == 0)
 	{
 		result = (char *)malloc(strlen(currentpath) - strlen(home) + 2);
 		if (!result)
-		{
-			free(currentpath);
-			return (NULL);
-		}
+			return (free(currentpath) ,NULL);
 		result[0] = '~';
 		strcpy(result + 1, currentpath + strlen(home));
 		free(currentpath);
@@ -58,18 +61,26 @@ static char	*ft_get_currentpath(void)
 	return (currentpath);
 }
 
-static char	*ft_get_username(void)
+static char	*ft_get_username(t_env_ms *lst)
 {
-	char	*username;
+	char		*username;
+	t_env_ms	*tmp;
+	char		*tmp_env_key;
 
-	username = getenv("USER");
-	if (!username)
-		username = "minishell";
+	username = "minishell";
+	tmp_env_key = get_envkey("USER");
+	if (tmp_env_key)
+	{
+		tmp = ms_find(lst, tmp_env_key);
+		if (tmp && tmp->value)
+			username = tmp->value;
+		free(tmp_env_key);
+	}
 	username = ft_strjoin(username, "@");
 	return (username);
 }
 
-char	*color_prompt(char *prompt, char *current_path)
+static char	*color_prompt(char *prompt, char *current_path)
 {
 	char	*tmp1;
 	char	*tmp2;
@@ -93,7 +104,7 @@ char	*color_prompt(char *prompt, char *current_path)
 	return (color_prompt);
 }
 
-char	*get_promt(void)
+char	*get_prompt(t_env_ms *lst)
 {
 	char	*username;
 	char	*hostname;
@@ -101,10 +112,13 @@ char	*get_promt(void)
 	char	*tmp2;
 	char	*current_path;
 
-	username = ft_get_username();
+	username = ft_get_username(lst);
 	hostname = ft_get_hostname();
 	tmp2 = ft_strjoin(username, hostname);
-	current_path = ft_get_currentpath();
+	current_path = getcwd(NULL, 0);
+	if (!current_path)
+		current_path = ft_strdup("~");
+	current_path = ft_get_currentpath(lst, current_path);
 	prompt = color_prompt(tmp2, current_path);
 	free(tmp2);
 	free(username);

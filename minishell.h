@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 17:31:00 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 17:21:54 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_pipeline
 	t_command	**commands;
 }	t_pipeline;
 
-char		*get_promt(void);
+char		*get_prompt(t_env_ms *lst);
 
 //-------------------------------UTILS-------------------------------
 

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/20 17:41:09 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 16:40:09 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,17 @@ int	args_checker(int argc, char **argv)
 
 void	free_tab(char **tab)
 {
-	int		i;
+	int i;
 
+	if (!tab)
+		return;
 	i = 0;
-	if (tab)
+	while (tab[i])
 	{
-		while (tab[i])
-			free(tab[i++]);
-		free(tab);
+		free(tab[i]);
+		i++;
 	}
+	free(tab);
 }
 
 void	script_checker(char *cmd)

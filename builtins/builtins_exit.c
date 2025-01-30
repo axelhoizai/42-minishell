@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/29 16:14:45 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 16:42:09 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	handle_exit(char **argv, t_data	*data)
 		rl_clear_history();
 		if (argv)
 			free_tab(argv);
+		free_tab(data->my_envp);
 		ms_lstclear(&data->env_ms);
 		exit(exit_code);
 	}

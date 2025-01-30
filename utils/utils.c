@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 16:16:16 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 17:07:27 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ void	handle_builtins(int argc, char **argv, t_data *data)
 	char		*cmd;
 
 	cmd = join_argv(argv);
-	if (ft_strchr(cmd, '|'))
-		handle_pipe(argc, argv, data);
-	else if (ft_strcmp(argv[0], "echo") == 0)
+	// if (ft_strchr(cmd, '|'))
+		// handle_pipe(argc, argv, data);
+	// else 
+	if (ft_strcmp(argv[0], "echo") == 0)
 		ft_echo(argc, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		change_dir(argc, argv[1], data);
@@ -60,42 +61,44 @@ void	handle_builtins(int argc, char **argv, t_data *data)
 	free(cmd);
 }
 
-static void	process_builtins(char **builtins, t_data *data)
+static void	process_builtins(char *builtins, t_data *data)
 {
 	char	**argv;
 	int		argc;
-	int		i;
 
 	argv = NULL;
 	argc = 0;
-	i = 0;
-	while (builtins && builtins[i])
-	{
-		argv = parse_args(builtins[i], data);
-		while (argv && argv[argc])
-			argc++;
-		if (argc > 0)
-			handle_builtins(argc, argv, data);
-		free_tab(argv);
-		argc = 0;
-		if (data->exit_code > 0)
-			break ;
-		i++;
-	}
+	argv = parse_args(builtins, data);
+	while (argv && argv[argc])
+		argc++;
+	if (argc > 0)
+		handle_builtins(argc, argv, data);
+	free_tab(argv);
+	argc = 0;
 }
 
 char	**get_argv(const char *input, t_data *data)
 {
-	char	**builtins;
 	char	*tmp;
+	char	*token;
 
 	if (!input)
 		return (NULL);
 	tmp = ft_strdup(input);
 	tmp = replace_double_ampersand(tmp);
-	builtins = ft_split(tmp, '\n');
+	if (strchr(tmp, '\n'))
+	{
+		token = strtok(tmp, "\n");
+		while (token)
+		{
+			process_builtins(token, data);
+			if (data->exit_code > 0)
+				break ;
+			token = strtok(NULL, "\n");
+		}
+	}
+	else
+		process_builtins(tmp, data);
 	free(tmp);
-	process_builtins(builtins, data);
-	free_tab(builtins);
 	return (NULL);
 }
