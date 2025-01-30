@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:30:28 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:32:08 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	main_loop(char **argv, t_data *data)
 	char	*input;
 	char	*prompt;
 	char	exit_code;
+	(void)argv;
 
 	while (1)
 	{
@@ -96,7 +97,6 @@ char	main_loop(char **argv, t_data *data)
 
 int	main(int ac, char **av, char **envp)
 {
-	char	**argv;
 	int		is_start;
 	char	exit_code;
 	t_data	data;
@@ -105,12 +105,11 @@ int	main(int ac, char **av, char **envp)
 	exit_code = 0;
 	(void)ac;
 	(void)av;
-	argv = NULL;
 	ft_bzero(&data, sizeof(t_data));
 	ft_init(envp, &is_start, &data);
 	signal(SIGINT, handle_sigint);
 	if (ac > 1)
 		sh_tester(NULL, &data);
-	exit_code = main_loop(argv, &data);
+	exit_code = main_loop(NULL, &data);
 	return (exit_code);
 }

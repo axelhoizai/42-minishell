@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 13:39:22 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/30 13:57:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_unclosed_quotes(const char *line)
 	single_quote = 0;
 	double_quote = 0;
 	i = 0;
-	while (line[i])
+	while (line && line[i])
 	{
 		if (line[i] == '\'' && double_quote == 0)
 			single_quote = !single_quote;

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:16:46 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/30 18:33:32 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	handle_pipe(char **argv, t_data *data)
 	t_pipeline	*pipeline;
 
 	pipeline = parse_pipeline(argv);
+	free_tab(argv);
 	print_pipeline(pipeline);
 	data->exit_code = pipex(pipeline, data);
 	free_pipeline(pipeline);
@@ -57,8 +58,9 @@ void	handle_builtins(int argc, char **argv, t_data *data)
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
 	else if (argc >= 1)
-		exec(argv, cmd, data);
-	free(cmd);
+		exec(argv, data);
+	// if (cmd)
+	// 	free(cmd);
 }
 
 static void	process_builtins(char *builtins, t_data *data)
