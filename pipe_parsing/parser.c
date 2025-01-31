@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/01/30 18:53:36 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:03:39 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd)
 	else if (ft_strcmp(tokens[*i], ">") == 0 && tokens[*i + 1])
 	{
 		cmd->output_file = ft_strdup(tokens[++(*i)]);
-		cmd->append = 0;
+		cmd->trunc = 1;
 	}
 	else if (ft_strcmp(tokens[*i], ">>") == 0 && tokens[*i + 1])
 	{

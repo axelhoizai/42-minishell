@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 15:26:26 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:17:19 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ static void	execute(char *cmd, t_data *data)
 		cmd_path = cmd_args[0];
 	if (execve(cmd_path, cmd_args, data->my_envp) == -1)
 	{
+		free_tab(data->my_envp);
+		ms_lstclear(&data->env_ms);
 		free_tab(cmd_args);
 		ft_print_error(ft_strtok(cmd, " "), NULL, "command not found");
+		free(cmd);
 		data->exit_code = CMD_NOT_FOUND;
 		exit(CMD_NOT_FOUND);
 	}
@@ -64,6 +67,7 @@ void	exec(char **argv, t_data *data)
 	if (cmd)
 	{
 		tmp = parse_cmd(argv, cmd);
+		free_tab(argv);
 		free (cmd);
 		pid[0] = fork();
 		if (pid[0] == -1)

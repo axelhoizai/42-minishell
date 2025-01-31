@@ -6,15 +6,15 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 10:22:36 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 15:14:12 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	execute(char **cmd, char **envp)
+static void	execute(char **cmd, t_pipeline *pip, t_data *data)
 {
-	// char	**cmd_args;
+	(void)pip;
 	char	*cmd_path;
 
 	if (ft_strstr(cmd[0], "./"))
@@ -26,17 +26,20 @@ static void	execute(char **cmd, char **envp)
 		print_error("Invalid command", NULL, CMD_NOT_FOUND);
 		return ;
 	}
-	cmd_path = get_path(cmd[0], envp);
+	cmd_path = get_path(cmd[0], data->my_envp);
 	if (ft_strstr(cmd[0], "./"))
 		cmd_path = cmd[0];
-	if (execve(cmd_path, cmd, envp) == -1)
+	if (execve(cmd_path, cmd, data->my_envp) == -1)
 	{
-		// free_tab(cmd_args);
+		free_tab(data->my_envp);
+		ms_lstclear(&data->env_ms);
 		print_error("command not found : ", ft_strtok(cmd[0], " "), CMD_NOT_FOUND);
+		free_pipeline(pip);
+		exit(CMD_NOT_FOUND);
 	}
 }
 
-static void	first_pipe(t_command *cmd, int *p_fd, char **envp, int *fd_files)
+static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 {
 	pid_t	child;
 
@@ -54,13 +57,13 @@ static void	first_pipe(t_command *cmd, int *p_fd, char **envp, int *fd_files)
 			exit(DUPLICATE_ERROR);
 		close(fd_files[0]);
 		close(p_fd[1]);
-		execute(cmd->args, envp);
+		execute(cmd->args, pip, data);
 	}
 	close(fd_files[0]);
 	close(p_fd[1]);
 }
 
-static void	multi_pipe(t_command *cmd, int *p_fd, char **envp)
+static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 {
 	pid_t	child;
 	int		temp_fd[2];
@@ -80,7 +83,7 @@ static void	multi_pipe(t_command *cmd, int *p_fd, char **envp)
 		close(p_fd[1]);
 		close(temp_fd[0]);
 		close(temp_fd[1]);
-		execute(cmd->args, envp);
+		execute(cmd->args, pip, data);
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
@@ -88,7 +91,7 @@ static void	multi_pipe(t_command *cmd, int *p_fd, char **envp)
 	p_fd[1] = temp_fd[1];
 }
 
-static int	last_pipe(t_pipeline *pip, int *p_fd, char **envp, int *fd_files)
+static int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 {
 	pid_t	child;
 	int		status;
@@ -98,7 +101,7 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, char **envp, int *fd_files)
 		exit(FORK_ERROR);
 	if (child == 0)
 	{
-		open_outfile(pip, pip->cmd_count, fd_files, p_fd);
+		open_outfile(pip, data, pip->cmd_count, fd_files, p_fd);
 		if (dup2(p_fd[0], STDIN_FILENO) == -1)
 			exit(DUPLICATE_ERROR);
 		if (dup2(fd_files[1], STDOUT_FILENO) == -1)
@@ -106,7 +109,8 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, char **envp, int *fd_files)
 		close(p_fd[0]);
 		close(p_fd[1]);
 		close(fd_files[1]);
-		execute(pip->commands[pip->cmd_count - 1]->args, envp);
+		if (pip->commands[pip->cmd_count - 1]->args)
+			execute(pip->commands[pip->cmd_count - 1]->args, pip, data);
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
@@ -129,20 +133,20 @@ int	pipex(t_pipeline *pip, t_data *data)
 	here_doc_checker(fd_files, pip, data);
 	i = 0;
 	// fd_files[0] = open_file(pip->commands[i]->input_file, 1, p_fd);
-	first_pipe(pip->commands[i], p_fd, data->my_envp, fd_files);
+	first_pipe(pip->commands[i], pip, p_fd, data, fd_files);
 	i++;
 	while (i < pip->cmd_count - 1)
 	{
-		multi_pipe(pip->commands[i], p_fd, data->my_envp);
+		multi_pipe(pip->commands[i], pip, p_fd, data);
 		i++;
 	}
-	status = last_pipe(pip, p_fd, data->my_envp, fd_files);
+	status = last_pipe(pip, p_fd, data, fd_files);
+	// free_pipeline(pip);
 	i = 0;
 	while (i < pip->cmd_count)
 	{
 		waitpid(-1, NULL, 0);
 		i++;
 	}
-	// free_pipeline(pip);
 	return (status);
 }

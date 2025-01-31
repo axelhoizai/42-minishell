@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 19:21:46 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:13:12 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	handle_sigint(int sig)
 {
 	(void)sig;
 	signal(SIGQUIT, SIG_IGN);
-	write(STDOUT_FILENO, "\n", 1);
+	// write(STDOUT_FILENO, "\n", 1);
+	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

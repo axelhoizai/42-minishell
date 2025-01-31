@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 13:10:50 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 12:55:39 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ char	**ft_echo_tab(int argc, char **argv)
 		i++;
 	}
 	builtin_tab[i] = NULL;
+	free_tab(argv);
 	return (builtin_tab);
 }

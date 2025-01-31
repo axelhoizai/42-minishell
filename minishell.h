@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 19:12:40 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:14:55 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,11 @@ typedef struct s_data
 typedef struct s_command
 {
 	char	**args;
+	int		in;
 	char	*input_file;
 	char	*output_file;
 	char	*limiter;
+	int		trunc;
 	int		append;
 	int		heredoc;
 }	t_command;
@@ -86,21 +88,6 @@ typedef struct s_pipeline
 	t_command	**commands;
 	int			cmd_count;
 }	t_pipeline;
-
-// typedef struct s_command
-// {
-// 	char	**args;
-// 	char	*input_file;
-// 	char	*output_file;
-// 	int		append;
-// 	int		heredoc;
-// }	t_command;
-
-// typedef struct s_pipeline
-// {
-// 	t_command	**commands;
-// 	int			cmd_count;
-// }	t_pipeline;
 
 char		*get_prompt(t_env_ms *lst);
 
@@ -215,8 +202,8 @@ int			args_checker(t_pipeline *pip);
 void		script_checker(char *cmd);
 
 //utils_files
-int			open_file(char *file, int mode, int *p_fd);
-void		open_outfile(t_pipeline *pip, int argc, int *fd_files, int *p_fd);
+int			open_file(t_data *data, char *file, int mode, int *p_fd);
+void		open_outfile(t_pipeline *pip, t_data *data, int argc, int *fd_files, int *p_fd);
 void		here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data);
 
 char		**utils_parse_args(const char *str);

@@ -6,15 +6,16 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:17:08 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 13:47:22 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	open_file(char *file, int mode, int *p_fd)
+int	open_file(t_data *data, char *file, int mode, int *p_fd)
 {
 	int	fd;
+	(void)data;
 
 	if (mode == 0)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -36,17 +37,17 @@ int	open_file(char *file, int mode, int *p_fd)
 	{
 		perror(file);
 		close(p_fd[0]);
-		exit (1);
+		// exit (1);
 	}
 	return (fd);
 }
 
-void	open_outfile(t_pipeline *pip, int argc, int *fd_files, int *p_fd)
+void	open_outfile(t_pipeline *pip, t_data *data, int argc, int *fd_files, int *p_fd)
 {
 	if (pip->commands[0]->heredoc)
-		fd_files[1] = open_file(pip->commands[argc - 1]->output_file, 0, p_fd);
+		fd_files[1] = open_file(data, pip->commands[argc - 1]->output_file, 0, p_fd);
 	else
-		fd_files[1] = open_file(pip->commands[argc - 1]->output_file, 2, p_fd);
+		fd_files[1] = open_file(data, pip->commands[argc - 1]->output_file, 2, p_fd);
 	if (fd_files[1] == -1)
 	{
 		close(p_fd[0]);
@@ -55,6 +56,9 @@ void	open_outfile(t_pipeline *pip, int argc, int *fd_files, int *p_fd)
 			close (fd_files[1]);
 		if (fd_files[0] != -1)
 			close (fd_files[0]);
+		free_tab(data->my_envp);
+		ms_lstclear(&data->env_ms);
+		free_pipeline(pip);
 		exit(1);
 	}
 }
@@ -83,5 +87,5 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 		wait(NULL);
 	}
 	else
-		fd_files[0] = open_file(pip->commands[0]->input_file, 1, p_fd);
+		fd_files[0] = open_file(data, pip->commands[0]->input_file, 1, p_fd);
 }

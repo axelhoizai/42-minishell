@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 17:49:46 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/31 10:13:22 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 void	print_error(char *mgs, char *arg, int exit_code)
 {
+	(void)exit_code;
 	if (arg)
 	{
 		ft_putstr_fd(mgs, 2);
 		ft_putendl_fd(arg, 2);
-		exit(exit_code);
+		// exit(exit_code);
 	}
 	else
 	{
 		ft_putendl_fd(mgs, 2);
-		exit(exit_code);
+		// exit(exit_code);
 	}
 }
 
