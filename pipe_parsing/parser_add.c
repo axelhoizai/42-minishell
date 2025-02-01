@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_add.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:29 by kalicem           #+#    #+#             */
-/*   Updated: 2025/01/28 14:38:19 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/31 17:59:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//? Build cmds like "cat -e"
 char	**add_to_tab(char **tab, const char *arg)
 {
 	char	**new_tab;
@@ -36,6 +37,7 @@ char	**add_to_tab(char **tab, const char *arg)
 	return (new_tab);
 }
 
+//? reBuild the input with tokenization
 void	add_command_to_pipeline(t_pipeline *pipeline, t_command *cmd)
 {
 	t_command	**new_commands;

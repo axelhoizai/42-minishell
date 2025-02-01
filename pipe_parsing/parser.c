@@ -6,12 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/01/31 16:03:39 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/01 16:54:01 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//? Check if redirection exists
 int	is_redirection(char *token)
 {
 	if (ft_strcmp(token, "<") == 0)
@@ -25,6 +26,7 @@ int	is_redirection(char *token)
 	return (0);
 }
 
+//? Tokenize args in the data structure
 void	handle_redirection(char **tokens, int *i, t_command *cmd)
 {
 	if (ft_strcmp(tokens[*i], "<") == 0 && tokens[*i + 1])
@@ -46,6 +48,7 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd)
 	}
 }
 
+//? Build cmds according to their token
 t_command	*parse_command(char **tokens, int *i)
 {
 	t_command	*cmd;
@@ -64,6 +67,7 @@ t_command	*parse_command(char **tokens, int *i)
 	return (cmd);
 }
 
+//? reBuild pipelines after tokenization 
 t_pipeline	*parse_pipeline(char **tokens)
 {
 	t_pipeline	*pipeline;
@@ -98,9 +102,9 @@ void	print_pipeline(t_pipeline *pipeline)
 	if (!pipeline)
 		return ;
 	i = 0;
-	while (pipeline->commands && pipeline->commands[i])
+	while (pipeline->cmds && pipeline->cmds[i])
 	{
-		cmd = pipeline->commands[i];
+		cmd = pipeline->cmds[i];
 		printf("[%d] : Command %d:\n", i, i + 1);
 		if (cmd->args)
 		{

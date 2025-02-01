@@ -6,12 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 18:18:18 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 17:55:34 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//? Check if VAR is ok
 char	*parse_var(const char *token, int *index, t_data *data)
 {
 	char		var_name[256];
@@ -46,6 +47,7 @@ void	skip_whitespace(const char *str, int *i)
 		(*i)++;
 }
 
+//? Remove all whitespaces and quotes
 char	**parse_args(char *str, t_data *data)
 {
 	char	**tokens;

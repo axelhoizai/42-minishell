@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_pwd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 15:53:13 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/01 17:49:58 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	get_dir(t_data	*data)
+void	get_dir(t_data	*data, t_pipeline *pip)
 {
 	char	*currentpath;
 
@@ -20,4 +20,5 @@ void	get_dir(t_data	*data)
 	printf("%s\n", currentpath);
 	free(currentpath);
 	data->exit_code = 0;
+	free_pipeline(pip);
 }

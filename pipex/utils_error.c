@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 10:13:22 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 17:34:52 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_error(char *mgs, char *arg, int exit_code)
 		// exit(exit_code);
 	}
 }
-
+//! reCheck all the input checking
 int	args_checker(t_pipeline *pip)
 {
 	printf("%d\n", pip->cmd_count);

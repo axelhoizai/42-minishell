@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 19:11:06 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/01 17:42:33 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ char	*ft_realine(void)
 }
 
 
-char	main_loop(char **argv, t_data *data)
+char	main_loop(char **av, t_data *data)
 {
-	char	*input;
-	char	*prompt;
-	char	exit_code;
-	(void)argv;
+	char		*input;
+	char		*prompt;
+	char		exit_code;
+	(void)av;
 
 	while (1)
 	{
@@ -58,12 +58,10 @@ char	main_loop(char **argv, t_data *data)
 		if (!input)
 		{
 			free(input);
-			handle_exit(argv, data);
+			handle_exit(NULL, data);
 			break ;
 		}
-		argv = get_argv(input, data);
-		// free_tab(argv);
-		// data->argv = argv;
+		get_argv(input, data);
 		free(input);
 		exit_code = data->exit_code;
 	}
@@ -111,6 +109,6 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGINT, handle_sigint);
 	if (ac > 1)
 		sh_tester(NULL, &data);
-	exit_code = main_loop(NULL, &data);
+	exit_code = main_loop(av, &data);
 	return (exit_code);
 }

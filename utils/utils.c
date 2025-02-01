@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 16:13:12 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/01 18:08:38 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,62 +16,91 @@ void	handle_sigint(int sig)
 {
 	(void)sig;
 	signal(SIGQUIT, SIG_IGN);
-	// write(STDOUT_FILENO, "\n", 1);
-	printf("\n");
+	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
-void	handle_pipe(char **argv, t_data *data)
+//? Check if pipe exists
+bool	is_pipe(char **argv)
 {
-	t_pipeline	*pipeline;
-
-	pipeline = parse_pipeline(argv);
-	free_tab(argv);
-	print_pipeline(pipeline);
-	data->exit_code = pipex(pipeline, data);
-	free_pipeline(pipeline);
-}
-
-void	handle_builtins(int argc, char **argv, t_data *data)
-{
-	int			is_pipe = 0;
-	int 		i = 0;
-
+	int 		i;
+	
+	i = 0;
 	while (argv[i])
 	{
 		if (ft_strchr(argv[i], '|'))
 		{
-			is_pipe = 1;
-			break ;
+			free_tab(argv);
+			return (true);
 		}
 		i++;
 	}
-	if (is_pipe == 1)
-		handle_pipe(argv, data);
-	else if (ft_strcmp(argv[0], "echo") == 0)
-		ft_echo(argc, argv);
-	else if (ft_strcmp(argv[0], "cd") == 0)
-		change_dir(argc, argv[1], data);
-	else if (ft_strcmp(argv[0], "pwd") == 0)
-		get_dir(data);
-	else if (ft_strcmp(argv[0], "export") == 0)
-		ft_export(argv, data);
-	else if (ft_strcmp(argv[0], "unset") == 0)
-		ft_unset(argc, argv[1], data);
-	else if (ft_strcmp(argv[0], "env") == 0)
-		ft_env(data);
-	else if (ft_strcmp(argv[0], "exit") == 0)
-		handle_exit(argv, data);
-	else if (ft_strcmp(argv[0], "clear") == 0)
-		printf("\033[H\033[J");
-	else if (argc >= 1)
-		exec(argv, data);
-	// if (cmd)
-	// 	free(cmd);
+	free_tab(argv);
+	return (false);
 }
 
+void	handle_builtins(int argc, t_pipeline *pip, t_data *data)
+{
+	if (ft_strcmp(pip->cmds[0]->args[0], "echo") == 0)
+		ft_echo(argc, pip);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "cd") == 0)
+		change_dir(argc, pip, data);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "pwd") == 0)
+		get_dir(data, pip);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "export") == 0)
+	{
+		ft_export(pip->cmds[0]->args, data);
+		free_pipeline(pip);
+	}
+	else if (ft_strcmp(pip->cmds[0]->args[0], "unset") == 0)
+		ft_unset(argc, pip, data);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "env") == 0)
+		ft_env(data, pip);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "exit") == 0)
+		handle_exit(pip, data);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "clear") == 0)
+		printf("\033[H\033[J");
+}
+
+//! Faire une fonction exclusivement handle_builtins
+void	send_to_exec(int argc, char **argv, t_data *data)
+{
+	t_pipeline	*pip;
+//TODO : Send all builtins in the exec part
+	pip = parse_pipeline(argv);
+	print_pipeline(pip);
+	if (is_pipe(argv))
+		data->exit_code = pipex(pip, data);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "echo") == 0)
+		ft_echo(argc, pip);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "cd") == 0)
+		change_dir(argc, pip, data);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "pwd") == 0)
+		get_dir(data, pip);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "export") == 0)
+	{
+		ft_export(pip->cmds[0]->args, data);
+		free_pipeline(pip);
+	}
+	else if (ft_strcmp(pip->cmds[0]->args[0], "unset") == 0)
+		ft_unset(argc, pip, data);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "env") == 0)
+		ft_env(data, pip);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "exit") == 0)
+		handle_exit(pip, data);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "clear") == 0)
+		printf("\033[H\033[J");
+	else if (argc >= 1)
+	{
+//TODO : Send all builtins in the exec part
+		exec(pip, data);
+		free_pipeline(pip);
+	}
+}
+
+//? Parse builtins to removes quotes and parse dollars
 static void	process_builtins(char *builtins, t_data *data)
 {
 	char	**argv;
@@ -84,22 +113,26 @@ static void	process_builtins(char *builtins, t_data *data)
 	while (argv && argv[argc])
 		argc++;
 	if (argc > 0)
-		handle_builtins(argc, argv, data);
-	// free_tab(argv);
-	argc = 0;
+		send_to_exec(argc, argv, data);
+	// argc = 0;
 }
 
-char	**get_argv(const char *input, t_data *data)
+//? Get the input and 
+void	get_argv(const char *input, t_data *data)
 {
 	char	*tmp;
 	char	*token;
 
 	if (!input)
-		return (NULL);
+		return ;
 	tmp = ft_strdup(input);
-	// free(input);
+	if (tmp && ft_strlen(tmp) == 0)
+	{
+		free(tmp);
+		return ;
+	}
 	tmp = replace_double_ampersand(tmp);
-	if (strchr(tmp, '\n'))
+	if (ft_strchr(tmp, '\n'))
 	{
 		token = strtok(tmp, "\n");
 		while (token)
@@ -112,6 +145,17 @@ char	**get_argv(const char *input, t_data *data)
 	}
 	else
 		process_builtins(tmp, data);
-	// free(tmp);
-	return (NULL);
 }
+
+//! To delete
+//? Prepare pipes before executing
+// void	handle_pipe(char **argv, t_data *data)
+// {
+// 	// t_pipeline	*pipeline;
+
+// 	// pipeline = parse_pipeline(argv);
+// 	// free_tab(argv);
+// 	// print_pipeline(pipeline);
+// 	data->exit_code = pipex(pipeline, data);
+// 	free_pipeline(pipeline);
+// }

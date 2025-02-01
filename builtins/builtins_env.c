@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:27 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 17:31:21 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/01 18:01:59 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,24 @@ char	*get_envval(char *env)
 
 void	init_env_ms(char **envp, t_data *data)
 {
-	int	i;
+	int		i;
+	char	*key;
+	char	*value;
 
 	i = 0;
 	data->env_ms = NULL;
 	while (envp[i])
 	{
-		ms_lstadd_back(&data->env_ms,
-			ms_lstnew(get_envkey(envp[i]), get_envval(envp[i]), true));
+		key = get_envkey(envp[i]);
+		value = get_envval(envp[i]);
+		ms_lstadd_back(&data->env_ms, ms_lstnew(key, value, true));
 		i++;
 	}
 	lst_to_tab(data->env_ms, data);
 }
 
-void	ft_env(t_data	*data)
+void	ft_env(t_data	*data, t_pipeline *pip)
 {
 	print_lst(data->env_ms);
+	free_pipeline(pip);
 }

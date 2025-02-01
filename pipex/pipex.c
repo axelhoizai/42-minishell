@@ -6,23 +6,20 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 15:14:12 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/01/31 16:42:47 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	execute(char **cmd, t_pipeline *pip, t_data *data)
+void	execute(char **cmd, t_pipeline *pip, t_data *data)
 {
-	(void)pip;
 	char	*cmd_path;
 
 	if (ft_strstr(cmd[0], "./"))
 		script_checker(cmd[0]);
-	// cmd_args = utils_parse_args(cmd);
 	if (!cmd || !cmd[0])
 	{
-		// free_tab(cmd_args);
 		print_error("Invalid command", NULL, CMD_NOT_FOUND);
 		return ;
 	}
@@ -125,14 +122,12 @@ int	pipex(t_pipeline *pip, t_data *data)
 	int		p_fd[2];
 	int		fd_files[2];
 	int		i;
-	// t_arg	args;
 	int		status;
 
 	if (args_checker(pip) == -1)
 		return (1);
 	here_doc_checker(fd_files, pip, data);
 	i = 0;
-	// fd_files[0] = open_file(pip->commands[i]->input_file, 1, p_fd);
 	first_pipe(pip->commands[i], pip, p_fd, data, fd_files);
 	i++;
 	while (i < pip->cmd_count - 1)
@@ -141,7 +136,6 @@ int	pipex(t_pipeline *pip, t_data *data)
 		i++;
 	}
 	status = last_pipe(pip, p_fd, data, fd_files);
-	// free_pipeline(pip);
 	i = 0;
 	while (i < pip->cmd_count)
 	{

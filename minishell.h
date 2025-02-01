@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 16:14:55 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/01 18:01:40 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_command
 
 typedef struct s_pipeline
 {
-	t_command	**commands;
+	t_command	**cmds;
 	int			cmd_count;
 }	t_pipeline;
 
@@ -94,7 +94,7 @@ char		*get_prompt(t_env_ms *lst);
 //-------------------------------UTILS-------------------------------
 
 //utils_cd
-void		change_dir(int argc, char *dir, t_data *data);
+void		change_dir(int argc, t_pipeline *pip, t_data *data);
 
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg);
@@ -117,10 +117,10 @@ void		free_tokens(char **tokens);
 char		*replace_double_ampersand(char *arg);
 
 //utils
-char		**get_argv(const char *input, t_data *data);
+void		get_argv(const char *input, t_data *data);
 void		handle_sigint(int sig);
 void		handle_pipe(char **argv, t_data *data);
-void		handle_builtins(int argc, char **argv, t_data *data);
+void		send_to_exec(int argc, char **argv, t_data *data);
 
 //utils_debug
 void		print_tab(char **tab);
@@ -144,7 +144,7 @@ int			get_process_id(void);
 char		*get_uid(void);
 
 //utils_pwd
-void		get_dir(t_data *data);
+void		get_dir(t_data *data, t_pipeline *pip);
 
 //utils_echo
 char		*handle_n(char *flag);
@@ -156,11 +156,11 @@ char		**ft_echo_tab(int argc, char **argv);
 //-------------------------------BUILTINS----------------------------
 
 //builtins_exit
-void		handle_exit(char **argv, t_data	*data);
+void		handle_exit(t_pipeline *pip, t_data *data);
 
 //builtins_echo
 char		**ft_echo_tab(int argc, char **argv);
-void		ft_echo(int argc, char **argv);
+void		ft_echo(int argc, t_pipeline *pip);
 
 //builtins_export
 bool		is_key(t_env_ms *lst, char *var);
@@ -172,13 +172,14 @@ void		ft_export(char **argv, t_data *data);
 char		*get_envkey(char *env);
 char		*get_envval(char *env);
 void		init_env_ms(char **envp, t_data *data);
-void		ft_env(t_data *data);
+void		ft_env(t_data *data, t_pipeline *pip);
 
 //builtins_unset
-void		ft_unset(int argc, char *argv, t_data *data);
+void		ft_unset(int argc, t_pipeline *pip, t_data *data);
 
 //builtin_exec
-void		exec(char **argv, t_data *data);
+void		exec(t_pipeline *pip, t_data *data);
+void		execute(char **cmd, t_pipeline *pip, t_data *data);
 
 //----------------------------BUILTINS-END---------------------------
 

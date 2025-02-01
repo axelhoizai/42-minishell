@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:40:20 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 12:55:39 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/01 15:41:34 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,28 @@ char	*process_arg(char **builtin_tab, char **argv, int i)
 	return (builtin_tab[i]);
 }
 
-char	**ft_echo_tab(int argc, char **argv)
-{
-	int		i;
-	char	**builtin_tab;
+// char	**ft_echo_tab(int argc, char **argv)
+// {
+// 	int		i;
+// 	char	**builtin_tab;
 
-	builtin_tab = malloc(sizeof(char *) * (argc + 1));
-	if (!builtin_tab)
-		return (NULL);
-	i = 0;
-	while (i < argc)
-	{
-		builtin_tab[i] = process_arg(builtin_tab, argv, i);
-		if (!builtin_tab[i])
-		{
-			while (i > 0)
-				free(builtin_tab[--i]);
-			free(builtin_tab);
-			return (NULL);
-		}
-		i++;
-	}
-	builtin_tab[i] = NULL;
-	free_tab(argv);
-	return (builtin_tab);
-}
+// 	builtin_tab = malloc(sizeof(char *) * (argc + 1));
+// 	if (!builtin_tab)
+// 		return (NULL);
+// 	i = 0;
+// 	while (i < argc)
+// 	{
+// 		builtin_tab[i] = process_arg(builtin_tab, argv, i);
+// 		if (!builtin_tab[i])
+// 		{
+// 			while (i > 0)
+// 				free(builtin_tab[--i]);
+// 			free(builtin_tab);
+// 			return (NULL);
+// 		}
+// 		i++;
+// 	}
+// 	builtin_tab[i] = NULL;
+// 	free_tab(argv);
+// 	return (builtin_tab);
+// }

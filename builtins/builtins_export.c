@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 16:15:14 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/01 17:55:46 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//? Check if an env key exists
 bool	is_key(t_env_ms *lst, char *var)
 {
 	while (lst)
@@ -23,6 +24,7 @@ bool	is_key(t_env_ms *lst, char *var)
 	return (false);
 }
 
+//? Find the node linked to the env key
 t_env_ms	*ms_find(t_env_ms *lst, char *var)
 {
 	while (lst)
@@ -55,7 +57,7 @@ void	print_export(t_env_ms *lst)
 void	ft_export(char **argv, t_data *data)
 {
 	char	*key;
-
+	
 	key = NULL;
 	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
 		print_export(data->env_ms);
