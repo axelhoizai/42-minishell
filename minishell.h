@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:32:45 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/01 17:24:26 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <termios.h>
 
 # define INPUT		1	//"<"
 # define HEREDOC	2	//"<<"
@@ -63,12 +64,18 @@ typedef struct s_env_ms
 	struct s_env_ms	*next;
 }	t_env_ms;
 
+typedef struct s_data_term
+{
+	struct termios original_term;
+} t_data_term;
+
 typedef struct s_data
 {
 	int			exit_code;
 	char		**my_envp;
 	t_env_ms	*env_ms;
 	char		**argv;
+	t_data_term	*term;
 }	t_data;
 
 typedef struct s_command
@@ -102,6 +109,62 @@ typedef struct s_pipeline
 // }	t_pipeline;
 
 char		*get_prompt(t_env_ms *lst);
+
+//----------------------------HISTORY-------------------------------
+
+// #define BUFFER_SIZE 1024
+# define BACKSPACE 127
+# define ENTER '\n'
+# define ARROW_UP 'A'
+# define ARROW_DOWN 'B'
+# define CTRLC 3
+# define CTRLD 4
+# define HISTORY_FILE ".minishell_history"
+# define MAX_HISTORY 100
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+
+typedef struct s_history
+{
+	char	*entries[MAX_HISTORY];
+	
+	char	**history_tab;
+	int		history_count;
+	int		history_index;
+}	t_history;
+
+typedef struct s_rl
+{
+	char 		*buffer;
+	char		*prompt;
+	int			prompt_len;
+	t_history	*history;
+	t_data_term	*term;
+}	t_rl;
+
+void		init_readline(t_rl *readline);
+
+void		save_terminal_settings(t_data_term *term);
+void		restore_terminal_settings(t_data_term *term);
+
+//utils_readline
+void		enable_raw_mode(t_data_term *term);
+void		disable_raw_mode(t_data_term *term);
+t_data		*get_data(t_data *new_data);
+t_data_term	*get_term_data(t_data_term *new_term);
+void   		ft_readline_redisplay(void);
+
+//readline_signal
+void		setup_signals(void);
+
+//readline history
+void		add_to_history(char *cmd, t_history *history);
+void 		load_history(t_history *history);
+void		free_history(t_history *history);
+char		*ft_realine(t_rl *readline);
+void		free_readline(t_rl *readline);
+//----------------------------HISTORY-END----------------------------
 
 //-------------------------------UTILS-------------------------------
 

@@ -5,3 +5,4 @@
 minishell
 *.txt
 bak files
+*minishell_history

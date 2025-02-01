@@ -6,21 +6,45 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:33:32 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/01/31 15:38:54 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	signal(SIGQUIT, SIG_IGN);
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+// void	handle_sigint(int sig)
+// {
+// 	(void)sig;
+// 	signal(SIGQUIT, SIG_IGN);
+// 	write(STDOUT_FILENO, "ghfdhgh^C\n", 3);
+// 	ft_readline_redisplay();
+// }
+
+// void	handle_sigint(int sig)
+// {
+// 	(void)sig;
+// 	signal(SIGQUIT, SIG_IGN);
+// 	write(STDOUT_FILENO, "^C\n", 3);
+// 	ft_readline_redisplay();
+// }
+
+// void	handle_sigint(int sig)
+// {
+// 	t_data		*data;
+// 	t_data_term	*term;
+
+// 	(void)sig;
+// 	data = get_data(NULL);
+// 	if (!data)
+// 		return;
+// 	term = data->term;
+// 	if (!term)
+// 		return;
+// 	restore_terminal_settings(term);
+// 	write(STDOUT_FILENO, "\n", 1);
+// 	ft_readline_redisplay();
+// 	enable_raw_mode(&term->original_term);
+// }
 
 void	handle_pipe(char **argv, t_data *data)
 {
@@ -35,9 +59,9 @@ void	handle_pipe(char **argv, t_data *data)
 
 void	handle_builtins(int argc, char **argv, t_data *data)
 {
-	char		*cmd;
+	// char		*cmd;
 
-	cmd = join_argv(argv);
+	// cmd = join_argv(argv);
 	// if (ft_strchr(cmd, '|'))
 		// handle_pipe(argc, argv, data);
 	// else 
@@ -57,8 +81,8 @@ void	handle_builtins(int argc, char **argv, t_data *data)
 		handle_exit(argv, data);
 	else if (ft_strcmp(argv[0], "clear") == 0)
 		printf("\033[H\033[J");
-	else if (argc >= 1)
-		exec(argv, data);
+	// else if (argc >= 1)
+	// 	exec(argv, data);
 	// if (cmd)
 	// 	free(cmd);
 }
