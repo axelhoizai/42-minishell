@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/01 17:11:59 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:41:53 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ char	**ft_echo_tab(int argc, char **argv)
 	return (builtin_tab);
 }
 
-void	ft_echo(int argc, t_pipeline *pip)
+void	ft_echo(int argc, char **argv)
 {
 	int		i;
 	char	**builtin_tab;
 
-	builtin_tab = ft_echo_tab(argc, pip->cmds[0]->args);
-	free_pipeline(pip);
+	builtin_tab = ft_echo_tab(argc, argv);
+	// free_pipeline(pip);
 	print_tab(builtin_tab);
 	if (!builtin_tab || !builtin_tab[0])
 	{

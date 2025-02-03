@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/01 17:28:57 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:44:41 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void	free_change_dir(t_pipeline *pip, char *cwd, char *tmpdir, char *tmp)
 {
+	(void)pip;
 	if (cwd)
 		free(cwd);
 	if (tmpdir)
 		free(tmpdir);
 	if (tmpdir)
 		free (tmp);
-	free_pipeline(pip);
+	// free_pipeline(pip);
 }
 
 int	check_dir(char	*dir)
@@ -59,7 +60,7 @@ int	handle_cd_error(int argc, char *dir, t_data *data)
 	return (1);
 }
 
-void	change_dir(int argc, t_pipeline *pip, t_data *data)
+void	change_dir(int argc, char **argv, t_pipeline *pip, t_data *data)
 {
 	char	*tmp;
 	char	*dir;
@@ -67,7 +68,7 @@ void	change_dir(int argc, t_pipeline *pip, t_data *data)
 	char	*cwd;
 
 	tmp = NULL;
-	dir = pip->cmds[0]->args[1];
+	dir = argv[1];
 	if (dir)
 		tmp = ft_strdup(dir);
 	cwd = getcwd(NULL, 0);

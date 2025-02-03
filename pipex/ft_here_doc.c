@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 10:50:45 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:15:48 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 10:45:59 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	here_doc(t_pipeline *pip, int *p_fd, t_data *data)
 		next_line = get_next_line(STDIN_FILENO);
 		if (!next_line)
 			break ;
-		if (ft_strlen(next_line) == (ft_strlen(pip->commands[0]->limiter) + 1)
-			&& ft_strncmp(next_line, pip->commands[0]->limiter,
-						ft_strlen(pip->commands[0]->limiter)) == 0)
+		if (ft_strlen(next_line) == (ft_strlen(pip->cmds[0]->limiter) + 1)
+			&& ft_strncmp(next_line, pip->cmds[0]->limiter,
+						ft_strlen(pip->cmds[0]->limiter)) == 0)
 		{
 			free(next_line);
 			break ;

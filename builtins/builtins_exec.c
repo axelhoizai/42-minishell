@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/01 17:06:42 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:08:57 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	exec(t_pipeline *pip, t_data *data)
 	int		status;
 	pid_t	pid[2];
 	int		fd_in; 
-	//!preparer le cas avec un fd_out
 
 	if (pip->cmds[0]->args)
 	{
@@ -76,7 +75,13 @@ void	exec(t_pipeline *pip, t_data *data)
 				dup2(fd_in, STDIN_FILENO);
 				close(fd_in);
 			}
-			execute(pip->cmds[0]->args, pip, data);
+			if (is_builtin(pip->cmds[0]->args[0]))
+			{
+				handle_builtins(pip->cmds[0], pip, data);
+				exit (0);
+			}
+			else
+				execute(pip->cmds[0]->args, pip, data);
 		}
 		waitpid(pid[0], &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) >= 0)

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/01 18:01:40 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:48:00 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_data
 typedef struct s_command
 {
 	char	**args;
+	int		arg_cnt;
 	int		in;
 	char	*input_file;
 	char	*output_file;
@@ -94,7 +95,7 @@ char		*get_prompt(t_env_ms *lst);
 //-------------------------------UTILS-------------------------------
 
 //utils_cd
-void		change_dir(int argc, t_pipeline *pip, t_data *data);
+void		change_dir(int argc, char **argv, t_pipeline *pip, t_data *data);
 
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg);
@@ -120,6 +121,8 @@ char		*replace_double_ampersand(char *arg);
 void		get_argv(const char *input, t_data *data);
 void		handle_sigint(int sig);
 void		handle_pipe(char **argv, t_data *data);
+bool		is_builtin(char *cmd);
+void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
 void		send_to_exec(int argc, char **argv, t_data *data);
 
 //utils_debug
@@ -160,7 +163,7 @@ void		handle_exit(t_pipeline *pip, t_data *data);
 
 //builtins_echo
 char		**ft_echo_tab(int argc, char **argv);
-void		ft_echo(int argc, t_pipeline *pip);
+void		ft_echo(int argc, char **argv);
 
 //builtins_export
 bool		is_key(t_env_ms *lst, char *var);
@@ -175,7 +178,7 @@ void		init_env_ms(char **envp, t_data *data);
 void		ft_env(t_data *data, t_pipeline *pip);
 
 //builtins_unset
-void		ft_unset(int argc, t_pipeline *pip, t_data *data);
+void		ft_unset(int argc, char **argv, t_pipeline *pip, t_data *data);
 
 //builtin_exec
 void		exec(t_pipeline *pip, t_data *data);

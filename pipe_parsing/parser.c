@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/01 16:54:01 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:20:53 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ t_command	*parse_command(char **tokens, int *i)
 		if (is_redirection(tokens[*i]))
 			handle_redirection(tokens, i, cmd);
 		else
+		{
 			cmd->args = add_to_tab(cmd->args, tokens[*i]);
+			cmd->arg_cnt += 1;
+		}
 		(*i)++;
 	}
 	return (cmd);
@@ -113,6 +116,7 @@ void	print_pipeline(t_pipeline *pipeline)
 			while (cmd->args[j])
 				printf("'%s' ", cmd->args[j++]);
 			printf("\n");
+			printf("arg_cnt : %d\n", cmd->arg_cnt);
 		}
 		if (cmd->input_file)
 			printf("[%d] : Input file: %s\n", i, cmd->input_file);

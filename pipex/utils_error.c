@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 17:34:52 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 17:15:01 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ int	args_checker(t_pipeline *pip)
 			NULL, INVALID_INPUT);
 		return (-1);
 	}
-	else if (pip->cmd_count < 2 && pip->commands[0]->heredoc)
+	else if (pip->cmd_count < 2 && pip->cmds[0]->heredoc)
 	{
 		print_error("Usage: ./pipex here_doc LIMITER \"cmd1\" \"cmd2\" fileout",
 			NULL, INVALID_INPUT);
 		return (-1);
 	}
-	else if (pip->cmd_count < 2 && !pip->commands[0]->heredoc)
+	else if (pip->cmd_count < 2 && !pip->cmds[0]->heredoc)
 	{
 		print_error("Usage: ./pipex filein \"cmd1\" \"cmd2\" fileout",
 			NULL, INVALID_INPUT);

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 16:42:47 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 17:32:37 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	}
 	cmd_path = get_path(cmd[0], data->my_envp);
 	if (ft_strstr(cmd[0], "./"))
+	{
+		free(cmd_path);
 		cmd_path = cmd[0];
+	}
 	if (execve(cmd_path, cmd, data->my_envp) == -1)
 	{
 		free_tab(data->my_envp);
@@ -48,15 +51,26 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 	if (child == 0)
 	{
 		close(p_fd[0]);
-		if (dup2(fd_files[0], STDIN_FILENO) == -1)
-			exit(DUPLICATE_ERROR);
+		if (fd_files[0] > -1)
+		{
+			if (dup2(fd_files[0], STDIN_FILENO) == -1)
+				exit(DUPLICATE_ERROR);
+		}
 		if (dup2(p_fd[1], STDOUT_FILENO) == -1)
 			exit(DUPLICATE_ERROR);
-		close(fd_files[0]);
+		if (fd_files[0] > -1)
+			close(fd_files[0]);
 		close(p_fd[1]);
-		execute(cmd->args, pip, data);
+		if (is_builtin(cmd->args[0]))
+		{
+			handle_builtins(cmd, pip, data);
+			exit (0);
+		}
+		else
+			execute(cmd->args, pip, data);
 	}
-	close(fd_files[0]);
+	if (fd_files[0] > -1)
+		close(fd_files[0]);
 	close(p_fd[1]);
 }
 
@@ -80,7 +94,13 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		close(p_fd[1]);
 		close(temp_fd[0]);
 		close(temp_fd[1]);
-		execute(cmd->args, pip, data);
+		if (is_builtin(cmd->args[0]))
+		{
+			handle_builtins(cmd, pip, data);
+			exit (0);
+		}
+		else
+			execute(cmd->args, pip, data);
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
@@ -106,8 +126,13 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 		close(p_fd[0]);
 		close(p_fd[1]);
 		close(fd_files[1]);
-		if (pip->commands[pip->cmd_count - 1]->args)
-			execute(pip->commands[pip->cmd_count - 1]->args, pip, data);
+		if (is_builtin(pip->cmds[pip->cmd_count - 1]->args[0]))
+		{
+			handle_builtins(pip->cmds[pip->cmd_count - 1], pip, data);
+			exit (0);
+		}
+		else
+			execute(pip->cmds[pip->cmd_count - 1]->args, pip, data);
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
@@ -128,11 +153,11 @@ int	pipex(t_pipeline *pip, t_data *data)
 		return (1);
 	here_doc_checker(fd_files, pip, data);
 	i = 0;
-	first_pipe(pip->commands[i], pip, p_fd, data, fd_files);
+	first_pipe(pip->cmds[i], pip, p_fd, data, fd_files);
 	i++;
 	while (i < pip->cmd_count - 1)
 	{
-		multi_pipe(pip->commands[i], pip, p_fd, data);
+		multi_pipe(pip->cmds[i], pip, p_fd, data);
 		i++;
 	}
 	status = last_pipe(pip, p_fd, data, fd_files);

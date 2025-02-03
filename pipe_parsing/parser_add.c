@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:29 by kalicem           #+#    #+#             */
-/*   Updated: 2025/01/31 17:59:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 10:46:55 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,24 @@ char	**add_to_tab(char **tab, const char *arg)
 //? reBuild the input with tokenization
 void	add_command_to_pipeline(t_pipeline *pipeline, t_command *cmd)
 {
-	t_command	**new_commands;
+	t_command	**new_cmds;
 	int			size;
 	int			i;
 
 	size = 0;
-	while (pipeline->commands && pipeline->commands[size])
+	while (pipeline->cmds && pipeline->cmds[size])
 		size++;
-	new_commands = ft_calloc(size + 2, sizeof(t_command *));
-	if (!new_commands)
+	new_cmds = ft_calloc(size + 2, sizeof(t_command *));
+	if (!new_cmds)
 		return ;
 	i = 0;
-	while (pipeline->commands && pipeline->commands[i])
+	while (pipeline->cmds && pipeline->cmds[i])
 	{
-		new_commands[i] = pipeline->commands[i];
+		new_cmds[i] = pipeline->cmds[i];
 		i++;
 	}
-	new_commands[i] = cmd;
-	new_commands[i + 1] = NULL;
-	free(pipeline->commands);
-	pipeline->commands = new_commands;
+	new_cmds[i] = cmd;
+	new_cmds[i + 1] = NULL;
+	free(pipeline->cmds);
+	pipeline->cmds = new_cmds;
 }

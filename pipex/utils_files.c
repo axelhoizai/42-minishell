@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 13:47:22 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 13:50:31 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,16 @@ int	open_file(t_data *data, char *file, int mode, int *p_fd)
 	{
 		perror(file);
 		close(p_fd[0]);
-		// exit (1);
 	}
 	return (fd);
 }
 
 void	open_outfile(t_pipeline *pip, t_data *data, int argc, int *fd_files, int *p_fd)
 {
-	if (pip->commands[0]->heredoc)
-		fd_files[1] = open_file(data, pip->commands[argc - 1]->output_file, 0, p_fd);
+	if (pip->cmds[0]->heredoc)
+		fd_files[1] = open_file(data, pip->cmds[argc - 1]->output_file, 0, p_fd);
 	else
-		fd_files[1] = open_file(data, pip->commands[argc - 1]->output_file, 2, p_fd);
+		fd_files[1] = open_file(data, pip->cmds[argc - 1]->output_file, 2, p_fd);
 	if (fd_files[1] == -1)
 	{
 		close(p_fd[0]);
@@ -67,7 +66,7 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 {
 	int	p_fd[2];
 
-	if (pip->commands[0]->heredoc)
+	if (pip->cmds[0]->heredoc)
 	{
 		if (pipe(p_fd) == -1)
 			exit(PIPE_ERROR);
@@ -79,7 +78,6 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 			ms_lstclear(&data->env_ms);
 			free_tab(data->my_envp);
 			free_pipeline(pip);
-			// handle_exit(data->argv, data);
 			exit(0);
 		}
 		close(p_fd[1]);
@@ -87,5 +85,12 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 		wait(NULL);
 	}
 	else
-		fd_files[0] = open_file(data, pip->commands[0]->input_file, 1, p_fd);
+	{
+		if (!pip->cmds[0]->input_file)
+		{
+			fd_files[0] = -1;
+			return ;
+		}
+		fd_files[0] = open_file(data, pip->cmds[0]->input_file, 1, p_fd);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:06:04 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 16:01:26 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 15:01:49 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 t_pipeline	*init_pipeline(void)
 {
-	t_pipeline	*pipeline;
+	t_pipeline	*pip;
 
-	pipeline = ft_calloc(1, sizeof(t_pipeline));
-	if (!pipeline)
+	pip = ft_calloc(1, sizeof(t_pipeline));
+	if (!pip)
 		return (NULL);
-	pipeline->commands = NULL;
-	return (pipeline);
+	pip->cmds = NULL;
+	return (pip);
 }
 
 t_command	*init_command(void)
@@ -31,6 +31,7 @@ t_command	*init_command(void)
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;
+	cmd->arg_cnt = 0;
 	cmd->input_file = NULL;
 	cmd->output_file = NULL;
 	cmd->limiter = NULL;

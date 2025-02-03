@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tester.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 16:10:49 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/03 10:49:36 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,14 @@ void	handle_av_commands(char **av, t_data *data)
 {
 	char	**argv;
 
+	argv = NULL;
 	if (av && av[2])
 	{
 		printf("Usage tester: ./minishell \"cmds\"\n");
 		handle_exit_tester(NULL, data);
 		return ;
 	}
-	argv = get_argv(av[1], data);
+	get_argv(av[1], data);
 	handle_exit_tester(argv, data);
 	free_tab(argv);
 }
@@ -95,7 +96,7 @@ void	sh_tester(char **av, t_data	*data)
 		input = get_next_line(STDIN_FILENO);
 		while (input != NULL)
 		{
-			argv = get_argv(input, data);
+			get_argv(input, data);
 			if (!argv)
 			{
 				free(input);

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:56:03 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 19:24:32 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 17:34:20 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_path(char *cmd, char **envp)
 	{
 		cmd_path = ft_strjoin(all_path[i], cmd_parsed);
 		if (access(cmd_path, F_OK) != -1)
-			return (free_tab(all_path), free(cmd_parsed), cmd_path);
+			return (free_tab(all_path), free(env_path), free(cmd_parsed), cmd_path);
 		free(cmd_path);
 		i++;
 	}
