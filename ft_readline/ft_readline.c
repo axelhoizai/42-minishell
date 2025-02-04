@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 19:24:14 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 10:30:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/04 19:13:24 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@
 //TODO : implementer auto-completion si possible
 //TODO : implementer suggestion si possible
 //TODO : supprimer ref readline si tout est OK!
+// premiere ligne
+// second ligne
+// 3e ligne
 
 char	*ft_realine_loop(t_rl *readline, char **buffer, int *buffer_pos, int *capacity)
 {
@@ -54,14 +57,15 @@ char	*ft_realine_loop(t_rl *readline, char **buffer, int *buffer_pos, int *capac
 			disable_raw_mode(readline->term);
 			return (NULL);
 		}
-		else if (c == ENTER)
+		if (c == ENTER && *buffer_pos > 2)
 		{
+			printf ("*buffer_pos = %d\n", *buffer_pos);
 			get_prompt_position(readline);
 			res = handle_enter(*buffer, *buffer_pos, readline);
 			if (res == 2)
 				return (*buffer);
 		}
-		else if (c == ESC)
+		if (c == ESC)
 			handle_arrow_keys(buffer, buffer_pos, capacity, readline);
 		else if (!handle_input(c, buffer, buffer_pos, capacity, readline))
 			get_prompt_position(readline);

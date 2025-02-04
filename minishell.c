@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 15:17:10 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/04 16:16:29 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	main_loop(t_data *data)
 			handle_exit(NULL, data);
 			break ;
 		}
-		get_argv(input, data);
+		// get_argv(input, data);
 		free(input);
 		exit_code = data->exit_code;
 	}
@@ -42,7 +42,7 @@ static char	main_loop(t_data *data)
 	return (exit_code);
 }
 
-// char	main_loop(char **argv, t_data *data)
+// char	main_loop(t_data *data)
 // {
 // 	char	*input;
 // 	char	*prompt;
@@ -50,19 +50,19 @@ static char	main_loop(t_data *data)
 
 // 	while (1)
 // 	{
-		// prompt = get_promt();
+// 		prompt = get_prompt(data->env_ms);
 // 		input = readline(prompt);
 // 		exit_code = data->exit_code;
 // 		free(prompt);
 // 		if (!input)
 // 		{
 // 			free(input);
-// 			handle_exit(argv, data);
+// 			handle_exit(NULL, data);
 // 			break ;
 // 		}
 // 		if (*input)
 // 			add_history(input);
-// 		argv = get_argv(input, data);
+// 		get_argv(input, data);
 // 		free(input);
 // 	}
 // 	return (exit_code);

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 12:35:43 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/04 17:46:17 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,10 @@ char		*get_prompt(t_env_ms *lst);
 
 //--------------------------FT_READLINE-----------------------------
 
+#ifdef ESC
+#	undef ESC
+#endif
+#	define ESC CTRL('[')
 # define BACKSPACE 127
 # define ENTER '\n'
 # define ARROW_UP 'A'
