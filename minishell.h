@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 11:32:14 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/04 12:35:43 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,6 @@ typedef struct s_rl
 	int			prompt_col;
 	int			cursor_row;
 	int			cursor_col;
-
 	int			term_row;
 	int			term_col;
 	t_history	*history;
@@ -185,7 +184,6 @@ void		add_to_history(char *cmd, t_history *history);
 void 		load_history(t_history *history);
 void		free_history(t_history *history);
 char		*ft_realine(t_rl *readline);
-void		free_readline(t_rl *readline);
 
 //readline_input
 void		handle_backspace(char **buffer, int *buffer_pos, int len, t_rl *readline);
