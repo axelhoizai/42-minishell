@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 13:50:31 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/04 12:58:38 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,16 @@ void	open_outfile(t_pipeline *pip, t_data *data, int argc, int *fd_files, int *p
 	{
 		close(p_fd[0]);
 		close(p_fd[1]);
-		if (fd_files[1] != -1)
-			close (fd_files[1]);
+		// if (fd_files[1] != -1)
+		// 	close (fd_files[1]);
 		if (fd_files[0] != -1)
 			close (fd_files[0]);
-		free_tab(data->my_envp);
-		ms_lstclear(&data->env_ms);
-		free_pipeline(pip);
-		exit(1);
+		// free_tab(data->my_envp);
+		// ms_lstclear(&data->env_ms);
+		// free_pipeline(pip);
+		data->exit_code = 1;
+		handle_exit(pip, data);
+		// exit(1);
 	}
 }
 

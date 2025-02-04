@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 11:33:39 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/04 15:17:10 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	main_loop(char **argv, t_data *data)
+static char	main_loop(t_data *data)
 {
 	char		*input;
 	char		exit_code;
@@ -31,7 +31,7 @@ char	main_loop(char **argv, t_data *data)
 		if (!input)
 		{
 			free_readline(&readline);
-			handle_exit(argv, data);
+			handle_exit(NULL, data);
 			break ;
 		}
 		get_argv(input, data);
@@ -83,6 +83,6 @@ int	main(int ac, char **av, char **envp)
 	// signal(SIGINT, handle_sigint);
 	if (ac > 1)
 		sh_tester(NULL, &data);
-	exit_code = main_loop(NULL, &data);
+	exit_code = main_loop(&data);
 	return (exit_code);
 }

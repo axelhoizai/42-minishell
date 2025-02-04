@@ -6,21 +6,21 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 15:47:48 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/04 15:12:01 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	signal(SIGQUIT, SIG_IGN);
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+// void	handle_sigint(int sig)
+// {
+// 	(void)sig;
+// 	signal(SIGQUIT, SIG_IGN);
+// 	write(STDOUT_FILENO, "\n", 1);
+// 	rl_on_new_line();
+// 	rl_replace_line("", 0);
+// 	rl_redisplay();
+// }
 
 //? Check if pipe exists
 bool	is_pipe(char **argv)
@@ -97,9 +97,12 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 //TODO : Create a function that handle pipex errors
 	if (is_pipe(argv))
 		data->exit_code = pipex(pip, data);
+	else if (ft_strcmp(pip->cmds[0]->args[0], "exit") == 0)
+		handle_exit(pip, data);
 	else if (argv)
 		exec(pip, data);
 	free_pipeline(pip);
+	
 }
 
 //? Parse builtins to removes quotes and parse dollars
@@ -112,6 +115,12 @@ static void	process_builtins(char *builtins, t_data *data)
 	argc = 0;
 	argv = parse_args(builtins, data);
 	free(builtins);
+	if (argv && !argv[0])
+	{
+		free(argv);
+		data->argv = 0;
+		handle_exit(NULL, data);
+	}
 	while (argv && argv[argc])
 		argc++;
 	if (argc > 0)

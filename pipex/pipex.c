@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 17:32:37 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/04 12:36:00 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,18 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 		exit(FORK_ERROR);
 	if (child == 0)
 	{
-		open_outfile(pip, data, pip->cmd_count, fd_files, p_fd);
+		if (pip->cmds[pip->cmd_count - 1]->output_file)
+		{
+			open_outfile(pip, data, pip->cmd_count, fd_files, p_fd);
+			if (dup2(fd_files[1], STDOUT_FILENO) == -1)
+				exit(DUPLICATE_ERROR);
+		}
 		if (dup2(p_fd[0], STDIN_FILENO) == -1)
-			exit(DUPLICATE_ERROR);
-		if (dup2(fd_files[1], STDOUT_FILENO) == -1)
 			exit(DUPLICATE_ERROR);
 		close(p_fd[0]);
 		close(p_fd[1]);
-		close(fd_files[1]);
+		if (pip->cmds[pip->cmd_count - 1]->output_file && fd_files[1] > -1)
+			close(fd_files[1]);
 		if (is_builtin(pip->cmds[pip->cmd_count - 1]->args[0]))
 		{
 			handle_builtins(pip->cmds[pip->cmd_count - 1], pip, data);
