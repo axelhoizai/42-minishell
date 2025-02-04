@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 14:04:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/27 00:01:43 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/03 04:49:53 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_list			*ft_lstnew(void *content);
 int				ft_lstsize(t_list *lst);
 
 //ft_mem
+void			*ft_realloc(void *ptr, size_t size);
 void			ft_bzero(void *s, size_t n);
 void			*ft_calloc(size_t nmemb, size_t size);
 void			*ft_memchr(const void *s, int c, size_t n);

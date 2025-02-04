@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 13:57:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/03 04:38:38 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,26 @@ void	init_parse(t_parse *parse, int size)
 
 void	append_char(t_parse *parse, char c)
 {
-	if (parse->len + 1 < parse->capacity)
+	char	*new_buffer;
+	int		i;
+
+	if (parse->len + 1 >= parse->capacity)
 	{
-		parse->buffer[parse->len++] = c;
-		parse->buffer[parse->len] = '\0';
+		new_buffer = (char *)ft_calloc(parse->capacity * 2, sizeof(char));
+		if (!new_buffer)
+			return ;
+		i = 0;
+		while (i < parse->len)
+		{
+			new_buffer[i] = parse->buffer[i];
+			i++;
+		}
+		free(parse->buffer);
+		parse->buffer = new_buffer;
+		parse->capacity *= 2;
 	}
-	else
-		exit(1);
+	parse->buffer[parse->len++] = c;
+	parse->buffer[parse->len] = '\0';
 }
 
 void	free_tokens(char **tokens)

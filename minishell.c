@@ -3,68 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/01 17:42:33 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/04 11:33:39 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_realine(void)
-{
-	char	*buffer;
-	char	c;
-	int		i;
-	int		ret;
-
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);
-	i = 0;
-	while ((ret = read(STDIN_FILENO, &c, 1)) > 0 && c != '\n')
-	{
-		if (i < BUFFER_SIZE - 1)
-			buffer[i++] = c;
-		else
-			break;
-	}
-	if (ret == 0 && i == 0)
-	{
-		free(buffer);
-		return (NULL);
-	}
-	buffer[i] = '\0';
-	return (buffer);
-}
-
-
-char	main_loop(char **av, t_data *data)
+char	main_loop(char **argv, t_data *data)
 {
 	char		*input;
-	char		*prompt;
 	char		exit_code;
-	(void)av;
+	t_rl		readline;
 
+	init_readline(&readline);
+	get_data(data);
+	data->term = readline.term;
 	while (1)
 	{
-		prompt = get_prompt(data->env_ms);
-		if (!prompt)
-			return (1);
-		write(STDOUT_FILENO, prompt, ft_strlen(prompt));
-		free(prompt);
-		input = ft_realine();
+		if (readline.prompt)
+			free(readline.prompt);
+		readline.prompt = get_prompt(data->env_ms);
+		// write(STDOUT_FILENO, readline.prompt, ft_strlen(readline.prompt));
+		input = ft_realine(&readline);
 		if (!input)
 		{
-			free(input);
-			handle_exit(NULL, data);
+			free_readline(&readline);
+			handle_exit(argv, data);
 			break ;
 		}
 		get_argv(input, data);
 		free(input);
 		exit_code = data->exit_code;
 	}
+	free_readline(&readline);
 	return (exit_code);
 }
 
@@ -106,9 +80,9 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	ft_bzero(&data, sizeof(t_data));
 	ft_init(envp, &is_start, &data);
-	signal(SIGINT, handle_sigint);
+	// signal(SIGINT, handle_sigint);
 	if (ac > 1)
 		sh_tester(NULL, &data);
-	exit_code = main_loop(av, &data);
+	exit_code = main_loop(NULL, &data);
 	return (exit_code);
 }

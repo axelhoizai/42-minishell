@@ -21,7 +21,7 @@ SRCS_TO = ft_atol.c ft_atoi.c ft_itoa.c ft_tolower.c ft_toupper.c \
 
 SRCS_MEM_DIR = ft_mem/
 SRCS_MEM = ft_bzero.c ft_calloc.c ft_memchr.c ft_memcmp.c \
-		   ft_memcpy.c ft_memmove.c ft_memset.c \
+		   ft_memcpy.c ft_memmove.c ft_memset.c ft_realloc.c \
 
 SRCS_PUT_DIR = ft_put/
 SRCS_PUT =	ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \

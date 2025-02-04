@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 15:48:00 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/04 11:32:14 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <termios.h>
+# include <sys/ioctl.h>
 
 # define INPUT		1	//"<"
 # define HEREDOC	2	//"<<"
@@ -63,12 +65,18 @@ typedef struct s_env_ms
 	struct s_env_ms	*next;
 }	t_env_ms;
 
+typedef struct s_data_term
+{
+	struct termios original_term;
+} t_data_term;
+
 typedef struct s_data
 {
 	int			exit_code;
 	char		**my_envp;
 	t_env_ms	*env_ms;
 	char		**argv;
+	t_data_term	*term;
 }	t_data;
 
 typedef struct s_command
@@ -90,7 +98,119 @@ typedef struct s_pipeline
 	int			cmd_count;
 }	t_pipeline;
 
+// typedef struct s_command
+// {
+// 	char	**args;
+// 	char	*input_file;
+// 	char	*output_file;
+// 	int		append;
+// 	int		heredoc;
+// }	t_command;
+
+// typedef struct s_pipeline
+// {
+// 	t_command	**commands;
+// 	int			cmd_count;
+// }	t_pipeline;
+
 char		*get_prompt(t_env_ms *lst);
+
+//--------------------------FT_READLINE-----------------------------
+
+# define BACKSPACE 127
+# define ENTER '\n'
+# define ARROW_UP 'A'
+# define ARROW_DOWN 'B'
+# define ARROW_LEFT 'D'
+# define ARROW_RIGHT 'C'
+# define DELETE '~'
+# define CTRLC 3
+# define CTRLD 4
+# define HISTORY_FILE ".minishell_history"
+
+typedef struct s_history
+{
+	int		history_capacity;
+	char	**history_tab;
+	int		history_count;
+	int		history_index;
+}	t_history;
+
+typedef struct s_rl
+{
+	char 		*buffer;
+	int			buffer_pos;
+	int			buffer_size;
+	char		*prompt;
+	int			prompt_len;
+	int			prompt_row;
+	int			prompt_col;
+	int			cursor_row;
+	int			cursor_col;
+
+	int			term_row;
+	int			term_col;
+	t_history	*history;
+	t_data_term	*term;
+}	t_rl;
+
+void		init_readline(t_rl *readline);
+
+//readline
+char		*ft_realine(t_rl *readline);
+
+//readline_helper
+void		init_readline(t_rl *readline);
+void		free_readline(t_rl *readline);
+void		handle_clear(int *buffer_pos, char *buffer, t_rl *readline);
+void		handle_arrow_keys(char **buffer, int *buffer_pos, int *capacity, t_rl *readline);
+int			handle_input(char c, char **buffer, int *buffer_pos, int *capacity, t_rl *readline);
+
+//utils_readline
+t_data		*get_data(t_data *new_data);
+t_rl		*get_rl(t_rl *new_readline);
+t_data_term	*get_term_data(t_data_term *new_term);
+char		*expand_buffer(char *buffer, int *capacity);
+void		print_prompt(t_rl *readline);
+
+//readline_signal
+void		save_terminal_settings(t_data_term *term);
+void		restore_terminal_settings(t_data_term *term);
+void		setup_signals(void);
+void   		ft_readline_redisplay(void);
+void		handle_sigint(int sig);
+
+//readline_history
+void		add_to_history(char *cmd, t_history *history);
+void 		load_history(t_history *history);
+void		free_history(t_history *history);
+char		*ft_realine(t_rl *readline);
+void		free_readline(t_rl *readline);
+
+//readline_input
+void		handle_backspace(char **buffer, int *buffer_pos, int len, t_rl *readline);
+void		handle_delete(char **buffer, int *buffer_pos, int len);
+void		handle_character(char c, char **buffer, int *buffer_pos, int *capacity, int len);
+int			handle_enter(char *buffer, int buffer_pos, t_rl *readline);
+int			handle_ctrl_d(int buffer_pos, char *buffer, t_rl *readline);
+
+//readline_arrow
+void		handle_arrow_movement(char **buffer, int *buffer_pos, int len, char c);
+void		handle_history(char **buffer, int *buffer_pos, int *capacity, t_rl *readline, char c);
+
+//readline_cursor
+void		move_cursor(int row, int col);
+void		get_prompt_position(t_rl *readline);
+void		get_cursor_position(t_rl *readline);
+int			get_terminal_size(t_rl *readline);
+
+//readline_term
+void		enable_raw_mode(t_data_term *term);
+void		disable_raw_mode(t_data_term *term);
+int			actual_prompt_length(char *str);
+int			get_prompt_length(char *prompt);
+
+//--------------------------FT_READLINE-END--------------------------
 
 //-------------------------------UTILS-------------------------------
 
@@ -119,7 +239,6 @@ char		*replace_double_ampersand(char *arg);
 
 //utils
 void		get_argv(const char *input, t_data *data);
-void		handle_sigint(int sig);
 void		handle_pipe(char **argv, t_data *data);
 bool		is_builtin(char *cmd);
 void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
