@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 11:32:14 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/06 15:55:26 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ typedef struct s_command
 {
 	char	**args;
 	int		arg_cnt;
-	int		in;
+	int		fd_in;
+	int		in_error;
 	char	*input_file;
+	int		fd_out;
 	char	*output_file;
 	char	*limiter;
 	int		trunc;
@@ -279,6 +281,8 @@ char		**ft_echo_tab(int argc, char **argv);
 
 //builtins_exit
 void		handle_exit(t_pipeline *pip, t_data *data);
+void		handle_exit_parent(t_pipeline *pip, t_data *data);
+
 
 //builtins_echo
 char		**ft_echo_tab(int argc, char **argv);
@@ -326,7 +330,7 @@ void		script_checker(char *cmd);
 
 //utils_files
 int			open_file(t_data *data, char *file, int mode, int *p_fd);
-void		open_outfile(t_pipeline *pip, t_data *data, int argc, int *fd_files, int *p_fd);
+int			open_outfile(char *file, t_data *data, int here_doc);
 void		here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data);
 
 char		**utils_parse_args(const char *str);
@@ -345,9 +349,9 @@ void		free_pipeline(t_pipeline *pipeline);
 
 //parser
 int			is_redirection(char *token);
-void		handle_redirection(char **tokens, int *i, t_command *cmd);
-t_command	*parse_command(char **tokens, int *i);
-t_pipeline	*parse_pipeline(char **tokens);
+void		handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data);
+t_command	*parse_command(char **tokens, int *i, t_data *data);
+t_pipeline	*parse_pipeline(char **tokens, t_data *data);
 void		print_pipeline(t_pipeline *pipeline);
 
 #endif

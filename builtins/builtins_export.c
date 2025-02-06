@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/01 17:55:46 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/06 11:24:49 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,33 @@ void	print_export(t_env_ms *lst)
 void	ft_export(char **argv, t_data *data)
 {
 	char	*key;
+	int		i;
 	
 	key = NULL;
 	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
 		print_export(data->env_ms);
 	else if (ft_strcmp(argv[0], "export") == 0 && argv[1] && argv[1][0] != '$')
 	{
-		key = get_envkey(argv[1]);
-		if (!ms_find(data->env_ms, key))
+		i = 1;
+		while (argv[i] && argv[i][0] != '$')
 		{
-			if (ft_strchr(argv[1], '='))
+			key = get_envkey(argv[i]);
+			if (!ms_find(data->env_ms, key))
 			{
-				ms_lstadd_back(&(data->env_ms),
-					ms_lstnew(get_envkey(argv[1]), get_envval(argv[1]), true));
+				if (ft_strchr(argv[i], '='))
+				{
+					ms_lstadd_back(&(data->env_ms),
+						ms_lstnew(get_envkey(argv[i]), get_envval(argv[i]), true));
+				}
+				else
+				{
+					ms_lstadd_back(&(data->env_ms),
+						ms_lstnew(get_envkey(argv[i]), get_envval(argv[i]), false));
+				}
 			}
-			else
-			{
-				ms_lstadd_back(&(data->env_ms),
-					ms_lstnew(get_envkey(argv[1]), get_envval(argv[1]), false));
-			}
+			free(key);
+			i++;
 		}
-		free(key);
 		lst_to_tab(data->env_ms, data);
 	}
 }

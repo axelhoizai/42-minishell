@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_signal.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 00:33:12 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 10:06:32 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/06 11:25:35 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ void	ft_readline_redisplay(void)
 	if (!readline)
 		return ;
 	readline->buffer_pos = 0;
-	ft_bzero(readline->buffer, SIZE_FIX);
+	// ft_bzero(readline->buffer, SIZE_FIX);
+	// free_tab(&readline->buffer);
+	readline->buffer = ft_calloc(64, sizeof(char));
 	// data->term = term;
 	prompt = get_prompt(data->env_ms);
 	if (!prompt)
@@ -70,4 +72,5 @@ void	ft_readline_redisplay(void)
 	write(STDOUT_FILENO, "\r\033[K", 4);
 	write(STDOUT_FILENO, prompt, ft_strlen(prompt));
 	free(prompt);
+	// disable_raw_mode(readline->term);
 }

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 17:15:01 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/06 13:07:41 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,22 @@
 
 void	print_error(char *mgs, char *arg, int exit_code)
 {
+	t_data *data;
+
+	data = get_data(NULL);
 	(void)exit_code;
+	
 	if (arg)
 	{
 		ft_putstr_fd(mgs, 2);
 		ft_putendl_fd(arg, 2);
+		data->exit_code = exit_code;
 		// exit(exit_code);
 	}
 	else
 	{
 		ft_putendl_fd(mgs, 2);
+		data->exit_code = exit_code;
 		// exit(exit_code);
 	}
 }
