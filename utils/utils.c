@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 15:12:01 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/06 18:58:41 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,19 @@ void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 		ft_export(cmd->args, data);
 	else if (ft_strcmp(cmd->args[0], "unset") == 0)
 		ft_unset(cmd->arg_cnt, cmd->args, pip, data);
+	else if (ft_strcmp(cmd->args[0], "env") == 0 && cmd->args[1])
+		ft_print_error(NULL, NULL, "Use \'env\' with no options or arguments");
 	else if (ft_strcmp(cmd->args[0], "env") == 0)
 		ft_env(data, pip);
 	else if (ft_strcmp(cmd->args[0], "exit") == 0)
+	{
 		handle_exit(pip, data);
+	}
 	else if (ft_strcmp(cmd->args[0], "clear") == 0)
 		printf("\033[H\033[J");
-	free_tab(data->my_envp);
-	ms_lstclear(&data->env_ms);
-	free_pipeline(pip);
+	// free_tab(data->my_envp);
+	// ms_lstclear(&data->env_ms);
+	// free_pipeline(pip);
 }
 
 //! Faire une fonction exclusivement handle_builtins
@@ -91,18 +95,50 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 {
 	(void)argc;
 	t_pipeline	*pip;
+	int			fd_std;
 
-	pip = parse_pipeline(argv);
+	fd_std = -1;
+	pip = parse_pipeline(argv, data);
+	// if (pip)
 	print_pipeline(pip);
-//TODO : Create a function that handle pipex errors
-	if (is_pipe(argv))
+	if (data->exit_code != 0)
+	{
+		if (pip)
+			free_pipeline(pip);
+		free_tab(argv);
+		return ;
+	}
+	else if (is_pipe(argv))
+	{
 		data->exit_code = pipex(pip, data);
-	else if (ft_strcmp(pip->cmds[0]->args[0], "exit") == 0)
-		handle_exit(pip, data);
+		free_pipeline(pip);
+	}
+	else if (is_builtin(pip->cmds[0]->args[0]))
+	{
+		if (pip->cmds[0]->output_file)
+		{
+			fd_std = dup(STDOUT_FILENO);
+			// open_outfile(pip, data, 1, NULL);
+			dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
+			close(pip->cmds[0]->fd_out);
+		}
+		handle_builtins(pip->cmds[0], pip, data);
+		if (pip->cmds[0]->output_file)
+		{
+			dup2(fd_std, STDOUT_FILENO);
+			close(fd_std);
+			// close(fd_files[1]);
+		}
+		// free_tab(data->my_envp);
+		// ms_lstclear(&data->env_ms);
+		free_pipeline(pip);
+	}
 	else if (argv)
+	{
 		exec(pip, data);
-	free_pipeline(pip);
-	
+		if (pip)
+			free_pipeline(pip);
+	}
 }
 
 //? Parse builtins to removes quotes and parse dollars
@@ -118,8 +154,9 @@ static void	process_builtins(char *builtins, t_data *data)
 	if (argv && !argv[0])
 	{
 		free(argv);
-		data->argv = 0;
-		handle_exit(NULL, data);
+		data->exit_code = 0;
+		return ;
+		// handle_exit(NULL, data);
 	}
 	while (argv && argv[argc])
 		argc++;

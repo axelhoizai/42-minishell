@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/03 15:20:53 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/06 19:04:25 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,52 @@ int	is_redirection(char *token)
 }
 
 //? Tokenize args in the data structure
-void	handle_redirection(char **tokens, int *i, t_command *cmd)
+void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 {
 	if (ft_strcmp(tokens[*i], "<") == 0 && tokens[*i + 1])
+	{
+		if (cmd->input_file || cmd->in_error == 1)
+		{
+			if (cmd->fd_in > -1)
+				close(cmd->fd_in);
+			free(cmd->input_file);
+		}
 		cmd->input_file = ft_strdup(tokens[++(*i)]);
+		cmd->fd_in = open_file(NULL, cmd->input_file, 1, NULL);
+		if (cmd->fd_in == -1 || cmd->in_error == 1)
+		{
+			if (cmd->fd_in == -1)
+			{
+				ft_print_error(NULL, cmd->input_file, "no such file or directory");
+				cmd->in_error = 1;
+				free(cmd->input_file);
+			}
+			else
+				close(cmd->fd_in);
+			data->exit_code = EXIT_FAILURE;
+		}
+	}
 	else if (ft_strcmp(tokens[*i], ">") == 0 && tokens[*i + 1])
 	{
-		cmd->output_file = ft_strdup(tokens[++(*i)]);
 		cmd->trunc = 1;
+		if (cmd->output_file)
+		{
+			close(cmd->fd_out);
+			free(cmd->output_file);
+		}
+		cmd->output_file = ft_strdup(tokens[++(*i)]);
+		cmd->fd_out = open_outfile(cmd->output_file, data, 0);
+		printf("fd_out : %d\n", cmd->fd_out);
+		if (cmd->fd_out == -1)
+		{
+			// if (cmd->in_error == 0)
+			// 	ft_print_error(NULL, cmd->output_file, "no such file or directory");
+			if (cmd->fd_in)
+				close(cmd->fd_in);
+			data->exit_code = EXIT_FAILURE;
+		}
+		else if (cmd->in_error == 1)
+			close(cmd->fd_out);
 	}
 	else if (ft_strcmp(tokens[*i], ">>") == 0 && tokens[*i + 1])
 	{
@@ -49,9 +87,10 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd)
 }
 
 //? Build cmds according to their token
-t_command	*parse_command(char **tokens, int *i)
+t_command	*parse_command(char **tokens, int *i, t_data *data)
 {
 	t_command	*cmd;
+	int			j;
 
 	cmd = init_command();
 	if (!cmd)
@@ -59,7 +98,11 @@ t_command	*parse_command(char **tokens, int *i)
 	while (tokens[*i] && ft_strcmp(tokens[*i], "|") != 0)
 	{
 		if (is_redirection(tokens[*i]))
-			handle_redirection(tokens, i, cmd);
+		{
+			handle_redirection(tokens, i, cmd, data);
+			if (cmd->in_error == 1)
+				return (cmd);
+		}
 		else
 		{
 			cmd->args = add_to_tab(cmd->args, tokens[*i]);
@@ -67,11 +110,22 @@ t_command	*parse_command(char **tokens, int *i)
 		}
 		(*i)++;
 	}
+	j = 1;
+	while (cmd->args[j])
+	{
+		if (cmd->args[j][0] != '-')
+		{
+			cmd->fd_in = open_file(data, cmd->args[j], 1, NULL);
+			if (cmd->fd_in == -1)
+				ft_print_error(NULL, cmd->args[j], "no such file or directory");
+		}
+		j++;
+	}
 	return (cmd);
 }
 
 //? reBuild pipelines after tokenization 
-t_pipeline	*parse_pipeline(char **tokens)
+t_pipeline	*parse_pipeline(char **tokens, t_data *data)
 {
 	t_pipeline	*pipeline;
 	t_command	*cmd;
@@ -83,11 +137,17 @@ t_pipeline	*parse_pipeline(char **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		cmd = parse_command(tokens, &i);
+		cmd = parse_command(tokens, &i, data);
+		if (cmd->in_error)
+		{
+			free(cmd);
+			return (pipeline);
+		}
 		if (!cmd)
 		{
 			free_pipeline(pipeline);
-			return (NULL);
+			pipeline = NULL;
+			break ;
 		}
 		add_command_to_pipeline(pipeline, cmd);
 		if (tokens[i] && ft_strcmp(tokens[i], "|") == 0)

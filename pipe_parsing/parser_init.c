@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:06:04 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 15:01:49 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/06 18:29:20 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ t_command	*init_command(void)
 		return (NULL);
 	cmd->args = NULL;
 	cmd->arg_cnt = 0;
+	cmd->fd_in = -2;
+	cmd->in_error = 0;
 	cmd->input_file = NULL;
+	cmd->fd_out = -2;
 	cmd->output_file = NULL;
 	cmd->limiter = NULL;
-	cmd->in = 0;
 	cmd->trunc = 0;
 	cmd->append = 0;
 	cmd->heredoc = 0;

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 12:36:00 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/06 17:52:57 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 		return ;
 	}
 	cmd_path = get_path(cmd[0], data->my_envp);
+	if (!cmd_path)
+		exit(CMD_NOT_FOUND);
 	if (ft_strstr(cmd[0], "./"))
 	{
 		free(cmd_path);
@@ -64,6 +66,9 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 		if (is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
+			free_tab(data->my_envp);
+			ms_lstclear(&data->env_ms);
+			free_pipeline(pip);
 			exit (0);
 		}
 		else
@@ -97,6 +102,9 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		if (is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
+			free_tab(data->my_envp);
+			ms_lstclear(&data->env_ms);
+			free_pipeline(pip);
 			exit (0);
 		}
 		else
@@ -120,7 +128,8 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 	{
 		if (pip->cmds[pip->cmd_count - 1]->output_file)
 		{
-			open_outfile(pip, data, pip->cmd_count, fd_files, p_fd);
+			// open_outfile(pip, data, pip->cmd_count, fd_files, p_fd);
+			fd_files[1] = pip->cmds[pip->cmd_count - 1]->fd_out;
 			if (dup2(fd_files[1], STDOUT_FILENO) == -1)
 				exit(DUPLICATE_ERROR);
 		}
@@ -133,11 +142,16 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 		if (is_builtin(pip->cmds[pip->cmd_count - 1]->args[0]))
 		{
 			handle_builtins(pip->cmds[pip->cmd_count - 1], pip, data);
+			free_tab(data->my_envp);
+			ms_lstclear(&data->env_ms);
+			free_pipeline(pip);
 			exit (0);
 		}
 		else
 			execute(pip->cmds[pip->cmd_count - 1]->args, pip, data);
 	}
+	if (pip->cmds[pip->cmd_count - 1]->output_file)
+			close(pip->cmds[pip->cmd_count - 1]->fd_out);
 	close(p_fd[0]);
 	close(p_fd[1]);
 	waitpid(child, &status, 0);

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 12:58:38 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/06 18:51:22 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	open_file(t_data *data, char *file, int mode, int *p_fd)
 {
 	int	fd;
 	(void)data;
+	(void)p_fd;
 
 	if (mode == 0)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -23,45 +24,35 @@ int	open_file(t_data *data, char *file, int mode, int *p_fd)
 		fd = open(file, O_RDONLY);
 	else
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1 && mode == 1)
-	{
-		perror(file);
-		fd = open("/dev/null", O_RDONLY);
-	}
-	else if (access(file, R_OK) == -1 && mode == 1)
-	{
-		perror(file);
-		close(fd);
-	}
-	if ((fd == -1 || access(file, W_OK) == -1) && mode != 1)
-	{
-		perror(file);
-		close(p_fd[0]);
-	}
+	// if (fd == -1 && mode == 1)
+	// {
+	// 	perror(file);
+	// 	// fd = open("/dev/null", O_RDONLY);
+	// }
+	// else if (access(file, R_OK) == -1 && mode == 1)
+	// {
+	// 	perror(file);
+	// 	close(fd);
+	// }
+	// if ((fd == -1 || access(file, W_OK) == -1) && mode != 1)
+	// {
+	// 	perror(file);
+	// 	// close(p_fd[0]);
+	// }
 	return (fd);
 }
 
-void	open_outfile(t_pipeline *pip, t_data *data, int argc, int *fd_files, int *p_fd)
+int	open_outfile(char *file, t_data *data, int here_doc)
 {
-	if (pip->cmds[0]->heredoc)
-		fd_files[1] = open_file(data, pip->cmds[argc - 1]->output_file, 0, p_fd);
+	int	fd;
+	
+	if (here_doc == 1)
+		fd = open_file(data, file, 0, NULL);
 	else
-		fd_files[1] = open_file(data, pip->cmds[argc - 1]->output_file, 2, p_fd);
-	if (fd_files[1] == -1)
-	{
-		close(p_fd[0]);
-		close(p_fd[1]);
-		// if (fd_files[1] != -1)
-		// 	close (fd_files[1]);
-		if (fd_files[0] != -1)
-			close (fd_files[0]);
-		// free_tab(data->my_envp);
-		// ms_lstclear(&data->env_ms);
-		// free_pipeline(pip);
+		fd = open_file(data, file, 2, NULL);
+	if (fd == -1)
 		data->exit_code = 1;
-		handle_exit(pip, data);
-		// exit(1);
-	}
+	return (fd);
 }
 
 void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
@@ -93,6 +84,6 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 			fd_files[0] = -1;
 			return ;
 		}
-		fd_files[0] = open_file(data, pip->cmds[0]->input_file, 1, p_fd);
+		fd_files[0] = pip->cmds[0]->fd_in;
 	}
 }
