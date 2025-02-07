@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 19:11:28 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/07 14:51:05 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_command
 	int		in_error;
 	char	*input_file;
 	int		fd_out;
+	int		out_error;
 	char	*output_file;
 	char	*limiter;
 	int		trunc;
@@ -355,5 +356,6 @@ void		handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data);
 t_command	*parse_command(char **tokens, int *i, t_data *data);
 t_pipeline	*parse_pipeline(char **tokens, t_data *data);
 void		print_pipeline(t_pipeline *pipeline);
+void		free_command(t_command *cmd);
 
 #endif

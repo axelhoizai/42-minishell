@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 18:58:41 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/07 16:51:21 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,18 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 	pip = parse_pipeline(argv, data);
 	// if (pip)
 	print_pipeline(pip);
-	if (data->exit_code != 0)
-	{
-		if (pip)
-			free_pipeline(pip);
-		free_tab(argv);
-		return ;
-	}
-	else if (is_pipe(argv))
+	// if (data->exit_code != 0)
+	// {
+	// 	printf("HELLO\n");
+	// 	if (pip)
+	// 	{
+	// 		printf("WORLD\n");
+	// 		free_pipeline(pip);
+	// 	}
+	// 	free_tab(argv);
+	// 	// return ;
+	// }
+	if (is_pipe(argv))
 	{
 		data->exit_code = pipex(pip, data);
 		free_pipeline(pip);

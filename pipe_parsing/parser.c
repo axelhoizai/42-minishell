@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/06 19:04:25 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/07 18:32:53 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,36 +43,58 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 		{
 			if (cmd->fd_in == -1)
 			{
-				ft_print_error(NULL, cmd->input_file, "no such file or directory");
+				if (cmd->in_error == 0)
+					ft_print_error(NULL, cmd->input_file, "No such file or directory");
 				cmd->in_error = 1;
-				free(cmd->input_file);
+				// free(cmd->input_file);
 			}
 			else
+			{
 				close(cmd->fd_in);
+				cmd->fd_in = -1;
+			}
 			data->exit_code = EXIT_FAILURE;
 		}
 	}
 	else if (ft_strcmp(tokens[*i], ">") == 0 && tokens[*i + 1])
 	{
 		cmd->trunc = 1;
-		if (cmd->output_file)
+		// if (cmd->out_error == 1)
+		// {
+		// 	(*i)++;
+		// 	return ;
+		// }
+		if (cmd->fd_out > -1 || cmd->output_file)
 		{
-			close(cmd->fd_out);
+			if (cmd->fd_out > -1)
+				close(cmd->fd_out);
 			free(cmd->output_file);
 		}
 		cmd->output_file = ft_strdup(tokens[++(*i)]);
-		cmd->fd_out = open_outfile(cmd->output_file, data, 0);
+		if (cmd->out_error == 0)
+			cmd->fd_out = open_outfile(cmd->output_file, data, 0);
 		printf("fd_out : %d\n", cmd->fd_out);
-		if (cmd->fd_out == -1)
+		if (cmd->fd_out == -1 && cmd->out_error == 0)
 		{
-			// if (cmd->in_error == 0)
-			// 	ft_print_error(NULL, cmd->output_file, "no such file or directory");
-			if (cmd->fd_in)
+			if (cmd->in_error == 0)
+			{
+				if (cmd->out_error == 0)
+					ft_print_error(NULL, cmd->output_file, "No such file or directory");
+				cmd->fd_out = open("/dev/null", O_RDONLY); //test
+				close(cmd->fd_out);
+				cmd->fd_out = -1; //test pour null
+				// free(cmd->output_file);
+			}
+			if (cmd->fd_in > -1)
 				close(cmd->fd_in);
+			cmd->out_error = 1;
 			data->exit_code = EXIT_FAILURE;
 		}
-		else if (cmd->in_error == 1)
-			close(cmd->fd_out);
+		if (cmd->in_error == 1)
+		{
+			if (cmd->fd_out > -1)
+				close(cmd->fd_out);
+		}	
 	}
 	else if (ft_strcmp(tokens[*i], ">>") == 0 && tokens[*i + 1])
 	{
@@ -100,8 +122,9 @@ t_command	*parse_command(char **tokens, int *i, t_data *data)
 		if (is_redirection(tokens[*i]))
 		{
 			handle_redirection(tokens, i, cmd, data);
-			if (cmd->in_error == 1)
-				return (cmd);
+			printf("cmd->out_error : %d\n", cmd->out_error);
+			// if (cmd->in_error == 1 || cmd->out_error == 1)
+			// 	return (cmd);
 		}
 		else
 		{
@@ -113,11 +136,11 @@ t_command	*parse_command(char **tokens, int *i, t_data *data)
 	j = 1;
 	while (cmd->args[j])
 	{
-		if (cmd->args[j][0] != '-')
+		if (cmd->args[j][0] != '-' && !is_builtin(cmd->args[0]))
 		{
 			cmd->fd_in = open_file(data, cmd->args[j], 1, NULL);
 			if (cmd->fd_in == -1)
-				ft_print_error(NULL, cmd->args[j], "no such file or directory");
+				ft_print_error(NULL, cmd->args[j], "No such file or directory");
 		}
 		j++;
 	}
@@ -138,11 +161,11 @@ t_pipeline	*parse_pipeline(char **tokens, t_data *data)
 	while (tokens[i])
 	{
 		cmd = parse_command(tokens, &i, data);
-		if (cmd->in_error)
-		{
-			free(cmd);
-			return (pipeline);
-		}
+		// if (cmd->in_error == 1 || cmd->out_error == 1)
+		// {
+		// 	// free_command(cmd);
+		// 	return (pipeline);
+		// }
 		if (!cmd)
 		{
 			free_pipeline(pipeline);

@@ -6,13 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:07:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 17:04:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/07 15:12:23 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	free_command(t_command *cmd)
+void	free_command(t_command *cmd)
 {
 	int	i;
 
@@ -30,6 +30,8 @@ static void	free_command(t_command *cmd)
 	}
 	if (cmd->input_file)
 		free(cmd->input_file);
+	if (cmd->fd_in > -1)
+		close(cmd->fd_in);
 	if (cmd->output_file)
 		free(cmd->output_file);
 	if (cmd->limiter)

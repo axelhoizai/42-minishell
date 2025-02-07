@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 18:51:22 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/07 17:05:30 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 	}
 	else
 	{
-		if (!pip->cmds[0]->input_file)
+		if (pip->cmds[0]->fd_in < 0)
 		{
-			fd_files[0] = -1;
+			fd_files[0] = -2;
 			return ;
 		}
 		fd_files[0] = pip->cmds[0]->fd_in;

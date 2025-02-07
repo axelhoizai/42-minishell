@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 18:29:01 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/07 18:18:52 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	exec(t_pipeline *pip, t_data *data)
 	pid_t	pid[2];
 	int 	fd_files[2];
 
-	fd_files[0] = -1;
-	if (pip->cmds[0]->fd_out == -1)
+	fd_files[0] = -2;
+	if (pip->cmds[0]->fd_out == -1 || pip->cmds[0]->fd_in == -1)
 	{
-		if (pip->cmds[0]->input_file)
+		if (pip->cmds[0]->fd_in > -1)
 			close (pip->cmds[0]->fd_in);
 		return ;
 	}
@@ -76,13 +76,13 @@ void	exec(t_pipeline *pip, t_data *data)
 			exit(1);
 		if (pid[0] == 0)
 		{
-			if (pip->cmds[0]->fd_in != 1)
+			if (pip->cmds[0]->fd_in > -1)
 			{
 				// fd_files[0] = open_file(data, pip->cmds[0]->input_file, 1, NULL);
 				dup2(pip->cmds[0]->fd_in, STDIN_FILENO);
 				close(pip->cmds[0]->fd_in);
 			}
-			if (pip->cmds[0]->output_file)
+			if (pip->cmds[0]->fd_out > -1)
 			{
 				// open_outfile(pip, data, pip->cmd_count, fd_files, NULL);
 				dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
@@ -90,9 +90,9 @@ void	exec(t_pipeline *pip, t_data *data)
 			}
 			execute(pip->cmds[0]->args, pip, data);
 		}
-		if (pip->cmds[0]->fd_in != -1)
+		if (pip->cmds[0]->fd_in > -1)
 			close(pip->cmds[0]->fd_in);
-		if (pip->cmds[0]->fd_out != -1)
+		if (pip->cmds[0]->fd_out > -1)
 			close(pip->cmds[0]->fd_out);
 		waitpid(pid[0], &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) >= 0)

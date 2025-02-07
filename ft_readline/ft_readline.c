@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 19:24:14 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 19:13:24 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/07 10:21:19 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_realine_loop(t_rl *readline, char **buffer, int *buffer_pos, int *capac
 		}
 		if (c == ENTER && *buffer_pos > 2)
 		{
-			printf ("*buffer_pos = %d\n", *buffer_pos);
+			// printf ("*buffer_pos = %d\n", *buffer_pos);
 			get_prompt_position(readline);
 			res = handle_enter(*buffer, *buffer_pos, readline);
 			if (res == 2)

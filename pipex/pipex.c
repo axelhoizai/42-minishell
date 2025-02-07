@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 17:52:57 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/07 18:42:16 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,16 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 			exit (0);
 		}
 		else
-			execute(cmd->args, pip, data);
+		{
+			if (cmd->fd_in > -1)
+				execute(cmd->args, pip, data);
+			else
+			{
+				free_tab(data->my_envp);
+				ms_lstclear(&data->env_ms);
+			// 	free_pipeline(pip);
+			}
+		}
 	}
 	if (fd_files[0] > -1)
 		close(fd_files[0]);
@@ -148,7 +157,15 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 			exit (0);
 		}
 		else
-			execute(pip->cmds[pip->cmd_count - 1]->args, pip, data);
+		{
+			if (pip->cmds[pip->cmd_count - 1]->fd_out > -1)
+				execute(pip->cmds[pip->cmd_count - 1]->args, pip, data);
+			else
+			{
+				free_tab(data->my_envp);
+				ms_lstclear(&data->env_ms);
+			}
+		}
 	}
 	if (pip->cmds[pip->cmd_count - 1]->output_file)
 			close(pip->cmds[pip->cmd_count - 1]->fd_out);
@@ -167,10 +184,11 @@ int	pipex(t_pipeline *pip, t_data *data)
 	int		i;
 	int		status;
 
-	if (args_checker(pip) == -1)
-		return (1);
+	// if (args_checker(pip) == -1)
+	// 	return (1);
 	here_doc_checker(fd_files, pip, data);
 	i = 0;
+	printf("fd_in : %d\n", fd_files[0]);
 	first_pipe(pip->cmds[i], pip, p_fd, data, fd_files);
 	i++;
 	while (i < pip->cmd_count - 1)
