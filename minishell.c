@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/07 17:15:11 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/08 18:37:13 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ int	main(int ac, char **av, char **envp)
 	ft_bzero(&data, sizeof(t_data));
 	ft_init(envp, &is_start, &data);
 	// signal(SIGINT, handle_sigint);
-	if (ac > 1)
-		sh_tester(NULL, &data);
+	// if (ac > 1)
+	// 	sh_tester(NULL, &data);
 	exit_code = main_loop(&data);
 	return (exit_code);
 }

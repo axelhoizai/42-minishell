@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   fdgdfg.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:04:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/08 19:28:56 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/08 19:13:18 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,6 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	}
 }
 
-
-		// if (fd_files[0] > -1)
-		// {
-		// 	if (dup2(fd_files[0], STDIN_FILENO) == -1)
-		// 		exit(DUPLICATE_ERROR);
-		// }
-		// else
-		// {
-		// 	fd_files[0] = open("/dev/null", O_RDONLY); //test
-		// 	if (dup2(fd_files[0], STDIN_FILENO) == -1)
-		// 		exit(DUPLICATE_ERROR);
-		// }
 static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 {
 	pid_t	child;
@@ -63,16 +51,15 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 	if (child == 0)
 	{
 		close(p_fd[0]);
-		if (fd_files[0] < 0)
-			fd_files[0] = open("/dev/null", O_RDONLY);
-		if (dup2(fd_files[0], STDIN_FILENO) == -1)
-			exit(DUPLICATE_ERROR);
+		if (fd_files[0] > -1)
+		{
+			if (dup2(fd_files[0], STDIN_FILENO) == -1)
+				exit(DUPLICATE_ERROR);
+		}
 		if (dup2(p_fd[1], STDOUT_FILENO) == -1)
 			exit(DUPLICATE_ERROR);
 		if (fd_files[0] > -1)
 			close(fd_files[0]);
-		if (pip->cmds[1]->fd_out > -1)
-			close(pip->cmds[1]->fd_out);
 		close(p_fd[1]);
 		if (is_builtin(cmd->args[0]))
 		{
@@ -80,16 +67,7 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 			exit (0);
 		}
 		else
-		{
 			execute(cmd->args, pip, data);
-			if (pip->cmds[0]->fd_in < 0)
-			{
-				free_tab(data->my_envp);
-				ms_lstclear(&data->env_ms);
-				// free_pipeline(pip);
-				// free_command(cmd);
-			}
-		}
 	}
 	if (fd_files[0] > -1)
 		close(fd_files[0]);
@@ -140,20 +118,14 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 		exit(FORK_ERROR);
 	if (child == 0)
 	{
-		// open_outfile(char *file, t_data *data, int here_doc);
-		fd_files[1] = pip->cmds[1]->fd_out;
+		open_outfile(pip, data, pip->cmd_count, fd_files, p_fd);
 		if (dup2(p_fd[0], STDIN_FILENO) == -1)
 			exit(DUPLICATE_ERROR);
-		if (fd_files[1] == -2)
-			fd_files[1] = 1;
-		else if (fd_files[1] == -1)
-			fd_files[1] = open("/dev/null", O_RDONLY);
 		if (dup2(fd_files[1], STDOUT_FILENO) == -1)
-				exit(DUPLICATE_ERROR);
+			exit(DUPLICATE_ERROR);
 		close(p_fd[0]);
 		close(p_fd[1]);
-		if (pip->cmds[1]->fd_out > -1)
-			close(pip->cmds[1]->fd_out);
+		close(fd_files[1]);
 		if (is_builtin(pip->cmds[pip->cmd_count - 1]->args[0]))
 		{
 			handle_builtins(pip->cmds[pip->cmd_count - 1], pip, data);
@@ -164,8 +136,6 @@ static int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
-	if (pip->cmds[1]->fd_out > -1)
-		close(pip->cmds[1]->fd_out);
 	waitpid(child, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
