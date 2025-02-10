@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:53:05 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 00:15:28 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,21 @@ static char	main_loop(t_data *data)
 	data->term = rl.term;
 	while (1)
 	{
-		// if (rl.prompt)
-		// 	free(rl.prompt);
 		rl.prompt = get_prompt(data->env_ms);
-		// write(STDOUT_FILENO, readline.prompt, ft_strlen(readline.prompt));
 		input = ft_readline(&rl);
 		if (!input)
 		{
-			// free_readline(&rl);
-			disable_raw_mode();
+			// disable_raw_mode();
+			// free_var(rl.prompt);
 			handle_exit(NULL, data);
 			break ;
 		}
 		get_argv(input, data);
-		free(input);
+		free_var(input);
 		exit_code = data->exit_code;
 	}
-	// free_readline(&rl);
-	disable_raw_mode();
+	// disable_raw_mode();
+	free_history(&rl);
 	return (exit_code);
 }
 

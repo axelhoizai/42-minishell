@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_helper.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:39:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:59 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 00:14:12 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	update_display(t_rl *rl)
 		return;
 	move_cursor(rl->prompt_row, rl->prompt_col);
 	write(STDOUT_FILENO, "\033[K", 3);
-	write(STDOUT_FILENO, "MiniShelldon > ", 15);
+	printf("%s", rl->prompt);
+	fflush(stdout);
 	write(STDOUT_FILENO, rl->buffer, rl->line_length);
 	get_cursor_position(rl);
 	get_prompt_position(rl);
@@ -58,21 +59,4 @@ t_rl	*get_rl(t_rl *new_rl)
 	if (new_rl)
 		rl = new_rl;
 	return (rl);
-}
-
-void	print_prompt(const char *prompt, t_rl *rl)
-{
-	if (rl->prompt)
-	{
-		free(rl->prompt);
-		rl->prompt = NULL;
-	}
-	rl->prompt = ft_strdup(prompt);
-	rl->prompt_len = ft_strlen(rl->prompt);
-	write(STDOUT_FILENO, rl->prompt, rl->prompt_len);
-	if (rl->prompt)
-	{
-		free(rl->prompt);
-		rl->prompt = NULL;
-	}
 }

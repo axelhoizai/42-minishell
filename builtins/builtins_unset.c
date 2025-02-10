@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_unset.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:10 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 11:35:27 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/10 21:10:53 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void	ft_unset(int argc, char **argv, t_pipeline *pip, t_data *data)
 	(void)pip;
 	int	i;
 	
-	if (!argv[1])
-		printf("");
-	else
+	if (argv[1])
 	{
 		i = 1;
 		while (argv[i])

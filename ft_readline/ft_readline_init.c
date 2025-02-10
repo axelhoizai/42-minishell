@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_init.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:36:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:55 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/10 23:02:47 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	init_history(t_rl *rl)
 	rl->history = (t_history *)ft_calloc(sizeof(t_history), 1);
 	if (!rl->history)
 		return ;
+	rl->history->history_tab = NULL;
 	rl->history->history_count = 0;
 	rl->history->history_index = 0;
 	load_history(rl->history);
@@ -50,14 +51,14 @@ void	init_readline(t_rl *rl)
 	rl->prompt = NULL;
 	rl->prompt_len = 15;
 	rl->lines_needed = 0;
-	rl->buffer = (char *)ft_calloc(rl->buffer_size + 1, 1);
+	rl->buffer = (char *)ft_calloc(rl->buffer_size, 1);
 	if (!rl->buffer)
 		return ;
 	ft_memset(rl->buffer, 0, rl->buffer_size);
-	rl->lines = (char **)ft_calloc(sizeof(char *) * rl->line_capacity + 1, 1);
+	rl->lines = (char **)ft_calloc(sizeof(char *) * rl->line_capacity, 1);
 	if (!rl->lines)
 	{
-		free(rl->buffer);
+		free_var(rl->buffer);
 		return ;
 	}
 	init_term(rl);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 13:07:41 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/10 22:26:46 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,6 @@ int	args_checker(t_pipeline *pip)
 	// if (ft_strstr(argv[2], "./"))
 	// 	script_checker(argv[2]);
 	return (1);
-}
-
-void	free_tab(char **tab)
-{
-	int i;
-
-	if (!tab)
-		return;
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
 }
 
 void	script_checker(char *cmd)

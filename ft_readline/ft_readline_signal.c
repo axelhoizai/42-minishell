@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_signal.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:48 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 00:14:06 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ static void	handle_sigint(int sig)
 	get_terminal_size(rl);
 	move_cursor(rl->prompt_row + 1, 0);
 	write(STDOUT_FILENO, "\033[K", 3);
-	write(STDOUT_FILENO, "MiniShelldon > ", 15);
+	debug_log("prompt = %s, prompt len = %d", rl->prompt, rl->prompt_len);
+	printf("%s", rl->prompt);
+	fflush(stdout);
 }
 
 // Quitte le programme (CTRL+\), ignore

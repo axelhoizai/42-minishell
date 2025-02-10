@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:43:33 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 00:16:31 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+//TODO : BUFFER NON RESET APRES ENTRE!!!!!!!!!
 
 //TODO : Tester problème d'affichage, surtout arrow left and right et position cursor and prompt
 //TODO : Probleme de copier coller, lignes suivantes decale
@@ -54,6 +55,17 @@
 // 	}
 // }
 
+void	ctrl_d_free(t_rl *rl)
+{
+	t_data *data;
+
+	data = get_data(NULL);
+	free_history(rl);
+	free_var(rl->prompt);
+	free_readline(rl);
+	handle_exit(NULL, data);
+}
+
 void	process_input(t_rl *rl, char c, int *bytes_available)
 {
 	if (c == BACKSPACE)
@@ -62,9 +74,11 @@ void	process_input(t_rl *rl, char c, int *bytes_available)
 		handle_arrow_keys(rl, c);
 	else if (c == CTRL_D)
 	{
-		write(STDOUT_FILENO, "exit\nTape \'stty sane\' si teminal bug\n", 38);
+		// write(STDOUT_FILENO, "exit\nTape \'stty sane\' si teminal bug\n", 38);
+		printf("exit\n");
+
 		disable_raw_mode();
-		free_readline(rl);
+		ctrl_d_free(rl);
 		*bytes_available = -1;
 		exit(0);
 	}
@@ -103,15 +117,15 @@ char *ft_readline(t_rl *rl)
 	enable_raw_mode();
 
 	rl->history->history_index = rl->history->history_count;
-	// rl->prompt = prompt;
-	rl->prompt_len = ft_strlen(rl->prompt);
-	write(STDOUT_FILENO, rl->prompt, rl->prompt_len);
+	rl->prompt_len = actual_prompt_length(rl->prompt);
+	write(STDOUT_FILENO, rl->prompt, ft_strlen(rl->prompt));
 	get_prompt_position(rl);
 	get_cursor_position(rl);
 	get_terminal_size(rl);
 	fflush(stdout);
 	ft_realine_loop(rl);
-	// disable_raw_mode();
+	disable_raw_mode();
+	free_var(rl->prompt);
 	return (rl->buffer);
 }
 

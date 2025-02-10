@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/07 18:18:52 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/10 21:11:24 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	exec(t_pipeline *pip, t_data *data)
 {
 	int		status;
 	pid_t	pid[2];
-	int 	fd_files[2];
+	// int 	fd_files[2];
 
-	fd_files[0] = -2;
+	// fd_files[0] = -2;
 	if (pip->cmds[0]->fd_out == -1 || pip->cmds[0]->fd_in == -1)
 	{
 		if (pip->cmds[0]->fd_in > -1)

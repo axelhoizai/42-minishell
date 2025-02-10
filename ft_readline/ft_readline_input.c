@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_input.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:31:18 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:45:55 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 00:15:39 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,11 @@
 
 int	handle_enter(t_rl *rl, int bytes_available, char c)
 {
-	char	*token;
-	int		i;
-
-	i = 0;
 	if (bytes_available == 0)
 	{
 		printf("\n↳ Contenu du buffer complet :\n%.*s\n", rl->line_length, rl->buffer); //split \n et ne pas oublier de free
-		printf("\n↳ Contenu du buffer : \n");
-		token = ft_strtok(rl->buffer, "\n");
-		while (token != NULL)
-		{
-			printf("token = %s num = %d\n", token, i);
-			add_to_history(token, rl->history);
-			token = ft_strtok(NULL, "\n");
-			i++;
-		}
-		ft_bzero(rl->buffer, rl->buffer_size);
+		parse_historique(rl->buffer, rl->history);
+		// ft_bzero(rl->buffer, rl->buffer_size);
 		return (1);
 	}
 	else

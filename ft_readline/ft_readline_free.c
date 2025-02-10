@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_free.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:42:15 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:31:01 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/10 22:41:48 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,19 @@ void	free_term(t_rl *rl)
 
 void	free_readline(t_rl *rl)
 {
+	int i;
 	if (!rl)
 		return;
 	free_term(rl);
-	free_history(rl);
-	if (rl->buffer)
-	{
-		free(rl->buffer);
-		rl->buffer = NULL;
-	}
+	// free_history(rl);
+	// if (rl->buffer)
+	// {
+	// 	free(rl->buffer);
+	// 	rl->buffer = NULL;
+	// }
 	if (rl->lines)
 	{
-		int i = 0;
+		i = 0;
 		while (i < (int)rl->line_count)
 		{
 			if (rl->lines[i])
@@ -47,4 +48,33 @@ void	free_readline(t_rl *rl)
 		free(rl->lines);
 		rl->lines = NULL;
 	}
+}
+
+void	free_var(void *var)
+{
+	if (!var)
+		return;
+	if (var)
+	{
+		free(var);
+		var = NULL;
+	}
+}
+
+
+void	free_tab(char **tab)
+{
+	int i;
+
+	if (!tab)
+		return;
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		tab[i] = NULL;
+		i++;
+	}
+	free(tab);
+	tab = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:07 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/10 23:49:23 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,57 +182,62 @@ char	*ft_readline(t_rl *rl);
 void	process_input(t_rl *rl, char c, int *bytes_available);
 
 // ft_readline_init
-void	init_readline(t_rl *rl);
-void	init_term(t_rl *rl);
+void		init_readline(t_rl *rl);
+void		init_term(t_rl *rl);
 
 // ft_readline_free
-void	free_term(t_rl *rl);
-void	free_readline(t_rl *rl);
+void		free_term(t_rl *rl);
+void		free_readline(t_rl *rl);
+void		free_var(void *var);
+void		free_tab(char **tab);
 
 //ft_readline_history
-void	add_to_history(char *cmd, t_history *history);
-void 	load_history(t_history *history);
-void	free_history(t_rl *rl);
+void		parse_historique(char *buffer, t_history *history);
+void		add_to_history(char *cmd, t_history *history);
+void 		load_history(t_history *history);
+void		free_history(t_rl *rl);
 
 // ft_readline_termimal
-void	get_terminal_size(t_rl *rl);
-void	enable_raw_mode();
-void	disable_raw_mode();
+void		get_terminal_size(t_rl *rl);
+void		enable_raw_mode();
+void		disable_raw_mode();
 
 // ft_readline_cursor
-void	move_cursor(int row, int col);
-void	get_prompt_position(t_rl *rl);
-void	recalculate_cursor_line_pos(t_rl *rl);
-int		get_cursor_position(t_rl *rl);
+void		move_cursor(int row, int col);
+void		get_prompt_position(t_rl *rl);
+void		recalculate_cursor_line_pos(t_rl *rl);
+int			get_cursor_position(t_rl *rl);
 
 // ft_readline_input
-int		handle_enter(t_rl *rl, int bytes_available, char c);
-void	handle_delete(t_rl *rl);
-void	handle_backspace(t_rl *rl);
-void	insert_char_at_cursor(t_rl *rl, char c);
-void	handle_arrow_keys(t_rl *rl, char first_char);
+int			handle_enter(t_rl *rl, int bytes_available, char c);
+void		handle_delete(t_rl *rl);
+void		handle_backspace(t_rl *rl);
+void		insert_char_at_cursor(t_rl *rl, char c);
+void		handle_arrow_keys(t_rl *rl, char first_char);
 
 //ft_realine_arrow
-void	move_cursor_up(t_rl *rl);
-void	move_cursor_down(t_rl *rl);
-void	move_cursor_left(t_rl *rl);
-void	move_cursor_right(t_rl *rl);
-void	handle_history(t_rl *rl, int direction);
+void		move_cursor_up(t_rl *rl);
+void		move_cursor_down(t_rl *rl);
+void		move_cursor_left(t_rl *rl);
+void		move_cursor_right(t_rl *rl);
+void		handle_history(t_rl *rl, int direction);
 
 // ft_readline_signal
-void	setup_signal_handlers(void);
+void		setup_signal_handlers(void);
 
 // ft_readline_helper
-void	update_display(t_rl *rl);
-int		is_real_enter();
-int		detect_scroll(t_rl *rl);
-t_rl	*get_rl(t_rl *new_rl);
-void	print_prompt(const char *prompt, t_rl *rl);
+void		update_display(t_rl *rl);
+int			is_real_enter();
+int			detect_scroll(t_rl *rl);
+t_rl		*get_rl(t_rl *new_rl);
+// void		print_prompt(t_rl *rl);
 
 // ft_readline_debug
-void	debug_log(const char *format, ...);
+void		debug_log(const char *format, ...);
 
-t_data	*get_data(t_data *new_data);
+t_data		*get_data(t_data *new_data);
+int			actual_prompt_length(char *str);
+int			get_prompt_length(char *prompt);
 
 //--------------------------FT_READLINE-END--------------------------
 
@@ -346,7 +351,6 @@ char		*get_cmd(char *cmd);
 
 //utils error
 void		print_error(char *mgs, char *arg, int exit_code);
-void		free_tab(char **tab);
 int			args_checker(t_pipeline *pip);
 void		script_checker(char *cmd);
 

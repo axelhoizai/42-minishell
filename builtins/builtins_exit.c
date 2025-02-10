@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/04 17:09:38 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/10 21:57:58 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,18 @@ void	handle_exit(t_pipeline *pip, t_data *data)
 	if (validate_exit_args(pip, &exit_code, data) == 1)
 	{
 		printf("exit\n");
-		free_tab(data->my_envp);
+		if (data->my_envp)
+		{
+			free_tab(data->my_envp);
+			data->my_envp = NULL;
+		}
 		ms_lstclear(&data->env_ms);
 		if(pip)
+		{
 			free_pipeline(pip);
-		rl_clear_history();
+			pip = NULL;
+		}
+		// rl_clear_history();
 		// if (argv)
 		// 	free_tab(argv);
 		exit(exit_code);
