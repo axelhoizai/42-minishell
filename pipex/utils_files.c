@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/08 18:30:46 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/10 11:38:28 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ int	open_outfile(char *file, t_data *data, int here_doc)
 	return (fd);
 }
 
-void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
+void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data, int *i)
 {
 	int	p_fd[2];
 
-	if (pip->cmds[0]->heredoc)
+	if (pip->cmds[*i]->heredoc)
 	{
 		if (pipe(p_fd) == -1)
 			exit(PIPE_ERROR);
@@ -84,6 +84,6 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data)
 		// 	fd_files[0] = -2;
 		// 	return ;
 		// }
-		fd_files[0] = pip->cmds[0]->fd_in;
+		fd_files[0] = pip->cmds[*i]->fd_in;
 	}
 }
