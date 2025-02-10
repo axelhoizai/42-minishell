@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 11:38:52 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/10 19:30:07 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,11 @@ typedef struct s_env_ms
 typedef struct s_data_term
 {
 	struct termios original_term;
+	unsigned int	term_row; //hauteur terminal
+	unsigned int	term_col; //largeur terminal
+
+	int	cursor_row; //ligne
+	ssize_t	cursor_col; // col
 } t_data_term;
 
 typedef struct s_data
@@ -120,19 +125,26 @@ char		*get_prompt(t_env_ms *lst);
 
 //--------------------------FT_READLINE-----------------------------
 
-#ifdef ESC
-#	undef ESC
-#endif
-#	define ESC CTRL('[')
 # define BACKSPACE 127
+# define DELETE '~'
 # define ENTER '\n'
 # define ARROW_UP 'A'
 # define ARROW_DOWN 'B'
 # define ARROW_LEFT 'D'
 # define ARROW_RIGHT 'C'
-# define DELETE '~'
-# define CTRLC 3
-# define CTRLD 4
+#ifdef ESC
+#	undef ESC
+#endif
+#	define ESC CTRL('[')
+# define CTRL_D 4
+# define CTRL_C 3
+# define CTRL_R 18
+# define CTRL_Z 26
+#ifdef TAB
+#	undef TAB
+#endif
+#	define TAB 9
+
 # define HISTORY_FILE ".minishell_history"
 
 typedef struct s_history
@@ -143,77 +155,84 @@ typedef struct s_history
 	int		history_index;
 }	t_history;
 
-typedef struct s_rl
+typedef struct	s_rl
 {
-	char 		*buffer;
-	int			buffer_pos;
-	int			buffer_size;
-	char		*prompt;
-	int			prompt_len;
-	int			prompt_row;
-	int			prompt_col;
-	int			cursor_row;
-	int			cursor_col;
-	int			term_row;
-	int			term_col;
-	t_history	*history;
-	t_data_term	*term;
+	int	temp_prompt_row;
+	int	prompt_row;
+	unsigned int	prompt_col;
+	unsigned int	prompt_len;
+	char			*prompt;
+
+	char			**lines;
+	int				lines_needed;
+	unsigned int	line_count;
+	unsigned int	line_capacity;
+	unsigned int	line_length;
+	ssize_t			cursor_pos;
+	bool			cursor_limit_line;
+
+	char			*buffer;
+	unsigned int	buffer_size;
+	t_history		*history;
+	t_data_term		*term;
 }	t_rl;
 
-void		init_readline(t_rl *readline);
+// ft_readline
+char	*ft_readline(t_rl *rl);
+void	process_input(t_rl *rl, char c, int *bytes_available);
 
-//readline
-char		*ft_realine(t_rl *readline);
+// ft_readline_init
+void	init_readline(t_rl *rl);
+void	init_term(t_rl *rl);
 
-//readline_helper
-void		init_readline(t_rl *readline);
-void		free_readline(t_rl *readline);
-void		handle_clear(int *buffer_pos, char *buffer, t_rl *readline);
-void		handle_arrow_keys(char **buffer, int *buffer_pos, int *capacity, t_rl *readline);
-int			handle_input(char c, char **buffer, int *buffer_pos, int *capacity, t_rl *readline);
+// ft_readline_free
+void	free_term(t_rl *rl);
+void	free_readline(t_rl *rl);
 
-//utils_readline
-t_data		*get_data(t_data *new_data);
-t_rl		*get_rl(t_rl *new_readline);
-t_data_term	*get_term_data(t_data_term *new_term);
-char		*expand_buffer(char *buffer, int *capacity);
-void		print_prompt(t_rl *readline);
+//ft_readline_history
+void	add_to_history(char *cmd, t_history *history);
+void 	load_history(t_history *history);
+void	free_history(t_rl *rl);
 
-//readline_signal
-void		save_terminal_settings(t_data_term *term);
-void		restore_terminal_settings(t_data_term *term);
-void		setup_signals(void);
-void   		ft_readline_redisplay(void);
-void		handle_sigint(int sig);
+// ft_readline_termimal
+void	get_terminal_size(t_rl *rl);
+void	enable_raw_mode();
+void	disable_raw_mode();
 
-//readline_history
-void		add_to_history(char *cmd, t_history *history);
-void 		load_history(t_history *history);
-void		free_history(t_history *history);
-char		*ft_realine(t_rl *readline);
+// ft_readline_cursor
+void	move_cursor(int row, int col);
+void	get_prompt_position(t_rl *rl);
+void	recalculate_cursor_line_pos(t_rl *rl);
+int		get_cursor_position(t_rl *rl);
 
-//readline_input
-void		handle_backspace(char **buffer, int *buffer_pos, int len, t_rl *readline);
-void		handle_delete(char **buffer, int *buffer_pos, int len);
-void		handle_character(char c, char **buffer, int *buffer_pos, int *capacity, int len);
-int			handle_enter(char *buffer, int buffer_pos, t_rl *readline);
-int			handle_ctrl_d(int buffer_pos, char *buffer, t_rl *readline);
+// ft_readline_input
+int		handle_enter(t_rl *rl, int bytes_available, char c);
+void	handle_delete(t_rl *rl);
+void	handle_backspace(t_rl *rl);
+void	insert_char_at_cursor(t_rl *rl, char c);
+void	handle_arrow_keys(t_rl *rl, char first_char);
 
-//readline_arrow
-void		handle_arrow_movement(char **buffer, int *buffer_pos, int len, char c);
-void		handle_history(char **buffer, int *buffer_pos, int *capacity, t_rl *readline, char c);
+//ft_realine_arrow
+void	move_cursor_up(t_rl *rl);
+void	move_cursor_down(t_rl *rl);
+void	move_cursor_left(t_rl *rl);
+void	move_cursor_right(t_rl *rl);
+void	handle_history(t_rl *rl, int direction);
 
-//readline_cursor
-void		move_cursor(int row, int col);
-void		get_prompt_position(t_rl *readline);
-void		get_cursor_position(t_rl *readline);
-int			get_terminal_size(t_rl *readline);
+// ft_readline_signal
+void	setup_signal_handlers(void);
 
-//readline_term
-void		enable_raw_mode(t_data_term *term);
-void		disable_raw_mode(t_data_term *term);
-int			actual_prompt_length(char *str);
-int			get_prompt_length(char *prompt);
+// ft_readline_helper
+void	update_display(t_rl *rl);
+int		is_real_enter();
+int		detect_scroll(t_rl *rl);
+t_rl	*get_rl(t_rl *new_rl);
+void	print_prompt(const char *prompt, t_rl *rl);
+
+// ft_readline_debug
+void	debug_log(const char *format, ...);
+
+t_data	*get_data(t_data *new_data);
 
 //--------------------------FT_READLINE-END--------------------------
 

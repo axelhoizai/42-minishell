@@ -3,74 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_signal.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/31 00:33:12 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 11:25:35 by ahoizai          ###   ########.fr       */
+/*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
+/*   Updated: 2025/02/10 19:30:48 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	save_terminal_settings(t_data_term *term)
+//Interrompt un programme (CTRL+C)
+static void	handle_sigint(int sig)
 {
-	if (tcgetattr(STDIN_FILENO, &term->original_term) == -1)
-		write(STDERR_FILENO, "Error: cannot save terminal settings\n", 37);
+	t_rl	*rl;
+
+	(void)sig;
+	rl = get_rl(NULL);
+	write(STDOUT_FILENO, "^C\n", 4);
+	// free(rl->buffer);
+	rl->buffer_size = 0;
+	rl->cursor_pos = 0;
+	rl->line_length = 0;
+	get_cursor_position(rl);
+	get_prompt_position(rl);
+	get_terminal_size(rl);
+	move_cursor(rl->prompt_row + 1, 0);
+	write(STDOUT_FILENO, "\033[K", 3);
+	write(STDOUT_FILENO, "MiniShelldon > ", 15);
 }
 
-void	restore_terminal_settings(t_data_term *term)
+// Quitte le programme (CTRL+\), ignore
+static void	handle_sigquit(int sig)
 {
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &term->original_term) == -1)
-		write(STDERR_FILENO, "Error: cannot restore terminal settings\n", 40);
+	(void)sig;
+	write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
 }
 
-void	setup_signals(void)
+//Demande d'arret propre
+static void	handle_sigterm(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\nSIGTERM reçu, fermeture propre...\n", 35);
+	// Ajoute ici du code pour libérer la mémoire et quitter proprement
+	_exit(0);
+}
+
+//Redimensionnement du terminal
+static void	handle_sigwinch(int sig)
+{
+	t_rl	*rl;
+
+	(void)sig;
+	rl = get_rl(NULL);
+	get_cursor_position(rl);
+	get_terminal_size(rl);
+}
+
+void	setup_signal_handlers(void)
 {
 	struct sigaction sa;
 
-	ft_bzero(&sa, sizeof(sa));
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+
+	// Gestion de CTRL+C (SIGINT)
 	sa.sa_handler = handle_sigint;
-	sa.sa_flags = SA_RESTART;
-	signal(SIGQUIT, SIG_IGN);
+	// sa.sa_handler = SIG_IGN; //ignore
 	sigaction(SIGINT, &sa, NULL);
-}
 
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	signal(SIGQUIT, SIG_IGN);
-	write(STDOUT_FILENO, "^C\n", 3);
-	ft_readline_redisplay();
-}
+	// Gestion de CTRL+\ (SIGQUIT) - Ignore
+	sa.sa_handler = handle_sigquit;
+	sigaction(SIGQUIT, &sa, NULL);
 
-#define SIZE_FIX 512
+	// Gestion du redimensionnement (SIGWINCH)
+	sa.sa_handler = handle_sigwinch;
+	sigaction(SIGWINCH, &sa, NULL);
 
-void	ft_readline_redisplay(void)
-{
-	t_data		*data;
-	t_data_term	*term;
-	t_rl 		*readline;
-	char		*prompt;
-
-	data = get_data(NULL);
-	if (!data)
-		return ;
-	term = get_term_data(NULL);
-	if (!term)
-		return ;
-	readline = get_rl(NULL);
-	if (!readline)
-		return ;
-	readline->buffer_pos = 0;
-	// ft_bzero(readline->buffer, SIZE_FIX);
-	// free_tab(&readline->buffer);
-	readline->buffer = ft_calloc(64, sizeof(char));
-	// data->term = term;
-	prompt = get_prompt(data->env_ms);
-	if (!prompt)
-		return;
-	write(STDOUT_FILENO, "\r\033[K", 4);
-	write(STDOUT_FILENO, prompt, ft_strlen(prompt));
-	free(prompt);
-	// disable_raw_mode(readline->term);
+	// Gerer proprement SIGTERM
+	sa.sa_handler = handle_sigterm;
+	sigaction(SIGTERM, &sa, NULL);
 }

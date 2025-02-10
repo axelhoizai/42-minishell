@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_readline_utils.c                                :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 15:47:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:42 by mdemare          ###   ########.fr       */
+/*   Created: 2024/10/21 08:54:41 by mdemare           #+#    #+#             */
+/*   Updated: 2024/10/29 16:21:42 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../libft.h"
 
-t_data	*get_data(t_data *new_data)
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	static t_data	*data = NULL;
-
-	if (new_data)
-		data = new_data;
-	return (data);
+	if (lst && del)
+	{
+		del(lst->content);
+		free(lst);
+	}
 }
-
-t_data_term	*get_term_data(t_data_term *new_term)
+/* int	main(void)
 {
-	static t_data_term term;
-
-	if (new_term) 
-		term = *new_term;
-	return (&term);
-}
+	t_list	*node = malloc(sizeof(t_list));
+	
+	if (node)
+	{
+		node->content = malloc(10 * sizeof(char));
+		if (!node->content)
+			free(node);
+		ft_lstdelone(node, free);
+	}
+} */

@@ -16,9 +16,10 @@ UTILS = utils/utils_prompt.c utils/utils_print_error.c utils/utils_parsing.c uti
 		utils/utils_list.c utils/utils_list2.c utils/utils_data.c utils/utils_parsing_echo.c utils/utils_get.c \
 		utils/utils.c utils_tester.c
 
-READLINE =	ft_readline/ft_readline_history.c ft_readline/ft_readline.c ft_readline/ft_readline_utils.c \
-			ft_readline/ft_readline_signal.c ft_readline/ft_readline_input.c ft_readline/ft_readline_cursor.c \
-			ft_readline/ft_readline_termimal.c ft_readline/ft_readline_arrow.c ft_readline/ft_readline_helper.c 
+READLINE = ft_readline/ft_readline_arrow.c ft_readline/ft_readline.c ft_readline/ft_readline_signal.c \
+		   ft_readline/ft_readline_init.c ft_readline/ft_readline_input.c ft_readline/ft_readline_cursor.c \
+		   ft_readline/ft_readline_termimal.c ft_readline/ft_readline_helper.c ft_readline/ft_readline_utils.c   \
+		   ft_readline/ft_readline_free.c ft_readline/ft_readline_history.c ft_readline/ft_readline_debug.c  
 
 SRCS_BONUS = \
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/08 18:37:13 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/10 19:53:05 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,23 @@ static char	main_loop(t_data *data)
 {
 	char		*input;
 	char		exit_code;
-	t_rl		readline;
+	// char		*prompt;
+	t_rl		rl;
 
-	init_readline(&readline);
+	init_readline(&rl);
 	get_data(data);
-	data->term = readline.term;
+	data->term = rl.term;
 	while (1)
 	{
-		if (readline.prompt)
-			free(readline.prompt);
-		readline.prompt = get_prompt(data->env_ms);
+		// if (rl.prompt)
+		// 	free(rl.prompt);
+		rl.prompt = get_prompt(data->env_ms);
 		// write(STDOUT_FILENO, readline.prompt, ft_strlen(readline.prompt));
-		input = ft_realine(&readline);
+		input = ft_readline(&rl);
 		if (!input)
 		{
-			free_readline(&readline);
+			// free_readline(&rl);
+			disable_raw_mode();
 			handle_exit(NULL, data);
 			break ;
 		}
@@ -38,7 +40,8 @@ static char	main_loop(t_data *data)
 		free(input);
 		exit_code = data->exit_code;
 	}
-	free_readline(&readline);
+	// free_readline(&rl);
+	disable_raw_mode();
 	return (exit_code);
 }
 
@@ -61,7 +64,7 @@ static char	main_loop(t_data *data)
 // 			break ;
 // 		}
 // 		if (*input)
-// 			add_history(input);
+			// add_history(input);
 // 		get_argv(input, data);
 // 		free(input);
 // 	}

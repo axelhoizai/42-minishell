@@ -5,111 +5,163 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/31 11:03:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 17:39:38 by mdemare          ###   ########.fr       */
+/*   Created: 2025/02/10 15:31:18 by mdemare           #+#    #+#             */
+/*   Updated: 2025/02/10 19:45:55 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_backspace(char **buffer, int *buffer_pos, int len, t_rl *readline)
+int	handle_enter(t_rl *rl, int bytes_available, char c)
 {
-	int	i;
-	int	term_size;
+	char	*token;
+	int		i;
 
-	get_cursor_position(readline);
-	term_size = get_terminal_size(readline);
-	if (readline->cursor_row == readline->prompt_row 
-		&& readline->cursor_col <= get_prompt_length(readline->prompt))
-		return ;
-	if (readline->cursor_row > readline->prompt_row && readline->cursor_col == 1)
+	i = 0;
+	if (bytes_available == 0)
 	{
-		printf("\033[%d;%dH\033[J", readline->cursor_row - 1, term_size);
-		fflush(stdout);
-	}
-	(*buffer_pos)--;
-	i = *buffer_pos;
-	while (i < len - 1)
-	{
-		(*buffer)[i] = (*buffer)[i + 1];
-		i++;
-	}
-	(*buffer)[len - 1] = '\0';
-	write(STDOUT_FILENO, "\b", 1);
-	write(STDOUT_FILENO, &(*buffer)[*buffer_pos], len - *buffer_pos);
-	write(STDOUT_FILENO, " ", 1);
-	while (--len >= *buffer_pos)
-		write(STDOUT_FILENO, "\b", 1);
-}
-
-void	handle_delete(char **buffer, int *buffer_pos, int len)
-{
-	int	i;
-
-	if (*buffer_pos < len)
-	{
-		i = *buffer_pos;
-		while (i < len - 1)
+		printf("\n↳ Contenu du buffer complet :\n%.*s\n", rl->line_length, rl->buffer); //split \n et ne pas oublier de free
+		printf("\n↳ Contenu du buffer : \n");
+		token = ft_strtok(rl->buffer, "\n");
+		while (token != NULL)
 		{
-			(*buffer)[i] = (*buffer)[i + 1];
+			printf("token = %s num = %d\n", token, i);
+			add_to_history(token, rl->history);
+			token = ft_strtok(NULL, "\n");
 			i++;
 		}
-		(*buffer)[len - 1] = '\0';
-		write(STDOUT_FILENO, &(*buffer)[*buffer_pos], len - *buffer_pos);
-		write(STDOUT_FILENO, " ", 1);
-		while (--len >= *buffer_pos)
-			write(STDOUT_FILENO, "\b", 1);
-	}
-}
-
-void	handle_character(char c, char **buffer, int *buffer_pos, int *capacity, int len)
-{
-	int	i;
-
-	if (*buffer_pos >= *capacity - 2)
-		*buffer = expand_buffer(*buffer, capacity);
-	i = len;
-	while (i >= *buffer_pos)
-		(*buffer)[i + 1] = (*buffer)[i], i--;
-	(*buffer)[*buffer_pos] = c;
-	write(STDOUT_FILENO, &(*buffer)[*buffer_pos], len - *buffer_pos + 1);
-	(*buffer_pos)++;
-	while (len-- > *buffer_pos)
-		write(STDOUT_FILENO, "\b", 1);
-}
-
-int	handle_enter(char *buffer, int buffer_pos, t_rl *readline)
-{
-	buffer[buffer_pos] = '\0';
-	if (buffer_pos == 0)
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		write(STDOUT_FILENO, readline->prompt, readline->prompt_len);
-		get_prompt_position(readline);
-		return (1);
-	}
-	if (ft_strcmp(buffer, "clear") == 0)
-	{
-		handle_clear(&buffer_pos, buffer, readline);
-		write(STDOUT_FILENO, readline->prompt, readline->prompt_len);
-		get_prompt_position(readline);
+		ft_bzero(rl->buffer, rl->buffer_size);
 		return (1);
 	}
 	else
 	{
-		add_to_history(buffer, readline->history);
+		if (rl->line_length >= rl->buffer_size - 1)
+			rl->buffer = ft_realloc(rl->buffer, rl->buffer_size *= 2);
+		rl->buffer[rl->line_length] = '\n';
+		rl->line_length++;
+		rl->buffer[rl->line_length] = '\0';
+		while (bytes_available > 0)
+		{
+			read(STDIN_FILENO, &c, 1);
+			if (rl->line_length >= rl->buffer_size - 1)
+				rl->buffer = ft_realloc(rl->buffer, rl->buffer_size *= 2);
+			rl->buffer[rl->line_length] = c;
+			rl->line_length++;
+			rl->buffer[rl->line_length] = '\0';
+			ioctl(STDIN_FILENO, FIONREAD, &bytes_available);
+		}
+	}
+	return (0);
+}
+
+void	handle_delete(t_rl *rl)
+{
+	if (!rl || !rl->buffer || rl->cursor_pos >= rl->line_length)
+		return;
+
+	ft_memmove(rl->buffer + rl->cursor_pos,
+			   rl->buffer + rl->cursor_pos + 1,
+			   rl->line_length - rl->cursor_pos);
+	rl->line_length--;
+	rl->buffer[rl->line_length] = '\0';
+	write(STDOUT_FILENO, "\033[s", 3);
+	write(STDOUT_FILENO, rl->buffer + rl->cursor_pos, rl->line_length - rl->cursor_pos);
+	write(STDOUT_FILENO, " ", 1);
+	write(STDOUT_FILENO, "\033[u", 3);
+}
+
+void	handle_backspace(t_rl *rl)
+{
+	// int	tmp_col;
+
+	if (!rl || !rl->buffer || rl->line_length == 0 || rl->cursor_pos < 0)
+		return;
+	// tmp_col = 0;
+	ft_memmove(rl->buffer + rl->cursor_pos - 1,
+			   rl->buffer + rl->cursor_pos,
+			   rl->line_length - rl->cursor_pos);
+	rl->cursor_pos--;
+	rl->line_length--;
+	rl->buffer[rl->line_length] = '\0';
+
+	// tmp_col = rl->term->cursor_col;
+	move_cursor_left(rl);
+	write(STDOUT_FILENO, " \b", 2);
+	if (rl->line_length && rl->cursor_pos && rl->cursor_pos == rl->line_length)
+		get_cursor_position(rl);
+	// // write(STDOUT_FILENO, " \b", 2);
+	// write(STDOUT_FILENO, rl->buffer + rl->cursor_pos, rl->line_length - rl->cursor_pos);
+	// write(STDOUT_FILENO, " ", 1);
+
+	// if (rl->line_length > 0)
+	// 	move_cursor(rl->term->cursor_row, tmp_col);
+	// else if (rl->line_length == 0)
+	// {
+	// 	write(STDOUT_FILENO, "\b", 1);
+	// 	write(STDOUT_FILENO, "\033[C", 3);
+	// }
+}
+
+void	insert_char_at_cursor(t_rl *rl, char c)
+{
+	if (!rl || !rl->buffer || rl->cursor_pos >= rl->buffer_size - 1)
+	rl->temp_prompt_row = rl->prompt_row;
+	if (rl->line_length >= rl->buffer_size - 1)
+		rl->buffer = ft_realloc(rl->buffer, rl->buffer_size *= 2);
+	ft_memmove(rl->buffer + rl->cursor_pos + 1,
+			   rl->buffer + rl->cursor_pos,
+			   rl->line_length - rl->cursor_pos);
+	rl->buffer[rl->cursor_pos] = c;
+	rl->cursor_pos++;
+	rl->line_length++;
+	rl->buffer[rl->line_length] = '\0';
+	if (detect_scroll(rl))
+		rl->term->cursor_row--;
+	write(STDOUT_FILENO, "\033[s", 3);
+	write(STDOUT_FILENO, rl->buffer + rl->cursor_pos - 1, rl->line_length - rl->cursor_pos + 1);
+	write(STDOUT_FILENO, "\033[u", 3);
+	if (rl->term->cursor_col>= (ssize_t)rl->term->term_col)
+	{
+
+		rl->term->cursor_col = 1;
+		rl->term->cursor_row++;
+		write(STDOUT_FILENO, "\033[C", 3);
 		write(STDOUT_FILENO, "\n", 1);
-		get_prompt_position(readline);
-		return (2);
+	}
+	else
+	{
+		rl->term->cursor_col++;
+		write(STDOUT_FILENO, "\033[C", 3);
 	}
 }
 
-int	handle_ctrl_d(int buffer_pos, char *buffer, t_rl *readline)
+void	handle_arrow_keys(t_rl *rl, char first_char)
 {
-	(void)buffer_pos;
-	free(buffer);
-	(void)readline;
-	write(STDOUT_FILENO, "\n", 1);
-	// write(STDOUT_FILENO, readline->prompt, ft_strlen(readline->prompt));
-	return (1);
+	char	seq[3];
+
+	if (first_char == ESC)
+	{
+		if (read(STDIN_FILENO, &seq[0], 1) <= 0)
+			return ;
+		if (read(STDIN_FILENO, &seq[1], 1) <= 0)
+			return ;
+		if (seq[0] == '[')
+		{
+			if (seq[1] == '3')
+			{
+				if (read(STDIN_FILENO, &seq[2], 1) <= 0)
+					return;
+				if (seq[2] == '~')
+					handle_delete(rl);
+				return ;
+			}
+			get_cursor_position(rl);
+			if (seq[1] == ARROW_LEFT)
+				move_cursor_left(rl);
+			else if (seq[1] == ARROW_RIGHT)
+				move_cursor_right(rl);
+			else if (seq[1] == ARROW_UP || seq[1] == ARROW_DOWN)
+				handle_history(rl, seq[1]);
+		}
+	}
 }

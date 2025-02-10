@@ -3,98 +3,120 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/30 19:24:14 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/07 10:21:19 by ahoizai          ###   ########.fr       */
+/*   Created: 2025/02/10 15:16:28 by mdemare           #+#    #+#             */
+/*   Updated: 2025/02/10 19:43:33 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//TODO : si input vide et enter, ne pas quitter OK
-//TODO : ne pas quitter quand clear OK
+//TODO : Tester problème d'affichage, surtout arrow left and right et position cursor and prompt
+//TODO : Probleme de copier coller, lignes suivantes decale
+//TODO : quand move et ecrit, ecris et descend ligne du dessous, multi lignes?
+//TODO : remettre historique
+//TODO : revoir les signaux
+// - SIGINT (CTRL+C) : Interrompt la saisie et reaffiche le prompt proprement
+// - SIGQUIT (CTRL+\) : Ignore pour eviter la fermeture brutale du shell
+// - SIGTSTP (CTRL+Z) : Desactive ou gere pour empecher la suspension du shell
+// - SIGWINCH : Detecte un changement de taille du terminal et met a jour l'affichage
+// - SIGTERM : Peut etre capture pour une sortie propre si necessaire
+//TODO : remplacer malloc en ft_safe_malloc
+//TODO : tester l'effacement multilignes 
+//TODO : ajout BUFFER static
 
-//TODO : creer structure pour historique OK
-//TODO : si use clear dans historique, doit clear ! OK
-//TODO : buffer non limite a 100 / dynamique OK
-//TODO : si echo -n, doit ecrire avant le prompt OK (fflush)
-//TODO : ne pas pouvoir effacer le prompt (uniquement historique ou long press?) OK?
-//TODO : implementer fleche gauche et droite OK?
-//TODO : creer structure pour prompt ou fonction OK?
-//TODO : trouver pourquoi terminal bug si use historique et ctrl+c ou ctrl+v. Reste raw? je pense : i != 0 OK?
-//TODO : si line en haut du terminal ctrl+d ne fonctionne pas (i != 0 ?) OK?
+// void	replace_char_at_cursor(t_rl *rl, char c)
+// {
+// 	if (!rl || !rl->buffer || rl->cursor_pos >= rl->buffer_size - 1)
+// 		return;
+// 	rl->buffer[rl->cursor_pos] = c;
+// 	if (rl->cursor_pos == rl->line_length)
+// 		rl->line_length++;
+// 	write(STDOUT_FILENO, &c, 1);
+// 	rl->cursor_pos++;
+// }
 
-//TODO : ajouter suppr surveiller que les bon caracteres se supprime
-//TODO : remplacer SIZE_FIX dans readline_utils
-//TODO : maj position prompt quand ctrl+c
-//TODO : si prompt remonte car nouvelle ligne en bas du terminla, recalculer sa position
-//TODO : monter le curso si fleche gauche au bord du terminal et sous le prompt
-//TODO : descendre si fleche du bas et au bord droite du terminal et pas au bout de la chaine de car
-//TODO : free readline quand handle exit
-//TODO : rendre independant
-//TODO : norme
-//TODO : faire multi-test pour voir si le terminal
-//est reset a chaque fois qu'on quitte le programme
-//TODO : faire si historique < 0 ou > historique_len ne rien afficher
-//TODO : implementer auto-completion si possible
-//TODO : implementer suggestion si possible
-//TODO : supprimer ref readline si tout est OK!
-// premiere ligne
-// second ligne
-// 3e ligne
+// void update_prompt_position(t_rl *rl)
+// {
+// 	int previous_prompt_row;
+// 	int diff;
 
-char	*ft_realine_loop(t_rl *readline, char **buffer, int *buffer_pos, int *capacity)
+// 	diff = 0;
+// 	if (!rl)
+// 		return;
+// 	previous_prompt_row = rl->prompt_row;
+// 	get_cursor_position(rl);
+// 	if (rl->prompt_row > previous_prompt_row)
+// 	{
+// 		diff = rl->prompt_row - previous_prompt_row;
+// 		rl->prompt_row -= diff;
+// 	}
+// }
+
+void	process_input(t_rl *rl, char c, int *bytes_available)
+{
+	if (c == BACKSPACE)
+		handle_backspace(rl);
+	else if (c == ESC)
+		handle_arrow_keys(rl, c);
+	else if (c == CTRL_D)
+	{
+		write(STDOUT_FILENO, "exit\nTape \'stty sane\' si teminal bug\n", 38);
+		disable_raw_mode();
+		free_readline(rl);
+		*bytes_available = -1;
+		exit(0);
+	}
+	else if (ft_isprint(c))
+		insert_char_at_cursor(rl, c);
+	fflush(stdout);
+}
+
+void	ft_realine_loop(t_rl *rl)
 {
 	char	c;
-	int		res;
+	int		bytes_available;
 
-	res = 0;
-	while (read(STDIN_FILENO, &c, 1) >= 0)
+	bytes_available = 0;
+	while (1)
 	{
-		if (c == CTRLD && handle_ctrl_d(*buffer_pos, *buffer, readline) == 1)
+		ioctl(STDIN_FILENO, FIONREAD, &bytes_available);
+		if (read(STDIN_FILENO, &c, 1) >= 0)
 		{
-			disable_raw_mode(readline->term);
-			return (NULL);
+			if (c == ENTER)
+			{
+				if (handle_enter(rl, bytes_available, c) == 1)
+					break ;
+				update_display(rl);
+			}
+			else
+				process_input(rl, c, &bytes_available);
 		}
-		if (c == ENTER && *buffer_pos > 2)
-		{
-			// printf ("*buffer_pos = %d\n", *buffer_pos);
-			get_prompt_position(readline);
-			res = handle_enter(*buffer, *buffer_pos, readline);
-			if (res == 2)
-				return (*buffer);
-		}
-		if (c == ESC)
-			handle_arrow_keys(buffer, buffer_pos, capacity, readline);
-		else if (!handle_input(c, buffer, buffer_pos, capacity, readline))
-			get_prompt_position(readline);
 	}
-	return (NULL);
 }
 
-char	*ft_realine(t_rl *readline)
+char *ft_readline(t_rl *rl)
 {
-	int	capacity;
+	// init_readline(rl);
+	get_rl(rl);
+	enable_raw_mode();
 
+	rl->history->history_index = rl->history->history_count;
+	// rl->prompt = prompt;
+	rl->prompt_len = ft_strlen(rl->prompt);
+	write(STDOUT_FILENO, rl->prompt, rl->prompt_len);
+	get_prompt_position(rl);
+	get_cursor_position(rl);
+	get_terminal_size(rl);
 	fflush(stdout);
-	write(STDOUT_FILENO, readline->prompt, ft_strlen(readline->prompt));
-	capacity = 64;
-	readline->buffer = ft_calloc(capacity, sizeof(char));
-	if (!readline->buffer)
-		return (NULL);
-	readline->buffer_pos = 0;
-	readline->history->history_index = readline->history->history_count;
-	readline->prompt_len = ft_strlen(readline->prompt);
-	enable_raw_mode(readline->term);
-	get_rl(readline);
-	get_prompt_position(readline);
-	readline->buffer = ft_realine_loop(readline, &readline->buffer, &readline->buffer_pos, &capacity);
-	disable_raw_mode(readline->term);
-	if (readline->buffer_pos == 0)
-	{
-		free(readline->buffer);
-		return (NULL);
-	}
-	return (readline->buffer);
+	ft_realine_loop(rl);
+	// disable_raw_mode();
+	return (rl->buffer);
 }
+
+//premiere ligne
+//second ligne
+//3e ligne
+
+//une ligne long qui depasse le terminal

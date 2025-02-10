@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_readline_utils.c                                :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 15:47:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:42 by mdemare          ###   ########.fr       */
+/*   Created: 2024/10/14 15:49:21 by mdemare           #+#    #+#             */
+/*   Updated: 2024/10/29 16:21:34 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../libft.h"
 
-t_data	*get_data(t_data *new_data)
+int	ft_isprint(int c)
 {
-	static t_data	*data = NULL;
-
-	if (new_data)
-		data = new_data;
-	return (data);
+	if (c >= ' ' && c <= '~')
+		return (1);
+	return (0);
 }
-
-t_data_term	*get_term_data(t_data_term *new_term)
+/* int	main(void)
 {
-	static t_data_term term;
-
-	if (new_term) 
-		term = *new_term;
-	return (&term);
-}
+	int	print = '\r';
+	if (ft_isprint(print))
+		printf("%c %s", print, "is print\n");
+	else
+		printf("%c %s", print, "no print\n");
+	return (0);
+} */

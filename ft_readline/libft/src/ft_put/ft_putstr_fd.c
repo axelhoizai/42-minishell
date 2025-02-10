@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_readline_utils.c                                :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 15:47:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:42 by mdemare          ###   ########.fr       */
+/*   Created: 2024/10/19 18:39:28 by mdemare           #+#    #+#             */
+/*   Updated: 2024/10/29 16:22:48 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../libft.h"
 
-t_data	*get_data(t_data *new_data)
+void	ft_putstr_fd(char *s, int fd)
 {
-	static t_data	*data = NULL;
-
-	if (new_data)
-		data = new_data;
-	return (data);
+	if (s)
+		write(fd, s, ft_strlen(s));
 }
-
-t_data_term	*get_term_data(t_data_term *new_term)
-{
-	static t_data_term term;
-
-	if (new_term) 
-		term = *new_term;
-	return (&term);
-}
+// int	main(void)
+// {
+// 	printf("test ft_putstr_fd :\n");
+// 	char	c[] = "Hello World";
+// 	ft_putstr_fd(c, 1);
+// 	return (0);
+// }

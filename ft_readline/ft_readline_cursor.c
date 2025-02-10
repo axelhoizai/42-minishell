@@ -5,77 +5,90 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 09:55:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 10:04:48 by mdemare          ###   ########.fr       */
+/*   Created: 2025/02/07 13:04:34 by mdemare           #+#    #+#             */
+/*   Updated: 2025/02/10 19:31:06 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	get_prompt_position(t_rl *readline)
-{
-	char	buf[32];
-	int		i;
-
-	i = 0;
-	write(STDOUT_FILENO, "\033[6n", 4);
-	while (i < (int)sizeof(buf) - 1)
-	{
-		if (read(STDIN_FILENO, buf + i, 1) != 1)
-			break;
-		if (buf[i] == 'R')
-			break;
-		i++;
-	}
-	buf[i] = '\0';
-	readline->prompt_row = 0;
-	// readline->prompt_col = 0;
-	i = 2;
-	while (buf[i] >= '0' && buf[i] <= '9')
-		readline->prompt_row = readline->prompt_row * 10 + (buf[i++] - '0');
-	i++;
-	// 	readline->prompt_col = readline->prompt_col * 10 + (buf[i++] - '0');
-}
-
-void	get_cursor_position(t_rl *readline)
-{
-	char	buf[32];
-	int		i;
-
-	i = 0;
-	write(STDOUT_FILENO, "\033[6n", 4);
-	while (i < (int)sizeof(buf) - 1)
-	{
-		if (read(STDIN_FILENO, buf + i, 1) != 1)
-			break;
-		if (buf[i] == 'R')
-			break;
-		i++;
-	}
-	buf[i] = '\0';
-	readline->cursor_row = 0;
-	readline->cursor_col = 0;
-	i = 2;
-	while (buf[i] >= '0' && buf[i] <= '9')
-		readline->cursor_row = readline->cursor_row * 10 + (buf[i++] - '0');
-	i++;
-	while (buf[i] >= '0' && buf[i] <= '9')
-		readline->cursor_col = readline->cursor_col * 10 + (buf[i++] - '0');
-}
-
 void	move_cursor(int row, int col)
 {
-	printf("\033[%d;%dH\033[J", row, col);
+	if (row <= 0 || col <= 0)
+		return;
+	printf("\033[%d;%dH", row, col);
 	fflush(stdout);
 }
 
-int	get_terminal_size(t_rl *readline)
+void	get_prompt_position(t_rl *rl)
 {
-	struct winsize	ws;
+	char	buf[32];
+	int		i;
 
-	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1)
-		return (0);
-	readline->term_row = ws.ws_row;
-	readline->term_col = ws.ws_col;
-	return (ws.ws_col);
+	i = 0;
+	write(STDOUT_FILENO, "\033[6n", 4);
+	while (i < (int)sizeof(buf) - 1)
+	{
+		if (read(STDIN_FILENO, buf + i, 1) != 1)
+			break;
+		if (buf[i] == 'R')
+			break;
+		i++;
+	}
+	buf[i] = '\0';
+	rl->prompt_row = 0;
+	i = 2;
+	while (buf[i] >= '0' && buf[i] <= '9')
+		rl->prompt_row = rl->prompt_row * 10 + (buf[i++] - '0');
+	i++;
+	rl->prompt_col = rl->prompt_col * 10 + (buf[i++] - '0');
+}
+
+void	recalculate_cursor_line_pos(t_rl *rl)
+{
+	int	relative_row;
+	int	absolute_col;
+
+	relative_row = 0;
+	absolute_col = 0;
+	if (!rl || !rl->term)
+		return;
+	relative_row = rl->term->cursor_row - rl->prompt_row;
+	absolute_col = rl->term->cursor_col;
+	rl->cursor_pos = (relative_row * rl->term->term_col) + absolute_col - (rl->prompt_len - 1);
+	if (rl->cursor_pos < 0)
+		rl->cursor_pos = 0;
+	if (rl->cursor_pos > rl->line_length)
+		rl->cursor_pos = rl->line_length;
+}
+
+int	get_cursor_position(t_rl *rl)
+{
+	char	buf[32];
+	int		i;
+	int		ret;
+	int		row;
+	int		col;
+
+	if (!rl || !rl->term)
+		return (-1);
+	write(STDOUT_FILENO, "\033[6n", 4);
+	ret = read(STDIN_FILENO, buf, sizeof(buf) - 1);
+	if (ret <= 0)
+		return (-1);
+	buf[ret] = '\0';
+	if (buf[0] != '\033' || buf[1] != '[')
+		return (-1);
+	row = 0;
+	i = 2;
+	while (buf[i] >= '0' && buf[i] <= '9')
+		row = (row * 10) + (buf[i++] - '0');
+	i++;
+	col = 0;
+	while (buf[i] >= '0' && buf[i] <= '9')
+		col = (col * 10) + (buf[i++] - '0');
+	rl->term->cursor_row = row;
+	rl->term->cursor_col = col;
+	recalculate_cursor_line_pos(rl);
+	return (0);
 }

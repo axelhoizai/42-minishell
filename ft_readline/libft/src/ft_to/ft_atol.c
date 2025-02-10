@@ -1,31 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_readline_utils.c                                :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 15:47:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:42 by mdemare          ###   ########.fr       */
+/*   Created: 2024/11/25 11:11:36 by mdemare           #+#    #+#             */
+/*   Updated: 2024/12/08 16:41:40 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../libft.h"
 
-t_data	*get_data(t_data *new_data)
+long	ft_atol(const char *str)
 {
-	static t_data	*data = NULL;
+	long	result;
+	long	sign;
+	long	i;
 
-	if (new_data)
-		data = new_data;
-	return (data);
-}
-
-t_data_term	*get_term_data(t_data_term *new_term)
-{
-	static t_data_term term;
-
-	if (new_term) 
-		term = *new_term;
-	return (&term);
+	result = 0;
+	sign = 1;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result * sign);
 }

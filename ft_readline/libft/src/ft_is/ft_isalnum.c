@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_readline_utils.c                                :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 15:47:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:42 by mdemare          ###   ########.fr       */
+/*   Created: 2024/10/14 15:26:34 by mdemare           #+#    #+#             */
+/*   Updated: 2024/10/29 16:21:20 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../libft.h"
 
-t_data	*get_data(t_data *new_data)
+int	ft_isalnum(int c)
 {
-	static t_data	*data = NULL;
-
-	if (new_data)
-		data = new_data;
-	return (data);
+	if ((c >= '0' && c <= '9')
+		|| (c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
 }
-
-t_data_term	*get_term_data(t_data_term *new_term)
+/* int	main(void)
 {
-	static t_data_term term;
-
-	if (new_term) 
-		term = *new_term;
-	return (&term);
-}
+	int		alnum = 'b';
+	if (ft_isalnum(alnum))
+		printf("%c %s", alnum, "is alnum\n");
+	else
+		printf("%c %s", alnum, "no alnum\n");
+	return (0);
+} */

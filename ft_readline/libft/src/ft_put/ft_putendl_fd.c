@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_readline_utils.c                                :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 15:47:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:42 by mdemare          ###   ########.fr       */
+/*   Created: 2024/10/19 18:39:04 by mdemare           #+#    #+#             */
+/*   Updated: 2024/10/29 16:22:44 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../libft.h"
 
-t_data	*get_data(t_data *new_data)
+void	ft_putendl_fd(char *s, int fd)
 {
-	static t_data	*data = NULL;
-
-	if (new_data)
-		data = new_data;
-	return (data);
+	if (s)
+	{
+		write(fd, s, ft_strlen(s));
+		write(fd, "\n", 1);
+	}
 }
-
-t_data_term	*get_term_data(t_data_term *new_term)
+/* int	main(void)
 {
-	static t_data_term term;
-
-	if (new_term) 
-		term = *new_term;
-	return (&term);
-}
+	printf("test ft_putendl_fd :\n");
+	char	c[] = "Hello World!";
+	ft_putendl_fd(c, 1);
+	return (0);
+} */

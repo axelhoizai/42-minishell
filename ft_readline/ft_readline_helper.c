@@ -5,112 +5,74 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 10:23:59 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/04 10:25:13 by mdemare          ###   ########.fr       */
+/*   Created: 2025/02/10 15:39:52 by mdemare           #+#    #+#             */
+/*   Updated: 2025/02/10 19:30:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	init_readline(t_rl *readline)
+void	update_display(t_rl *rl)
 {
-	readline->prompt_len = 0;
-	readline->prompt = NULL;
-	readline->history = (t_history *)malloc(sizeof(t_history));
-	if (!readline->history)
-		return ;
-	readline->history->history_count = 0;
-	readline->history->history_index = 0;
-	load_history(readline->history);
-	readline->term = (t_data_term *)malloc(sizeof(t_data_term));
-	if (!readline->term)
-	{
-		free_readline(readline);
-		return ;
-	}
-	save_terminal_settings(readline->term);
-	setup_signals();
-	readline->prompt_row = 0;
-	readline->prompt_col = 0;
-	readline->cursor_row = 0;
-	readline->cursor_col = 0;
-	readline->term_row = 0;
-	readline->term_col = 0;
-	if (!readline->history || !readline->term)
-		return ;
+	if (!rl || !rl->buffer)
+		return;
+	move_cursor(rl->prompt_row, rl->prompt_col);
+	write(STDOUT_FILENO, "\033[K", 3);
+	write(STDOUT_FILENO, "MiniShelldon > ", 15);
+	write(STDOUT_FILENO, rl->buffer, rl->line_length);
+	get_cursor_position(rl);
+	get_prompt_position(rl);
+	get_terminal_size(rl);
 }
 
-void	free_readline(t_rl *readline)
+int	is_real_enter()
 {
-	if (readline->history)
-	{
-		free_history(readline->history);
-		free(readline->history);
-		readline->history = NULL;
-	}
-	if (readline->term)
-	{
-		free(readline->term);
-		readline->term = NULL;
-	}
-	if (readline->prompt)
-	{
-		free(readline->prompt);
-		readline->prompt = NULL;
-	}
+	int	bytes_available;
+
+	ioctl(STDIN_FILENO, FIONREAD, &bytes_available);
+	return (bytes_available == 0);
 }
 
-void	handle_clear(int *buffer_pos, char *buffer, t_rl *readline)
+int	detect_scroll(t_rl *rl)
 {
-	add_to_history(buffer, readline->history);
-	disable_raw_mode(readline->term);
-	write(STDOUT_FILENO, "\033[H\033[J", 6);
-	enable_raw_mode(readline->term);
-	*buffer_pos = 0;
-}
+	if (!rl || !rl->term)
+		return (-1);
 
-void	handle_arrow_keys(char **buffer, int *buffer_pos, int *capacity, t_rl *readline)
-{
-	char	c;
-	int		len;
-
-	if (read(STDIN_FILENO, &c, 1) != 1 || c != '[')
-		return;
-	if (read(STDIN_FILENO, &c, 1) != 1)
-		return;
-	if (!*buffer)
-		return;
-	len = ft_strlen(*buffer);
-
-	if (c == ARROW_UP || c == ARROW_DOWN)
+	if (rl->temp_prompt_row > rl->prompt_row)
 	{
-		handle_history(buffer, buffer_pos, capacity, readline, c);
-		return;
-	}
-	handle_arrow_movement(buffer, buffer_pos, len, c);
-}
-
-int	handle_input(char c, char **buffer, int *buffer_pos, int *capacity, t_rl *readline)
-{
-	int	len;
-
-	if (!*buffer)
-		return (0);
-	len = ft_strlen(*buffer);
-	if (c == BACKSPACE && *buffer_pos > 0)
-	{
-		handle_backspace(buffer, buffer_pos, len, readline);
+		rl->prompt_row--;
 		return (1);
 	}
-	if (c == DELETE)
+	if (rl->term->cursor_row >= (int)rl->term->term_row + 1)
 	{
-		handle_delete(buffer, buffer_pos, len);
-		return (1);
-	}
-	if (c >= 32 && c <= 126)
-	{
-		handle_character(c, buffer, buffer_pos, capacity, len);
+		rl->prompt_row--;
 		return (1);
 	}
 	return (0);
+}
+
+t_rl	*get_rl(t_rl *new_rl)
+{
+	static t_rl	*rl = NULL;
+
+	if (new_rl)
+		rl = new_rl;
+	return (rl);
+}
+
+void	print_prompt(const char *prompt, t_rl *rl)
+{
+	if (rl->prompt)
+	{
+		free(rl->prompt);
+		rl->prompt = NULL;
+	}
+	rl->prompt = ft_strdup(prompt);
+	rl->prompt_len = ft_strlen(rl->prompt);
+	write(STDOUT_FILENO, rl->prompt, rl->prompt_len);
+	if (rl->prompt)
+	{
+		free(rl->prompt);
+		rl->prompt = NULL;
+	}
 }

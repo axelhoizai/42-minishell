@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_history.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 21:35:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 06:14:37 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/10 19:30:57 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,21 @@ void	load_history(t_history *history)
 	close(fd);
 }
 
-void	free_history(t_history *history)
+void	free_history(t_rl *rl)
 {
 	int	i;
 
-	if (!history || !history->history_tab)
-		return ;
+	if (!rl || !rl->history)
+		return;
 	i = 0;
-	while (i < history->history_count)
+	while (i < rl->history->history_count)
 	{
-		free(history->history_tab[i]);
+		free(rl->history->history_tab[i]);
 		i++;
 	}
-	free(history->history_tab);
-	history->history_tab = NULL;
+	free(rl->history->history_tab);
+	rl->history->history_tab = NULL;
+	free(rl->history);
+	rl->history = NULL;
 }
+
