@@ -6,13 +6,12 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 14:47:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:30:44 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 16:44:23 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/* 🔹 Recup la taille du terminal */
 void	get_terminal_size(t_rl *rl)
 {
 	struct winsize	ws;
@@ -33,7 +32,8 @@ void	enable_raw_mode()
 	rl = get_rl(NULL);
 	tcgetattr(STDIN_FILENO, &rl->term->original_term);
 	raw = rl->term->original_term;
-	raw.c_lflag &= ~(ECHO | ICANON);
+	// raw.c_lflag &= ~(ECHO | ICANON);
+	raw.c_lflag &= ~(ECHO | ICANON | ECHONL);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 

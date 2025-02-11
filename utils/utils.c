@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/07 16:51:21 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/11 14:04:49 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,10 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 	}
 	else if (argv)
 	{
-		exec(pip, data);
-		if (pip)
-			free_pipeline(pip);
+		data->exit_code = pipex(pip, data);
+		// exec(pip, data);
+		// if (pip)
+		// 	free_pipeline(pip);
 	}
 }
 

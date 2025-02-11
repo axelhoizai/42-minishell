@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 09:15:50 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/11 16:50:52 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ char *ft_readline(t_rl *rl)
 	get_terminal_size(rl);
 	fflush(stdout);
 	ft_realine_loop(rl);
-	disable_raw_mode();
+	// disable_raw_mode();
 	free_var(rl->prompt);
 	buffer_copy = ft_strdup(rl->buffer);
 	if (!buffer_copy)
@@ -156,7 +156,6 @@ char *ft_readline(t_rl *rl)
 	rl->cursor_pos = 0;
 	return (buffer_copy);
 }
-
 
 //premiere ligne
 //second ligne

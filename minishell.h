@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 23:49:23 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/11 17:40:00 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,17 @@ typedef struct s_command
 	char	**args;
 	int		arg_cnt;
 	int		fd_in;
-	int		in_error;
-	char	*input_file;
 	int		fd_out;
-	int		out_error;
+	char	*input_file;
 	char	*output_file;
 	char	*limiter;
+	char	**limiters;
 	int		trunc;
 	int		append;
 	int		heredoc;
+
+	int		in_error;
+	int		out_error;
 }	t_command;
 
 typedef struct s_pipeline
@@ -342,7 +344,9 @@ void		sh_tester(char **av, t_data *data);
 //-------------------------------PIPEX-------------------------------
 
 //here_doc
-void		here_doc(t_pipeline *pip, int *p_fd, t_data *data);
+// void		here_doc(t_pipeline *pip, int *p_fd, t_data *data);
+// void		here_doc(t_command *cmd, int *p_fd);
+void		here_doc(char *limiters, int *p_fd);
 
 //utils
 char		*get_env_path(char **envp);

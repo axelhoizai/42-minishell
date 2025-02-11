@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/07 18:32:53 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/11 14:37:58 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,17 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 		cmd->output_file = ft_strdup(tokens[++(*i)]);
 		cmd->append = 1;
 	}
+	// else if (ft_strcmp(tokens[*i], "<<") == 0 && tokens[*i + 1])
+	// {
+	// 	cmd->limiter = ft_strdup(tokens[++(*i)]);
+	// 	cmd->heredoc = 1;
+	// }
 	else if (ft_strcmp(tokens[*i], "<<") == 0 && tokens[*i + 1])
 	{
-		cmd->limiter = ft_strdup(tokens[++(*i)]);
+		cmd->limiters = add_to_tab(cmd->limiters, tokens[++(*i)]);
 		cmd->heredoc = 1;
 	}
+
 }
 
 //? Build cmds according to their token
@@ -207,8 +213,17 @@ void	print_pipeline(t_pipeline *pipeline)
 			printf("[%d] : Out: %s (append: %d)\n", i, cmd->output_file, cmd->append);
 		if (cmd->heredoc)
 			printf("[%d] : Heredoc: enabled\n", i);
-		if (cmd->limiter)
-			printf("[%d] : limiter: %s\n", i, cmd->limiter);
+		// if (cmd->limiter)
+		// 	printf("[%d] : limiter: %s\n", i, cmd->limiter);
+		if (cmd->heredoc)
+		{
+			j = 0;
+			while (cmd->limiters && cmd->limiters[j])
+			{
+				printf("[%d] : limiter[%d]: %s\n", i, j, cmd->limiters[j]);
+				j++;
+			}
+		}
 		i++;
 	}
 	pipeline->cmd_count = i;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:21:41 by mdemare           #+#    #+#             */
-/*   Updated: 2024/10/29 16:22:26 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/08 00:37:41 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	size_t	total_size;
 
 	if (size == 0 || nmemb == 0)
-		return (malloc(0));
+		return (ft_safe_malloc(0));
 	total_size = nmemb * size;
 	if (total_size / nmemb != size)
 		return (NULL);
-	ptr = malloc(total_size);
+	ptr = ft_safe_malloc(total_size);
 	if (!ptr)
 		return (NULL);
 	ft_bzero(ptr, total_size);

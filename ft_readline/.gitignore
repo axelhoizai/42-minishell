@@ -1,8 +1,0 @@
-.vscode
-*.o
-*.a
-*copy*
-minishell
-*.txt
-bak files
-*minishell_history

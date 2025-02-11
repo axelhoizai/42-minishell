@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_test.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/11 00:41:40 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/11 09:48:02 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 
 	if (!cmd || !cmd[0])
 	{
-		write(2, "Invalid command\n", 16);
+		print_error("Invalid command", NULL, CMD_NOT_FOUND);
 		exit(127);
 	}
 	cmd_path = get_path(cmd[0], data->my_envp);
@@ -30,9 +30,15 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 		free_pipeline(pip);
 		exit(127);
 	}
+	/////////////////////
+	if (ft_strstr(cmd[0], "./"))
+	{
+		free(cmd_path);
+		cmd_path = cmd[0];
+	}
+	/////////////////////
 	execve(cmd_path, cmd, data->my_envp);
 
-	/* Vérification d'échec spécifique à `execve` */
 	if (access(cmd_path, F_OK) == 0)
 	{
 		if (access(cmd_path, X_OK) == -1)
@@ -193,7 +199,7 @@ void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data, int *i)
 		if (fork() == 0)
 		{
 			close(p_fd[0]);
-			here_doc(pip, p_fd, data);
+			here_doc(pip, p_fd);
 			close(p_fd[1]);
 			ms_lstclear(&data->env_ms);
 			free_tab(data->my_envp);

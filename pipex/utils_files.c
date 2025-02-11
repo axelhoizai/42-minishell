@@ -1,12 +1,13 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 11:38:28 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/11 09:42:21 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,33 +58,43 @@ int	open_outfile(char *file, t_data *data, int here_doc)
 
 void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data, int *i)
 {
-	int	p_fd[2];
+	int		p_fd[2];
+	int		j;
+	int		last_fd;
+	pid_t	child;
 
-	if (pip->cmds[*i]->heredoc)
+	(void)data;
+	last_fd = -1;
+	j = 0;
+	if (!pip || !pip->cmds[*i] || !pip->cmds[*i]->limiters)
+		return;
+	while (pip->cmds[*i]->heredoc && pip->cmds[*i]->limiters[j])
 	{
 		if (pipe(p_fd) == -1)
 			exit(PIPE_ERROR);
-		if (fork() == 0)
+		child = fork();
+		if (child == -1)
+			exit(FORK_ERROR);
+		if (child == 0)
 		{
 			close(p_fd[0]);
-			here_doc(pip, p_fd, data);
-			close(p_fd[1]);
-			ms_lstclear(&data->env_ms);
-			free_tab(data->my_envp);
-			free_pipeline(pip);
+			here_doc(pip->cmds[*i]->limiters[j], p_fd);
 			exit(0);
 		}
 		close(p_fd[1]);
-		fd_files[0] = p_fd[0];
-		wait(NULL);
+		if (last_fd > 0)
+			close(last_fd);
+		last_fd = p_fd[0];
+		waitpid(child, NULL, 0);
+		j++;
+	}
+	if (last_fd > 0)
+	{
+		fd_files[0] = last_fd;
+		close(last_fd);
 	}
 	else
-	{
-		// if (pip->cmds[0]->fd_in < 0)
-		// {
-		// 	fd_files[0] = -2;
-		// 	return ;
-		// }
-		fd_files[0] = pip->cmds[*i]->fd_in;
-	}
+		fd_files[0] = -1;
+	if (!pip->cmds[*i]->output_file)
+		fd_files[1] = -1;
 }

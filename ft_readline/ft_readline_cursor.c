@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:04:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 19:31:06 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 16:48:07 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	get_prompt_position(t_rl *rl)
 	int		i;
 
 	i = 0;
+	ft_bzero(buf, sizeof(buf));
 	write(STDOUT_FILENO, "\033[6n", 4);
 	while (i < (int)sizeof(buf) - 1)
 	{
@@ -43,6 +44,41 @@ void	get_prompt_position(t_rl *rl)
 	i++;
 	rl->prompt_col = rl->prompt_col * 10 + (buf[i++] - '0');
 }
+
+// void	get_prompt_position(t_rl *rl)
+// {
+// 	char	buf[32];
+// 	int		i;
+
+// 	if (!rl)
+// 		return;
+// 	ft_bzero(buf, sizeof(buf));
+// 	write(STDOUT_FILENO, "\033[6n", 4);
+// 	i = 0;
+// 	while (i < (int)sizeof(buf) - 1)
+// 	{
+// 		if (read(STDIN_FILENO, buf + i, 1) != 1)
+// 			return;
+// 		if (buf[i] == 'R')
+// 			break;
+// 		i++;
+// 	}
+// 	buf[i] = '\0';
+// 	if (buf[0] != '\033' || buf[1] != '[')
+// 		return;
+// 	rl->prompt_row = 0;
+// 	i = 2;
+// 	while (buf[i] && buf[i] >= '0' && buf[i] <= '9')
+// 		rl->prompt_row = rl->prompt_row * 10 + (buf[i++] - '0');
+
+// 	if (!buf[i] || buf[i] != ';')
+// 		return;
+// 	i++;
+// 	rl->prompt_col = 0;
+// 	while (buf[i] && buf[i] >= '0' && buf[i] <= '9')
+// 		rl->prompt_col = rl->prompt_col * 10 + (buf[i++] - '0');
+// }
+
 
 void	recalculate_cursor_line_pos(t_rl *rl)
 {
