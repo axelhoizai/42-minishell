@@ -6,12 +6,14 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 00:16:31 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/11 09:15:50 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-//TODO : BUFFER NON RESET APRES ENTRE!!!!!!!!!
+//TODO : BUFFER NON RESET APRES ENTRE!!!!!!!!! ok?
+
+//TODO : permettre le echo -n
 
 //TODO : Tester problème d'affichage, surtout arrow left and right et position cursor and prompt
 //TODO : Probleme de copier coller, lignes suivantes decale
@@ -61,6 +63,7 @@ void	ctrl_d_free(t_rl *rl)
 
 	data = get_data(NULL);
 	free_history(rl);
+	free_var(rl->buffer);
 	free_var(rl->prompt);
 	free_readline(rl);
 	handle_exit(NULL, data);
@@ -110,12 +113,31 @@ void	ft_realine_loop(t_rl *rl)
 	}
 }
 
+// char *ft_readline(t_rl *rl)
+// {
+// 	// init_readline(rl);
+// 	get_rl(rl);
+// 	enable_raw_mode();
+
+// 	rl->history->history_index = rl->history->history_count;
+// 	rl->prompt_len = actual_prompt_length(rl->prompt);
+// 	write(STDOUT_FILENO, rl->prompt, ft_strlen(rl->prompt));
+// 	get_prompt_position(rl);
+// 	get_cursor_position(rl);
+// 	get_terminal_size(rl);
+// 	fflush(stdout);
+// 	ft_realine_loop(rl);
+// 	disable_raw_mode();
+// 	free_var(rl->prompt);
+// 	return (rl->buffer);
+// }
+
 char *ft_readline(t_rl *rl)
 {
-	// init_readline(rl);
+	char	*buffer_copy;
+
 	get_rl(rl);
 	enable_raw_mode();
-
 	rl->history->history_index = rl->history->history_count;
 	rl->prompt_len = actual_prompt_length(rl->prompt);
 	write(STDOUT_FILENO, rl->prompt, ft_strlen(rl->prompt));
@@ -126,8 +148,15 @@ char *ft_readline(t_rl *rl)
 	ft_realine_loop(rl);
 	disable_raw_mode();
 	free_var(rl->prompt);
-	return (rl->buffer);
+	buffer_copy = ft_strdup(rl->buffer);
+	if (!buffer_copy)
+		return (NULL);
+	ft_bzero(rl->buffer, rl->buffer_size);
+	rl->line_length = 0;
+	rl->cursor_pos = 0;
+	return (buffer_copy);
 }
+
 
 //premiere ligne
 //second ligne

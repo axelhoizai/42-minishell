@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 00:15:28 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/11 09:05:09 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ static char	main_loop(t_data *data)
 		}
 		get_argv(input, data);
 		free_var(input);
+		// free(input;
+		// rl.buffer_size = 0;
+		// ft_bzero(rl.buffer, rl.buffer_size);
+		
 		exit_code = data->exit_code;
 	}
 	// disable_raw_mode();

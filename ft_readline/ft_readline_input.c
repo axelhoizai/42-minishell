@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:31:18 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 00:15:39 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/11 09:13:33 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,16 @@ int	handle_enter(t_rl *rl, int bytes_available, char c)
 {
 	if (bytes_available == 0)
 	{
-		printf("\n↳ Contenu du buffer complet :\n%.*s\n", rl->line_length, rl->buffer); //split \n et ne pas oublier de free
 		parse_historique(rl->buffer, rl->history);
-		// ft_bzero(rl->buffer, rl->buffer_size);
+		write(1, "\n", 1);
+		// Vérifier si on a assez de place pour ajouter '\n'
+		// if (rl->line_length + 1 >= rl->buffer_size)
+		// 	rl->buffer = ft_realloc(rl->buffer, rl->buffer_size *= 2);
+
+		// // Ajouter '\n' à la fin du buffer
+		// rl->buffer[rl->line_length] = '\n';
+		// rl->line_length++;
+		// rl->buffer[rl->line_length] = '\0';
 		return (1);
 	}
 	else

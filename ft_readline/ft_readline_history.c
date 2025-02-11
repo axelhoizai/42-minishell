@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 21:35:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 00:02:18 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/11 09:07:36 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	parse_historique(char *buffer, t_history *history)
 	result = ft_split(buffer, '\n');
 	if (!result)
 		return ;
-	printf("\n↳ Contenu du buffer : \n");
+	// printf("\n↳ Contenu du buffer : \n");
 	i = 0;
 	while (result[i])
 	{
-		printf("token = %s num = %d\n", result[i], i);
+		// printf("token = %s num = %d\n", result[i], i);
 		add_to_history(result[i], history);
 		i++;
 	}
