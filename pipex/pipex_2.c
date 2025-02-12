@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/12 17:57:42 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 18:39:45 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,22 +105,36 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	if (child == 0)
 	{
 		close(p_fd[0]);
-		printf("cmd->fd_in : %d\n", cmd->fd_in);
-		if (cmd->fd_in > -1)
-			dup2(cmd->fd_in, STDIN_FILENO);
-		if (cmd->fd_out > -1)
-			dup2(cmd->fd_out, STDOUT_FILENO);
-		else if (cmd->in_error == 0)
-			dup2(p_fd[1], STDOUT_FILENO);
-		close(p_fd[1]);
-		ft_close_fdin(pip);
-		ft_close_fdout(pip);
-		if (is_builtin(cmd->args[0]))
+		if (cmd->in_error == 1 || cmd->out_error == 1)
 		{
-			handle_builtins(cmd, pip, data);
-			exit(0);
+			// print_lst(data->env_ms);
+			// rl = get_rl(NULL);
+			// clear_exit(pip, data, rl);
+			ms_lstclear(&data->env_ms);
+			free_tab(data->my_envp);
+			free_pipeline(pip);
+			close(p_fd[1]);
+			exit(1);
 		}
-		execute(cmd->args, pip, data);
+		else
+		{
+			printf("cmd->fd_in : %d\n", cmd->fd_in);
+			if (cmd->fd_in > -1)
+				dup2(cmd->fd_in, STDIN_FILENO);
+			if (cmd->fd_out > -1)
+				dup2(cmd->fd_out, STDOUT_FILENO);
+			else if (cmd->in_error == 0)
+				dup2(p_fd[1], STDOUT_FILENO);
+			close(p_fd[1]);
+			ft_close_fdin(pip);
+			ft_close_fdout(pip);
+			if (is_builtin(cmd->args[0]))
+			{
+				handle_builtins(cmd, pip, data);
+				exit(0);
+			}
+			execute(cmd->args, pip, data);
+		}
 	}
 	// close(cmd->fd_in);
 	// wait(NULL);

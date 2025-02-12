@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_signal.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 20:56:10 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/12 19:14:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,21 @@ static void	handle_sigint(int sig)
 static void	handle_sigquit(int sig)
 {
 	(void)sig;
-	write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
+	t_data *data;
+
+	data = get_data(NULL);
+	if (isatty(STDIN_FILENO) == 0)
+	{
+		//  write(STDOUT_FILENO, "^\\Quit (core dumped\n", 19);
+		 printf("Quit (core dumped\n");
+		 fflush(stdout);
+		signal(SIGQUIT, SIG_DFL);
+		exit(131);
+	}
+	else
+		write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
 }
+
 
 //Demande d'arret propre
 static void	handle_sigterm(int sig)
