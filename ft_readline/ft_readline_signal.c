@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_signal.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 19:14:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 19:25:44 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,8 @@ static void	handle_sigint(int sig)
 static void	handle_sigquit(int sig)
 {
 	(void)sig;
-	t_data *data;
-
-	data = get_data(NULL);
-	if (isatty(STDIN_FILENO) == 0)
-	{
-		//  write(STDOUT_FILENO, "^\\Quit (core dumped\n", 19);
-		 printf("Quit (core dumped\n");
-		 fflush(stdout);
-		signal(SIGQUIT, SIG_DFL);
-		exit(131);
-	}
-	else
-		write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
+	write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
 }
-
 
 //Demande d'arret propre
 static void	handle_sigterm(int sig)
@@ -72,6 +59,15 @@ static void	handle_sigwinch(int sig)
 	get_cursor_position(rl);
 	get_terminal_size(rl);
 }
+
+// void sighup_handler(int sig)
+// {
+// 	(void)sig;
+// 	if (!isatty(STDIN_FILENO))
+// 		debug_log("Le terminal s'est détaché !\n");
+// 	if (isatty(STDIN_FILENO))
+// 		debug_log("istty\n");
+// }
 
 void	setup_signal_handlers(void)
 {
@@ -96,4 +92,7 @@ void	setup_signal_handlers(void)
 	// Gerer proprement SIGTERM
 	sa.sa_handler = handle_sigterm;
 	sigaction(SIGTERM, &sa, NULL);
+
+	// sa.sa_handler = sighup_handler;
+	// sigaction(SIGHUP, &sa, NULL);
 }

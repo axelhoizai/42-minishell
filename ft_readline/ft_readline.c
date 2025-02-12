@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 14:45:56 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 19:24:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,8 @@ void	process_input(t_rl *rl, char c, int *bytes_available)
 	{
 		// write(STDOUT_FILENO, "exit\nTape \'stty sane\' si teminal bug\n", 38);
 		printf("exit\n");
-
-		disable_raw_mode();
 		ctrl_d_free(rl);
+		//disable_raw_mode();
 		*bytes_available = -1;
 		exit(0);
 	}

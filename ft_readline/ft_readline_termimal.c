@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_termimal.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 14:47:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 14:43:58 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 19:17:11 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,15 @@ void	reset_terminal()
 {
 	struct termios term;
 
-	// Récupérer les paramètres actuels du terminal
 	if (tcgetattr(STDIN_FILENO, &term) == -1) {
 		perror("tcgetattr");
 		exit(EXIT_FAILURE);
 	}
-
-	// Rétablir les paramètres du terminal en mode "cooked" (mode normal)
-	term.c_lflag |= (ICANON | ECHO);  // Mode canonique, activation de l'écho
-	term.c_iflag |= (ICRNL);		  // Conversion CR -> NL
-	term.c_oflag |= OPOST;			// Activation des sorties
-
-	// Appliquer les changements au terminal
+	term.c_lflag |= (ICANON | ECHO);
+	term.c_iflag |= (ICRNL);
+	term.c_oflag |= OPOST;
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
-	{
-		// perror("tcsetattr");
 		exit(EXIT_FAILURE);
-	}
-
-	// Optionnel : Vous pouvez aussi restaurer d'autres paramètres si nécessaire.
 }
 
 void	enable_raw_mode()
@@ -69,4 +59,31 @@ void	disable_raw_mode()
 	rl = get_rl(NULL);
 	reset_terminal();
 	// tcsetattr(STDIN_FILENO, TCSAFLUSH, &rl->term->original_term);
+}
+
+
+void	configure_terminal()
+{
+	t_rl			*rl;
+	
+	rl = get_rl(NULL);
+	if (tcgetattr(0, &rl->term->original_term) < 0)
+		return ;
+	rl->term->original_term.c_lflag &= ~(ECHO | ICANON);
+	rl->term->original_term.c_cc[VMIN] = 0;
+	rl->term->original_term.c_cc[VTIME] = 1;
+	if (tcsetattr(0, 0, &rl->term->original_term) < 0)
+		return ;
+}
+
+void	unconfigure_terminal()
+{
+	t_rl			*rl;
+	
+	rl = get_rl(NULL);
+	rl->term->original_term.c_lflag |= (ECHO | ICANON);
+	rl->term->original_term.c_cc[VMIN] = 1;
+	rl->term->original_term.c_cc[VTIME] = 0;
+	if (tcsetattr(0, 0, &rl->term->original_term) < 0)
+		return ;
 }
