@@ -13,7 +13,7 @@
 
 #include "../minishell.h"
 
-void here_doc(char **limiters, int *p_fd)
+void here_doc(t_command *cmd)
 {
 	char	*next_line;
 	int		j;
@@ -21,7 +21,9 @@ void here_doc(char **limiters, int *p_fd)
 	int		matched;
 
 	limiter_count = 0;
-	while (limiters[limiter_count])
+	cmd->fd_in = open("here_doc", O_RDWR | O_CREAT, 0777);
+	printf("cmd->fd_in here_doc first : %d\n", cmd->fd_in);
+	while (cmd->limiters[limiter_count])
 		limiter_count++;
 	j = 0;
 	while (j < limiter_count)
@@ -32,15 +34,21 @@ void here_doc(char **limiters, int *p_fd)
 			ft_putstr_fd("here_doc> ", STDOUT_FILENO);
 			next_line = get_next_line(STDIN_FILENO);
 			if (!next_line)
+			{
+				// free_tab(cmd->limiters);
 				break;
-			if (ft_strlen(next_line) == ft_strlen(limiters[j]) + 1 &&
-				ft_strncmp(next_line, limiters[j], ft_strlen(limiters[j])) == 0)
+			}
+			if (ft_strlen(next_line) == ft_strlen(cmd->limiters[j]) + 1 &&
+				ft_strncmp(next_line, cmd->limiters[j], ft_strlen(cmd->limiters[j])) == 0)
 				matched = 1;
 			else
-				ft_putstr_fd(next_line, p_fd[1]);
+				ft_putstr_fd(next_line, cmd->fd_in);
 			free(next_line);
 		}
 		j++;
 	}
-	close(p_fd[1]);
+	close(cmd->fd_in);
+	cmd->fd_in = open("here_doc", O_RDONLY);
+	printf("cmd->fd_in here_doc last : %d\n", cmd->fd_in);
+	unlink("here_doc");
 }

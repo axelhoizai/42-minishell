@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/12 15:55:26 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 17:07:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 {
 	pid_t	child;
 
-	if (cmd->fd_in == -1)
-		return ;
+	// if (cmd->fd_in == -1)
+	// 	return ;
 	if (pipe(p_fd) == -1)
 		exit(PIPE_ERROR);
 	child = fork();
@@ -96,32 +96,17 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		exit(FORK_ERROR);
 	if (child == 0)
 	{
-		printf("cmd->fd_in First : %d\n", cmd->fd_in);
-		printf("p_fd[0] avant close : %d, p_fd[1] avant close : %d\n", p_fd[0], p_fd[1]);
-		if (!cmd->heredoc)
-			close(p_fd[0]);
-		if (cmd->heredoc)
-		{
-			dup2(p_fd[0], STDIN_FILENO);
-			close(p_fd[0]);
-		}
-		else if (cmd->fd_in > -1)
+		close(p_fd[0]);
+		printf("cmd->fd_in : %d\n", cmd->fd_in);
+		if (cmd->fd_in > -1)
 			dup2(cmd->fd_in, STDIN_FILENO);
-		printf("STDIN_FILENO après dup2 : %d\n", STDIN_FILENO);
 		if (cmd->fd_out > -1)
 			dup2(cmd->fd_out, STDOUT_FILENO);
 		else if (cmd->in_error == 0)
-		{
-			printf("in_error\n");
 			dup2(p_fd[1], STDOUT_FILENO);
-			printf("dup in_error\n");
-
-		}
-		printf("STDOUT_FILENO après dup2 : %d\n", STDOUT_FILENO);
 		close(p_fd[1]);
 		ft_close_fdin(pip);
 		ft_close_fdout(pip);
-		printf("Avant exécution de la commande\n");
 		if (is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
@@ -131,10 +116,10 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	}
 	// close(cmd->fd_in);
 	// wait(NULL);
-	waitpid(-1, NULL, 0);
-	if (cmd->in_error == 1 || cmd->fd_in > -1)
+	if (cmd->in_error == 1 || cmd->fd_out > -1)
 		close(p_fd[0]);
 	close(p_fd[1]);
+	waitpid(-1, NULL, 0);
 }
 
 /* Gestion des processus intermédiaires */
@@ -169,30 +154,30 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	close(p_fd[1]);
 	p_fd[0] = temp_fd[0];
 	p_fd[1] = temp_fd[1];
-	close(p_fd[1]);
+	// close(p_fd[1]);
 }
 
-void clear_exit(t_pipeline *pip)
-{
-	t_rl 	*rl;
-	t_data *data;
+// void clear_exit(t_pipeline *pip, t_data *data, t_rl *rl)
+// {
+// 	// t_rl 	*rl;
+// 	// t_data *data;
 
-	// rl = NULL;
-	rl = get_rl(NULL);
-	data = get_data(NULL);
-	ms_lstclear(&data->env_ms);
-	free_tab(data->my_envp);
-	free_pipeline(pip);
-	// ctrl_d_free(rl);
-	free_history(rl);
-	free_var(rl->buffer);
-	free_term(rl);
-	free_var(rl->buffer_copy);
-	free_tab(rl->lines);
-	// free_var(rl->prompt);
-	// free_readline(rl);
-	reset_terminal();
-}
+// 	// rl = NULL;
+// 	// rl = get_rl(NULL);
+// 	// data = get_data(NULL);
+// 	ms_lstclear(&data->env_ms);
+// 	free_tab(data->my_envp);
+// 	free_pipeline(pip);
+// 	// ctrl_d_free(rl);
+// 	free_history(rl);
+// 	// free_var(rl->buffer);
+// 	free_term(rl);
+// 	free_var(rl->buffer_copy);
+// 	free_tab(rl->lines);
+// 	// free_var(rl->prompt);
+// 	// free_readline(rl);
+// 	reset_terminal();
+// }
 
 /* Gestion du dernier processus de la pipeline */
 static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
@@ -209,15 +194,20 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		close(p_fd[1]);
 		if (cmd->in_error == 1 || cmd->out_error == 1)
 		{
+			// print_lst(data->env_ms);
+			// rl = get_rl(NULL);
+			// clear_exit(pip, data, rl);
+			ms_lstclear(&data->env_ms);
+			free_tab(data->my_envp);
+			free_pipeline(pip);
 			close(p_fd[0]);
-			clear_exit(pip);
 			exit(1);
 		}
 		else
 		{
 			if (cmd->fd_in > -1)
 				dup2(cmd->fd_in, STDIN_FILENO);
-			else if (!pip->cmds[pip->cmd_count - 2]->output_file)
+			else if (pip->cmds[pip->cmd_count - 2]->fd_out < 0)
 				dup2(p_fd[0], STDIN_FILENO);
 			if (cmd->fd_out > -1)
 				dup2(cmd->fd_out, STDOUT_FILENO);
@@ -243,50 +233,26 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	return (1);
 }
 
-/* Gestion des here_doc */
-void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data, int *i)
-{
-	int	p_fd[2];
-	(void)fd_files;
-
-	if (pip->cmds[*i]->heredoc)
-	{
-		if (pipe(p_fd) == -1)
-			exit(PIPE_ERROR);
-		if (fork() == 0)
-		{
-			close(p_fd[0]);
-			here_doc(pip->cmds[*i]->limiters, p_fd);
-			close(p_fd[1]);
-			ms_lstclear(&data->env_ms);
-			free_tab(data->my_envp);
-			free_pipeline(pip);
-			exit(0);
-		}
-		close(p_fd[1]);
-		wait(NULL);
-	}
-}
-
 /* Fonction principale qui gère l'exécution des pipes */
 int	pipex(t_pipeline *pip, t_data *data)
 {
 	int		p_fd[2];
-	int		fd_files[2];
+	// int		fd_files[2];
 	int		i;
 	int		status;
 
 	i = 0;
-	here_doc_checker(fd_files, pip, data, &i);
+	if (pip->cmds[i]->heredoc == 1)
+		here_doc(pip->cmds[i]);
 	first_pipe(pip->cmds[0], pip, p_fd, data);
 	i++;
 	while (i < pip->cmd_count - 1)
 	{
-		here_doc_checker(fd_files, pip, data, &i);
+		// here_doc_checker(fd_files, pip, data, &i);
 		multi_pipe(pip->cmds[i], pip, p_fd, data);
 		i++;
 	}
-	here_doc_checker(fd_files, pip, data, &i);
+	// here_doc_checker(fd_files, pip, data, &i);
 	status = last_pipe(pip->cmds[i], pip, p_fd, data);
 	i = 0;
 	// while (i <= pip->cmd_count)

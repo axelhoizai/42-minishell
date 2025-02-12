@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 14:45:28 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 16:18:22 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,7 +350,7 @@ void		sh_tester(char **av, t_data *data);
 //here_doc
 // void		here_doc(t_pipeline *pip, int *p_fd, t_data *data);
 // void		here_doc(t_command *cmd, int *p_fd);
-void		here_doc(char **limiters, int *p_fd);
+void		here_doc(t_command *cmd);
 
 //utils
 char		*get_env_path(char **envp);

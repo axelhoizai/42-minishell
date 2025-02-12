@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:07:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/08 19:00:08 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 17:37:56 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ void free_command(t_command *cmd)
         free(cmd->output_file);
         cmd->output_file = NULL;
     }
-    if (cmd->limiter)
+    if (cmd->limiters)
     {
-        free(cmd->limiter);
-        cmd->limiter = NULL;
+        free_tab(cmd->limiters);
+        cmd->limiters = NULL;
     }
     if (cmd->fd_in > -1)
     {
