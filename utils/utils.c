@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 02:12:56 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/12 18:21:15 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,61 +91,6 @@ void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 
 //! Faire une fonction exclusivement handle_builtins
 //TODO : Send all builtins in the exec part
-// void	send_to_exec(int argc, char **argv, t_data *data)
-// {
-// 	(void)argc;
-// 	t_pipeline	*pip;
-// 	int			fd_std;
-
-// 	fd_std = -1;
-// 	pip = parse_pipeline(argv, data);
-// 	// if (pip)
-// 	print_pipeline(pip);
-// 	// if (data->exit_code != 0)
-// 	// {
-// 	// 	printf("HELLO\n");
-// 	// 	if (pip)
-// 	// 	{
-// 	// 		printf("WORLD\n");
-// 	// 		free_pipeline(pip);
-// 	// 	}
-// 	// 	free_tab(argv);
-// 	// 	// return ;
-// 	// }
-// 	if (is_pipe(argv))
-// 	{
-// 		data->exit_code = pipex(pip, data);
-// 		free_pipeline(pip);
-// 	}
-// 	else if (is_builtin(pip->cmds[0]->args[0]))
-// 	{
-// 		if (pip->cmds[0]->output_file)
-// 		{
-// 			fd_std = dup(STDOUT_FILENO);
-// 			// open_outfile(pip, data, 1, NULL);
-// 			dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
-// 			close(pip->cmds[0]->fd_out);
-// 		}
-// 		handle_builtins(pip->cmds[0], pip, data);
-// 		if (pip->cmds[0]->output_file)
-// 		{
-// 			dup2(fd_std, STDOUT_FILENO);
-// 			close(fd_std);
-// 			// close(fd_files[1]);
-// 		}
-// 		// free_tab(data->my_envp);
-// 		// ms_lstclear(&data->env_ms);
-// 		free_pipeline(pip);
-// 	}
-// 	else if (argv)
-// 	{
-// 		data->exit_code = pipex(pip, data);
-// 		exec(pip, data);
-// 		if (pip)
-// 			free_pipeline(pip);
-// 	}
-// }
-
 void	send_to_exec(int argc, char **argv, t_data *data)
 {
 	(void)argc;
@@ -154,41 +99,81 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 
 	fd_std = -1;
 	pip = parse_pipeline(argv, data);
-	if (!pip || !pip->cmds || !pip->cmds[0] || !pip->cmds[0]->args || !pip->cmds[0]->args[0])
-	{
-		free_pipeline(pip);
-		return;
-	}
-	//affiche pipeline
 	print_pipeline(pip);
-	// Vérifie si un pipe est présent
-	if (is_pipe(argv) || !is_builtin(pip->cmds[0]->args[0]))
+	if (is_pipe(argv))
 	{
 		data->exit_code = pipex(pip, data);
+		free_pipeline(pip);
 	}
-	// Vérifie si la commande est un builtin
 	else if (is_builtin(pip->cmds[0]->args[0]))
 	{
-		// Si un fichier de sortie est défini, redirige stdout
 		if (pip->cmds[0]->output_file)
 		{
 			fd_std = dup(STDOUT_FILENO);
 			dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
 			close(pip->cmds[0]->fd_out);
 		}
-
-		// Exécute le builtin
 		handle_builtins(pip->cmds[0], pip, data);
-
-		// Restaure stdout si redirigé
-		if (fd_std != -1)
+		if (pip->cmds[0]->output_file)
 		{
 			dup2(fd_std, STDOUT_FILENO);
 			close(fd_std);
 		}
+		free_pipeline(pip);
 	}
-	free_pipeline(pip);
+	else if (argv)
+	{
+		if (pip->cmds[0]->heredoc == 1)
+			here_doc(pip->cmds[0]);
+		exec(pip, data);
+		if (pip)
+			free_pipeline(pip);
+	}
 }
+
+// void	send_to_exec(int argc, char **argv, t_data *data)
+// {
+// 	(void)argc;
+// 	t_pipeline	*pip;
+// 	int			fd_std;
+
+// 	fd_std = -1;
+// 	pip = parse_pipeline(argv, data);
+// 	if (!pip || !pip->cmds || !pip->cmds[0] || !pip->cmds[0]->args || !pip->cmds[0]->args[0])
+// 	{
+// 		free_pipeline(pip);
+// 		return;
+// 	}
+// 	//affiche pipeline
+// 	print_pipeline(pip);
+// 	// Vérifie si un pipe est présent
+// 	if (is_pipe(argv) || !is_builtin(pip->cmds[0]->args[0]))
+// 	{
+// 		data->exit_code = pipex(pip, data);
+// 	}
+// 	// Vérifie si la commande est un builtin
+// 	else if (is_builtin(pip->cmds[0]->args[0]))
+// 	{
+// 		// Si un fichier de sortie est défini, redirige stdout
+// 		if (pip->cmds[0]->output_file)
+// 		{
+// 			fd_std = dup(STDOUT_FILENO);
+// 			dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
+// 			close(pip->cmds[0]->fd_out);
+// 		}
+
+// 		// Exécute le builtin
+// 		handle_builtins(pip->cmds[0], pip, data);
+
+// 		// Restaure stdout si redirigé
+// 		if (fd_std != -1)
+// 		{
+// 			dup2(fd_std, STDOUT_FILENO);
+// 			close(fd_std);
+// 		}
+// 	}
+// 	free_pipeline(pip);
+// }
 
 //? Parse builtins to removes quotes and parse dollars
 static void	process_builtins(char *builtins, t_data *data)
@@ -242,16 +227,3 @@ void	get_argv(char *input, t_data *data)
 	else
 		process_builtins(tmp, data);
 }
-
-//! To delete
-//? Prepare pipes before executing
-// void	handle_pipe(char **argv, t_data *data)
-// {
-// 	// t_pipeline	*pipeline;
-
-// 	// pipeline = parse_pipeline(argv);
-// 	// free_tab(argv);
-// 	// print_pipeline(pipeline);
-// 	data->exit_code = pipex(pipeline, data);
-// 	free_pipeline(pipeline);
-// }

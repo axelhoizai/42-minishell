@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/12 17:07:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 17:57:42 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 		write(2, "command not found: ", 19);
 		write(2, cmd[0], ft_strlen(cmd[0]));
 		write(2, "\n", 1);
+		ms_lstclear(&data->env_ms);
+		free_tab(data->my_envp);
 		free_pipeline(pip);
 		exit(127);
 	}
@@ -46,6 +48,9 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 			write(2, "Permission denied: ", 19);
 			write(2, cmd[0], ft_strlen(cmd[0]));
 			write(2, "\n", 1);
+			ms_lstclear(&data->env_ms);
+			free_tab(data->my_envp);
+			free_pipeline(pip);
 			exit(126);
 		}
 	}
@@ -53,6 +58,9 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	write(2, "Execution error: ", 17);
 	write(2, cmd[0], ft_strlen(cmd[0]));
 	write(2, "\n", 1);
+	ms_lstclear(&data->env_ms);
+	free_tab(data->my_envp);
+	free_pipeline(pip);
 	exit(127);
 }
 
