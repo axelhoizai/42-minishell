@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 17:40:00 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/12 02:05:59 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_command
 typedef struct s_pipeline
 {
 	t_command	**cmds;
+	int			pipe_cnt;
 	int			cmd_count;
 }	t_pipeline;
 
@@ -269,7 +270,7 @@ void		free_tokens(char **tokens);
 char		*replace_double_ampersand(char *arg);
 
 //utils
-void		get_argv(const char *input, t_data *data);
+void		get_argv(char *input, t_data *data);
 void		handle_pipe(char **argv, t_data *data);
 bool		is_builtin(char *cmd);
 void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
@@ -346,7 +347,7 @@ void		sh_tester(char **av, t_data *data);
 //here_doc
 // void		here_doc(t_pipeline *pip, int *p_fd, t_data *data);
 // void		here_doc(t_command *cmd, int *p_fd);
-void		here_doc(char *limiters, int *p_fd);
+void		here_doc(char **limiters, int *p_fd);
 
 //utils
 char		*get_env_path(char **envp);

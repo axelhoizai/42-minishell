@@ -77,6 +77,130 @@ void	ft_close_fdout(t_pipeline *pip)
 }
 
 
+// static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
+// {
+// 	pid_t	child;
+
+// 	// if (cmd->fd_in == -1)
+// 	// 	return ;
+// 	// if (pipe(p_fd) == -1)
+// 	// 	exit(PIPE_ERROR);
+// 	child = fork();
+// 	if (child == -1)
+// 		exit(FORK_ERROR);
+// 	if (child == 0)
+// 	{
+// 		// close(p_fd[0]);
+// 		/////////////////////////////////////////////////1
+// 		if (cmd->fd_in == -1)
+// 			fd_files[0] = open("/dev/null", O_RDONLY);
+// 		else
+// 			fd_files[0] = cmd->fd_in;
+// 		if (dup2(fd_files[0], STDIN_FILENO) == -1)
+// 			exit(DUPLICATE_ERROR);
+// 		close(fd_files[0]);	
+// 		////////////////////////////////////////////////2
+// 		if (pip->pipe_cnt == 0) //si 0 pipe
+// 		{
+// 			if (pip->cmds[0]->fd_out > 0)
+// 				p_fd[1] = pip->cmds[0]->fd_out;
+// 			else
+// 				p_fd[1] = 0;
+// 		}
+// 		////////////////////////////////////////////////3
+// 		if (dup2(p_fd[1], STDOUT_FILENO) == -1)
+// 			exit(DUPLICATE_ERROR);
+// 		close(p_fd[1]);
+// 		if (is_builtin(cmd->args[0]))
+// 		{
+// 			handle_builtins(cmd, pip, data);
+// 			exit(0);
+// 		}
+// 		execute(cmd->args, pip, data);
+// 	}
+// }
+
+// void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
+// {
+// 	pid_t	child;
+
+// 	if (pipe(p_fd) == -1)
+// 		exit(PIPE_ERROR);
+// 	child = fork();
+// 	if (child == -1)
+// 		exit(FORK_ERROR);
+// 	if (child == 0)
+// 	{
+// 		close(p_fd[0]);
+
+// 		// Redirection de l'entrée standard
+// 		if (dup2(fd_files[0], STDIN_FILENO) == -1)
+// 			exit(DUPLICATE_ERROR);
+// 		// Redirection de la sortie standard
+
+// 		if (pip->pipe_cnt > 0)
+// 		{
+// 			dup2(p_fd[1], STDOUT_FILENO);
+// 			close(p_fd[1]);
+// 		}
+// 		else if (fd_files[1] != -1)
+// 		{
+// 			dup2(fd_files[1], STDOUT_FILENO);
+// 			close(fd_files[1]);
+// 		}
+// 		close(fd_files[0]);
+// 		close(p_fd[1]);
+// 		if (is_builtin(cmd->args[0]))
+// 		{
+// 			handle_builtins(cmd, pip, data);
+// 			exit(0);
+// 		}
+// 		execute(cmd->args, pip, data);
+// 	}
+// 	// close(fd_files[0]);
+// 	close(p_fd[1]);
+// }
+
+// void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
+// {
+// 	pid_t	child;
+
+// 	child = fork();
+// 	if (child == -1)
+// 		exit(FORK_ERROR);
+// 	if (child == 0)
+// 	{
+// 		// Redirection de l'entrée standard
+// 		if (fd_files[0] != -1)
+// 		{
+// 			dup2(fd_files[0], STDIN_FILENO);
+// 			close(fd_files[0]);
+// 		}
+
+// 		// Redirection de la sortie standard
+// 		if (pip->pipe_cnt > 0)
+// 		{
+// 			dup2(p_fd[1], STDOUT_FILENO);
+// 			close(p_fd[1]);
+// 		}
+// 		else if (fd_files[1] != -1)
+// 		{
+// 			dup2(fd_files[1], STDOUT_FILENO);
+// 			close(fd_files[1]);
+// 		}
+
+// 		close(p_fd[0]); // Ferme la lecture du pipe dans le premier processus
+		
+// 		if (is_builtin(cmd->args[0]))
+// 		{
+// 			handle_builtins(cmd, pip, data);
+// 			exit(0);
+// 		}
+// 		execute(cmd->args, pip, data);
+// 	}
+// 	close(p_fd[1]); // Ferme l'écriture du pipe dans le parent
+// }
+
 static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 {
 	pid_t	child;
@@ -91,12 +215,17 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 	if (child == 0)
 	{
 		close(p_fd[0]);
+		// if (cmd->fd_in == -1)
+		// 	fd_files[0] = open("/dev/null", O_RDONLY);
+		// dup2(fd_files[0], STDIN_FILENO);
+		// Redirection de l'entrée standard
 		if (fd_files[0] != -1)
 		{
 			dup2(fd_files[0], STDIN_FILENO);
 			close(fd_files[0]);
+			printf("close(fd_files[0] = %d\n", fd_files[0]);
 		}
-		if (cmd->fd_out > -1 && pip->pipe_cnt > 0)
+		if (cmd->fd_out > -1)
 			dup2(cmd->fd_out, STDOUT_FILENO);
 		else
 		{
@@ -107,15 +236,13 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 				fd_files[1] = open("/dev/null", O_RDONLY);
 				dup2(fd_files[1], STDOUT_FILENO);
 				close(fd_files[1]);
+				printf("close(fd_files[1] = %d\n", fd_files[1]);
 			}
 		}
 		if (cmd->fd_in == -1)
 			close(fd_files[0]);
 		// ft_close_fdin(pip);
-		
-		
-		
-		ft_close_fdout(pip);
+		// ft_close(pip);
 		close(p_fd[1]);
 		if (is_builtin(cmd->args[0]))
 		{
@@ -135,6 +262,7 @@ void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 
 	if (pipe(temp_fd) == -1)
 		exit(PIPE_ERROR);
+
 	child = fork();
 	if (child == -1)
 		exit(FORK_ERROR);
@@ -142,9 +270,12 @@ void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	{
 		dup2(p_fd[0], STDIN_FILENO);
 		close(p_fd[0]);
+
 		dup2(temp_fd[1], STDOUT_FILENO);
 		close(temp_fd[1]);
-		close(temp_fd[0]);
+
+		close(temp_fd[0]); // Ferme la lecture du pipe créé dans le processus enfant
+
 		if (is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
@@ -152,11 +283,11 @@ void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		}
 		execute(cmd->args, pip, data);
 	}
-	close(p_fd[0]);
-	close(p_fd[1]);
+	close(p_fd[0]); // Ferme la lecture de l’ancien pipe dans le parent
+	close(p_fd[1]); // Ferme l'écriture de l’ancien pipe dans le parent
 	p_fd[0] = temp_fd[0];
 	p_fd[1] = temp_fd[1];
-	close(p_fd[1]);
+	close(p_fd[1]); // Ferme l'écriture du nouveau pipe dans le parent
 }
 
 int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
@@ -184,8 +315,6 @@ int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 		}
 		close(p_fd[0]);
 		close(p_fd[1]);
-		ft_close_fdin(pip);
-		ft_close_fdout(pip);
 		if (is_builtin(pip->cmds[pip->cmd_count - 1]->args[0]))
 		{
 			handle_builtins(pip->cmds[pip->cmd_count - 1], pip, data);
@@ -205,16 +334,17 @@ int	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 int	pipex(t_pipeline *pip, t_data *data)
 {
 	int	p_fd[2];
-	int	fd_files[2];
+	int	fd_files[2] = {-1, -1};
 	int	i = 0;
 	int	status;
 
-	fd_files[0] = -1;
-	fd_files[1] = -1;
+	// Gestion des Here-Docs
 	here_doc_checker(fd_files, pip, data, &i);
-	// if (pip->cmds[i]->fd_in > 0)
-	// 	fd_files[0] = pip->cmds[0]->fd_in;
+
+	// Exécution du premier pipe
 	first_pipe(pip->cmds[i], pip, p_fd, data, fd_files);
+
+	// Gestion des pipes intermédiaires
 	i++;
 	while (i < pip->cmd_count - 1)
 	{
@@ -222,11 +352,15 @@ int	pipex(t_pipeline *pip, t_data *data)
 		multi_pipe(pip->cmds[i], pip, p_fd, data);
 		i++;
 	}
+
+	// Exécution du dernier pipe
 	status = last_pipe(pip, p_fd, data, fd_files);
-	if (fd_files[0] > 0) 
-		close(fd_files[0]);
-	if (fd_files[1] > 0)
-		close(fd_files[1]);
+
+	// Fermeture des derniers descripteurs
+	if (fd_files[0] > 0) close(fd_files[0]);
+	if (fd_files[1] > 0) close(fd_files[1]);
+
+	// Attente des processus
 	i = 0;
 	while (i < pip->cmd_count)
 	{

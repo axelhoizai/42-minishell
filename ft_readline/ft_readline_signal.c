@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_signal.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 16:46:27 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 20:56:10 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	handle_sigint(int sig)
 
 	(void)sig;
 	rl = get_rl(NULL);
-	write(STDOUT_FILENO, "^C\n", 5);
+	write(STDOUT_FILENO, "^C\n", 4);
 	// free(rl->buffer);
 	rl->buffer_size = 0;
 	rl->cursor_pos = 0;

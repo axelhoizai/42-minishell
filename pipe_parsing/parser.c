@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/11 14:37:58 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/11 21:37:41 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,11 @@ t_pipeline	*parse_pipeline(char **tokens, t_data *data)
 		}
 		add_command_to_pipeline(pipeline, cmd);
 		if (tokens[i] && ft_strcmp(tokens[i], "|") == 0)
+		{
+			pipeline->pipe_cnt++;	
 			i++;
+		}
+		
 	}
 	return (pipeline);
 }
@@ -226,6 +230,8 @@ void	print_pipeline(t_pipeline *pipeline)
 		}
 		i++;
 	}
+	printf("pipeline->pipe_cnt: %d\n", pipeline->pipe_cnt);
+
 	pipeline->cmd_count = i;
 }
 

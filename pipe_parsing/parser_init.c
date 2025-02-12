@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:06:04 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/08 19:02:40 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/11 21:22:09 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_pipeline	*init_pipeline(void)
 	if (!pip)
 		return (NULL);
 	pip->cmds = NULL;
+	pip->pipe_cnt = 0;
 	return (pip);
 }
 
