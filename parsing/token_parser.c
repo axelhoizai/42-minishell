@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 17:57:31 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/12 10:49:34 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ char	*parse_token(char *line, int *i, t_data *data)
 			handle_variable(line, i, &parse, data);
 			continue ;
 		}
-		append_char(&parse, line[*i]);
+		if (line[*i] && (((line[*i] == '\'' && parse.in_double == 1)
+			|| (line[*i] == '"' && parse.in_single == 1))
+			|| (line[*i] != '"' && line[*i] != '\'')))
+			append_char(&parse, line[*i]);
 		(*i)++;
 	}
 	return (parse.buffer);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 03:25:15 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/12 10:53:24 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,29 +70,29 @@ int	open_outfile(char *file, t_data *data, int here_doc)
 	return (fd);
 }
 
-void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data, int *i)
-{
-	int		p_fd[2];
-	pid_t	child;
+// void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data, int *i)
+// {
+// 	int		p_fd[2];
+// 	pid_t	child;
 
-	(void)data;
-	if (!pip || !pip->cmds[*i] || !pip->cmds[*i]->limiters)
-		return;
-	if (pipe(p_fd) == -1)
-		exit(PIPE_ERROR);
-	child = fork();
-	if (child == -1)
-		exit(FORK_ERROR);
-	if (child == 0)
-	{
-		close(p_fd[0]);
-		here_doc(pip->cmds[*i]->limiters, p_fd);
-		close(p_fd[1]);
-		exit(0);
-	}
-	close(p_fd[1]);
-	waitpid(child, NULL, 0);
-	if (fd_files[0] > 0)
-		close(fd_files[0]);
-	fd_files[0] = p_fd[0];
-}
+// 	(void)data;
+// 	if (!pip || !pip->cmds[*i] || !pip->cmds[*i]->limiters)
+// 		return;
+// 	if (pipe(p_fd) == -1)
+// 		exit(PIPE_ERROR);
+// 	child = fork();
+// 	if (child == -1)
+// 		exit(FORK_ERROR);
+// 	if (child == 0)
+// 	{
+// 		close(p_fd[0]);
+// 		here_doc(pip->cmds[*i]->limiters, p_fd);
+// 		close(p_fd[1]);
+// 		exit(0);
+// 	}
+// 	close(p_fd[1]);
+// 	waitpid(child, NULL, 0);
+// 	if (fd_files[0] > 0)
+// 		close(fd_files[0]);
+// 	fd_files[0] = p_fd[0];
+// }

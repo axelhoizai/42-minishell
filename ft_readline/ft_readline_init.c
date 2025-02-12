@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_init.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:36:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 09:52:19 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/12 14:48:49 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	init_readline(t_rl *rl)
 	rl->prompt = NULL;
 	rl->prompt_len = 15;
 	rl->lines_needed = 0;
+	rl->buffer_copy = NULL;
 	rl->buffer = (char *)ft_calloc(rl->buffer_size, 1);
 	if (!rl->buffer)
 		return ;

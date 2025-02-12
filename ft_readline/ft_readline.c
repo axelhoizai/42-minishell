@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 16:50:52 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/12 14:45:56 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	ft_realine_loop(t_rl *rl)
 
 char *ft_readline(t_rl *rl)
 {
-	char	*buffer_copy;
+	// char	*buffer_copy;
 
 	get_rl(rl);
 	enable_raw_mode();
@@ -148,13 +148,14 @@ char *ft_readline(t_rl *rl)
 	ft_realine_loop(rl);
 	// disable_raw_mode();
 	free_var(rl->prompt);
-	buffer_copy = ft_strdup(rl->buffer);
-	if (!buffer_copy)
+	free_var(rl->buffer_copy);
+	rl->buffer_copy = ft_strdup(rl->buffer);
+	if (!rl->buffer_copy)
 		return (NULL);
 	ft_bzero(rl->buffer, rl->buffer_size);
 	rl->line_length = 0;
 	rl->cursor_pos = 0;
-	return (buffer_copy);
+	return (rl->buffer_copy);
 }
 
 //premiere ligne

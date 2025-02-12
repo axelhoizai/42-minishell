@@ -3,7 +3,7 @@ NAME = minishell
 SRCS = 	minishell.c 
 
 PIPEX = pipex/pipex.c pipex/utils.c pipex/utils_error.c \
-		pipex/utils_files.c pipex/ft_here_doc.c pipex/utils_parse.c 
+		pipex/utils_files.c pipex/ft_here_doc.c pipex/utils_parse.c pipex/pipex_2.c
 
 PARSING = parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c parsing/ampersand_parse.c
 
