@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/13 11:21:01 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/13 13:47:34 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 			write(2, "Permission denied: ", 19);
 			write(2, cmd[0], ft_strlen(cmd[0]));
 			write(2, "\n", 1);
+			free(cmd_path);
 			ms_lstclear(&data->env_ms);
 			free_tab(data->my_envp);
 			free_pipeline(pip);
@@ -139,35 +140,57 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			execute(cmd->args, pip, data);
 		}
 	}
+		close(p_fd[1]);
+		if (cmd->fd_in >= 0)
+			close(cmd->fd_in);
+		if (cmd->fd_in == -2)
+			cmd->fd_in = p_fd[0];
+		if (pip->cmds[1]->fd_in == -2)
+			pip->cmds[1]->fd_in = p_fd[0];
+		else
+			close(p_fd[0]);
 	// close(cmd->fd_in);
 	// wait(NULL);
 	// if (cmd->in_error == 1 || cmd->fd_out > -1)
 	// 	close(p_fd[0]);
 	// close(p_fd[1]);
-	waitpid(child, NULL, 0);
+	// waitpid(child, NULL, 0);
 }
 
 /* Gestion des processus intermédiaires */
 static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 {
 	pid_t	child;
-	int		temp_fd[2];
+	// int		p_fd[2];
 
-	if (pipe(temp_fd) == -1)
+	if (pipe(p_fd) == -1)
 		exit(PIPE_ERROR);
 	child = fork();
 	if (child == -1)
 		exit(FORK_ERROR);
 	if (child == 0)
 	{
-		dup2(p_fd[0], STDIN_FILENO);
-		dup2(temp_fd[1], STDOUT_FILENO);
+		close(p_fd[0]);
+		if (cmd->fd_in > -1)
+		{
+			dup2(cmd->fd_in, STDIN_FILENO);
+			close(cmd->fd_in);
+		}
+		if (cmd->fd_out > -1)
+		{
+			dup2(cmd->fd_out, STDOUT_FILENO);
+			close(cmd->fd_out);
+		}
+		else if (cmd->fd_out < 0 && cmd->out_error == 0 && cmd->in_error == 0)
+			dup2(p_fd[1], STDOUT_FILENO);
+		close(p_fd[1]);
+		// dup2(p_fd[0], STDIN_FILENO);
+		// dup2(p_fd[1], STDOUT_FILENO);
 		ft_close_fdin(pip);
 		ft_close_fdout(pip);
-		close(p_fd[0]);
-		close(p_fd[1]);
-		close(temp_fd[0]);
-		close(temp_fd[1]);
+		// close(p_fd[1]);
+		// close(p_fd[0]);
+		// close(p_fd[1]);
 		if (is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
@@ -175,11 +198,15 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		}
 		execute(cmd->args, pip, data);
 	}
-	// close(p_fd[0]);
-	// close(p_fd[1]);
-	// p_fd[0] = temp_fd[0];
-	// p_fd[1] = temp_fd[1];
-	// close(p_fd[1]);
+	close(p_fd[1]);
+	if (cmd->fd_in >= 0)
+		close(cmd->fd_in);
+	if (cmd->fd_in == -2)
+		cmd->fd_in = p_fd[0];
+	if (pip->cmds[2]->fd_in == -2)
+		pip->cmds[2]->fd_in = p_fd[0];
+	else
+		close(p_fd[0]);
 }
 
 // void clear_exit(t_pipeline *pip, t_data *data, t_rl *rl)
@@ -254,11 +281,11 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	close(p_fd[1]);
 	ft_close_fdin(pip);
 	ft_close_fdout(pip);
-	waitpid(child, NULL, 0);
+	// waitpid(child, NULL, 0);
 	// waitpid(child, &status, 0);
 	// if (WIFEXITED(status))
 	// 	return (WEXITSTATUS(status));
-	return (1);
+	return (0);
 }
 
 /* Fonction principale qui gère l'exécution des pipes */
@@ -283,10 +310,10 @@ int	pipex(t_pipeline *pip, t_data *data)
 	// here_doc_checker(fd_files, pip, data, &i);
 	status = last_pipe(pip->cmds[i], pip, p_fd, data);
 	i = 0;
-	// while (i <= pip->cmd_count)
-	// {
-	// 	waitpid(-1, NULL, 0);
-	// 	i++;
-	// }
+	while (i < pip->cmd_count)
+	{
+		waitpid(0, NULL, 0);
+		i++;
+	}
 	return (status);
 }
