@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 03:58:33 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/13 11:40:38 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 //TODO : gestion de la conversion entre le buffer 1D et le terminal 2D
 // - Les `\n` dans le buffer indiquent des nouvelles lignes à compter,
-//	 ajoutées au numéro de ligne du prompt pour déterminer la ligne réelle dans le terminal
+//	 ajoutées au numéro de ligne du prompt (rl->prompt_col) pour déterminer la ligne réelle dans le terminal
 // - Pour retrouver la position dans le buffer depuis le terminal,
 //	 il faut additionner les lignes du buffer jusqu'à la ligne cible
 // - Dans le buffer, tout ce qui est avant le premier `\n` ou `\0` est sur la même ligne que le prompt
@@ -40,7 +40,7 @@
 // - La lecture se fait de gauche à droite
 // - Chaque `\n` dans le buffer correspond à un retour à la ligne,
 //	 et le caractère juste après correspond toujours au bord gauche du terminal
-
+// le buffer vas de 0 à rl->buffer_size et rl->buffer_lines_cnt retourne le nombre de \n
 void	ctrl_d_free(t_rl *rl)
 {
 	t_data *data;

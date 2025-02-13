@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 03:00:53 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/13 11:29:34 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ void	unconfigure_terminal();
 void		move_cursor(int row, int col);
 void		get_prompt_position(t_rl *rl);
 void		recalculate_cursor_line_pos(t_rl *rl);
+int			get_cursor_pos_from_terminal(t_rl *rl);
 int			get_cursor_position(t_rl *rl);
 
 // ft_readline_input

@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:04:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 03:34:04 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/13 11:44:49 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,47 @@ void	recalculate_cursor_line_pos(t_rl *rl)
 	if (rl->cursor_pos > rl->line_length)
 		rl->cursor_pos = rl->line_length;
 }
+
+// int get_cursor_pos_from_terminal(t_rl *rl)
+// {
+// 	int i;
+// 	int row;
+// 	int col;
+// 	int cursor_pos;
+
+// 	if (!rl || !rl->buffer)
+// 		return (0);
+
+// 	row = rl->prompt_row;
+// 	col = rl->prompt_col;
+// 	cursor_pos = 0;
+// 	i = 0;
+
+// 	// Trouver la ligne correspondant à cursor_row
+// 	while (rl->buffer[i] && row < rl->term->cursor_row)
+// 	{
+// 		if (rl->buffer[i] == '\n')
+// 		{
+// 			row++; // Passer à la ligne suivante
+// 			col = 0;
+// 		}
+// 		else
+// 			col++;
+
+// 		i++;
+// 	}
+
+// 	// Trouver la colonne correspondant à cursor_col
+// 	while (rl->buffer[i] && col < rl->term->cursor_col)
+// 	{
+// 		col++;
+// 		i++;
+// 	}
+
+// 	cursor_pos = i;
+// 	return (cursor_pos);
+// }
+
 
 int	get_cursor_position(t_rl *rl)
 {
