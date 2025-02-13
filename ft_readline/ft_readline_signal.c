@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_signal.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 22:16:47 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/13 15:50:53 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,26 @@ static void	handle_sigint(int sig)
 	fflush(stdout);
 }
 
+int	get_pid(void)
+{
+	int		fd;
+	char	buffer[32];
+	int		pid;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd < 0)
+		return (-1);
+	if (read(fd, buffer, 31) <= 0)
+	{
+		close(fd);
+		return (-1);
+	}
+	buffer[31] = '\0';
+	pid = ft_atoi(buffer);
+	close(fd);
+	return (pid);
+}
+
 // Quitte le programme (CTRL+\), ignore en mode readline
 static void	handle_sigquit(int sig)
 {
@@ -52,9 +72,11 @@ static void	handle_sigquit(int sig)
 		return;
 	}
 	write(STDOUT_FILENO, "\nQuit (core dumped)\n", 20);
-	ctrl_d_free(rl);
 	data->exit_code = 131;
-	// exit(131); // Code de sortie pour SIGQUIT
+	ctrl_d_free(rl);
+	configure_terminal();
+	kill(get_pid(), SIGQUIT);
+	exit(131); // Code de sortie pour SIGQUIT
 }
 
 // Demande d'arrêt propre (kill <PID>)

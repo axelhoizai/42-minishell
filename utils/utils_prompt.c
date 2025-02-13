@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/30 18:13:24 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/13 16:22:15 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,24 @@ static char	*ft_get_hostname(void)
 	int		fd;
 	char	*hostname;
 	char	*tmp;
+	char	**split;
 
 	fd = open("/etc/hostname", O_RDONLY);
 	if (fd < 0)
-		return ("minishell");
+		return (ft_strdup("minishell"));
 	tmp = get_next_line(fd);
-	if (ft_strchr(tmp, '\n'))
-		tmp[strlen(tmp) - 1] = '\0';
+	if (tmp && ft_strchr(tmp, '\n'))
+		tmp[ft_strlen(tmp) - 1] = '\0';
 	close(fd);
-	hostname = ft_strtok(tmp, ".");
-	if (!hostname)
-		hostname = "minishell";
-	ft_strtok(NULL, ".");
+	split = ft_split(tmp, '.');
+	free_var(tmp);
+	if (!split || !split[0])
+	{
+		free_tab(split);
+		return (ft_strdup("minishell"));
+	}
+	hostname = ft_strdup(split[0]);
+	free_tab(split);
 	return (hostname);
 }
 
@@ -46,16 +52,16 @@ static char	*ft_get_currentpath(t_env_ms *lst, char *currentpath)
 		tmp = ms_find(lst, tmp_env_key);
 		if (tmp && tmp->value)
 			home = tmp->value;
-		free(tmp_env_key);
+		free_var(tmp_env_key);
 	}
-	if (home && strncmp(currentpath, home, strlen(home)) == 0)
+	if (home && ft_strncmp(currentpath, home, ft_strlen(home)) == 0)
 	{
-		result = (char *)malloc(strlen(currentpath) - strlen(home) + 2);
+		result = (char *)ft_safe_malloc(ft_strlen(currentpath) - ft_strlen(home) + 2);
 		if (!result)
-			return (free(currentpath), NULL);
+			return (free_var(currentpath), NULL);
 		result[0] = '~';
-		strcpy(result + 1, currentpath + strlen(home));
-		free(currentpath);
+		ft_strcpy(result + 1, currentpath + ft_strlen(home));
+		free_var(currentpath);
 		return (result);
 	}
 	return (currentpath);
@@ -66,6 +72,7 @@ static char	*ft_get_username(t_env_ms *lst)
 	char		*username;
 	t_env_ms	*tmp;
 	char		*tmp_env_key;
+	char		*tmp_username;
 
 	username = "minishell";
 	tmp_env_key = get_envkey("USER");
@@ -74,10 +81,10 @@ static char	*ft_get_username(t_env_ms *lst)
 		tmp = ms_find(lst, tmp_env_key);
 		if (tmp && tmp->value)
 			username = tmp->value;
-		free(tmp_env_key);
+		free_var(tmp_env_key);
 	}
-	username = ft_strjoin(username, "@");
-	return (username);
+	tmp_username = ft_strjoin(username, "@");
+	return (tmp_username);
 }
 
 static char	*color_prompt(char *prompt, char *current_path)
@@ -88,19 +95,21 @@ static char	*color_prompt(char *prompt, char *current_path)
 	char	*color_prompt;
 	char	*colorcurrentpath;
 
+	color_prompt = NULL;
 	tmp1 = ft_strjoin("\e[1;32m", prompt);
 	tmp2 = ft_strjoin(tmp1, "\e[m");
-	free(tmp1);
+	free_var(tmp1);
 	tmp3 = ft_strjoin(tmp2, ":");
-	free(tmp2);
+	free_var(tmp2);
 	tmp1 = ft_strjoin("\e[1;34m", current_path);
 	tmp2 = ft_strjoin(tmp1, "\e[m");
 	colorcurrentpath = ft_strjoin(tmp2, "$ ");
-	free(tmp1);
-	free(tmp2);
+	free_var(tmp1);
+	free_var(tmp2);
+	free_var(color_prompt);
 	color_prompt = ft_strjoin(tmp3, colorcurrentpath);
-	free(tmp3);
-	free(colorcurrentpath);
+	free_var(colorcurrentpath);
+	free_var(tmp3);
 	return (color_prompt);
 }
 
@@ -112,6 +121,7 @@ char	*get_prompt(t_env_ms *lst)
 	char	*tmp2;
 	char	*current_path;
 
+	prompt = NULL;
 	username = ft_get_username(lst);
 	hostname = ft_get_hostname();
 	tmp2 = ft_strjoin(username, hostname);
@@ -120,10 +130,10 @@ char	*get_prompt(t_env_ms *lst)
 		current_path = ft_strdup("~");
 	current_path = ft_get_currentpath(lst, current_path);
 	prompt = color_prompt(tmp2, current_path);
-	free(tmp2);
-	free(username);
+	free_var(tmp2);
+	free_var(username);
 	if (ft_strncmp(hostname, "minishell", 9) != 0)
-		free(hostname);
-	free(current_path);
+		free_var(hostname);
+	free_var(current_path);
 	return (prompt);
 }
