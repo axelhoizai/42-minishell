@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/12 18:39:45 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/13 11:21:01 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,9 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			if (is_builtin(cmd->args[0]))
 			{
 				handle_builtins(cmd, pip, data);
+				ms_lstclear(&data->env_ms);
+				free_tab(data->my_envp);
+				free_pipeline(pip);
 				exit(0);
 			}
 			execute(cmd->args, pip, data);
@@ -138,10 +141,10 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	}
 	// close(cmd->fd_in);
 	// wait(NULL);
-	if (cmd->in_error == 1 || cmd->fd_out > -1)
-		close(p_fd[0]);
-	close(p_fd[1]);
-	waitpid(-1, NULL, 0);
+	// if (cmd->in_error == 1 || cmd->fd_out > -1)
+	// 	close(p_fd[0]);
+	// close(p_fd[1]);
+	waitpid(child, NULL, 0);
 }
 
 /* Gestion des processus intermédiaires */
@@ -172,10 +175,10 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		}
 		execute(cmd->args, pip, data);
 	}
-	close(p_fd[0]);
-	close(p_fd[1]);
-	p_fd[0] = temp_fd[0];
-	p_fd[1] = temp_fd[1];
+	// close(p_fd[0]);
+	// close(p_fd[1]);
+	// p_fd[0] = temp_fd[0];
+	// p_fd[1] = temp_fd[1];
 	// close(p_fd[1]);
 }
 
@@ -239,6 +242,9 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			if (is_builtin(pip->cmds[pip->cmd_count - 1]->args[0]))
 			{
 				handle_builtins(pip->cmds[pip->cmd_count - 1], pip, data);
+				ms_lstclear(&data->env_ms);
+				free_tab(data->my_envp);
+				free_pipeline(pip);
 				exit(0);
 			}
 			execute(pip->cmds[pip->cmd_count - 1]->args, pip, data);
@@ -248,7 +254,7 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	close(p_fd[1]);
 	ft_close_fdin(pip);
 	ft_close_fdout(pip);
-	waitpid(-1, NULL, 0);
+	waitpid(child, NULL, 0);
 	// waitpid(child, &status, 0);
 	// if (WIFEXITED(status))
 	// 	return (WEXITSTATUS(status));
