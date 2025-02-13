@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 21:12:57 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/13 15:40:28 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	exec(t_pipeline *pip, t_data *data)
 	{
 		if (pip->cmds[0]->fd_in > -1)
 			close (pip->cmds[0]->fd_in);
+		data->exit_code = 1;
 		return ;
 	}
 	if (pip->cmds[0]->args)

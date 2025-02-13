@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/11 21:37:41 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/13 16:02:44 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,6 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 	else if (ft_strcmp(tokens[*i], ">") == 0 && tokens[*i + 1])
 	{
 		cmd->trunc = 1;
-		// if (cmd->out_error == 1)
-		// {
-		// 	(*i)++;
-		// 	return ;
-		// }
 		if (cmd->fd_out > -1 || cmd->output_file)
 		{
 			if (cmd->fd_out > -1)
@@ -98,8 +93,37 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 	}
 	else if (ft_strcmp(tokens[*i], ">>") == 0 && tokens[*i + 1])
 	{
-		cmd->output_file = ft_strdup(tokens[++(*i)]);
 		cmd->append = 1;
+		if (cmd->fd_out > -1 || cmd->output_file)
+		{
+			if (cmd->fd_out > -1)
+				close(cmd->fd_out);
+			free(cmd->output_file);
+		}
+		cmd->output_file = ft_strdup(tokens[++(*i)]);
+		if (cmd->out_error == 0)
+			cmd->fd_out = open_outfile(cmd->output_file, data, 1);
+		if (cmd->fd_out == -1 && cmd->out_error == 0)
+		{
+			if (cmd->in_error == 0)
+			{
+				if (cmd->out_error == 0)
+					ft_print_error(NULL, cmd->output_file, "No such file or directory");
+				cmd->fd_out = open("/dev/null", O_RDONLY); //test
+				close(cmd->fd_out);
+				cmd->fd_out = -1; //test pour null
+				// free(cmd->output_file);
+			}
+			if (cmd->fd_in > -1)
+				close(cmd->fd_in);
+			cmd->out_error = 1;
+			data->exit_code = EXIT_FAILURE;
+		}
+		if (cmd->in_error == 1)
+		{
+			if (cmd->fd_out > -1)
+				close(cmd->fd_out);
+		}	
 	}
 	// else if (ft_strcmp(tokens[*i], "<<") == 0 && tokens[*i + 1])
 	// {
