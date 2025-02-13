@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 17:39:50 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/13 03:47:18 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 // 		input = ft_readline(&rl);
 // 		if (!input)
 // 		{
-// 			// disable_raw_mode();
 // 			// free_var(rl.prompt);
 // 			handle_exit(NULL, data);
 // 			break ;
@@ -38,10 +37,8 @@
 // 		// free(input;
 // 		// rl.buffer_size = 0;
 // 		// ft_bzero(rl.buffer, rl.buffer_size);
-		
 // 		exit_code = data->exit_code;
 // 	}
-// 	// disable_raw_mode();
 // 	free_history(&rl);
 // 	return (exit_code);
 // }

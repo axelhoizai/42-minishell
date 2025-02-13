@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 16:18:22 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/13 03:00:53 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,9 +176,12 @@ typedef struct	s_rl
 
 	char			*buffer;
 	unsigned int	buffer_size;
+	unsigned int	buffer_lines_cnt;
 	char			*buffer_copy;
 	t_history		*history;
 	t_data_term		*term;
+
+	bool			is_reading;
 }	t_rl;
 
 // ft_readline
@@ -203,10 +206,13 @@ void 		load_history(t_history *history);
 void		free_history(t_rl *rl);
 
 // ft_readline_termimal
-void		reset_terminal();
+// void		reset_terminal();
 void		get_terminal_size(t_rl *rl);
-void		enable_raw_mode();
-void		disable_raw_mode();
+// void		enable_raw_mode();
+// void		disable_raw_mode();
+void	configure_terminal();
+void	unconfigure_terminal();
+
 
 // ft_readline_cursor
 void		move_cursor(int row, int col);

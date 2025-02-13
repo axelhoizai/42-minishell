@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_termimal.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 14:47:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 19:17:11 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/12 23:23:58 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,30 @@ void	reset_terminal()
 		exit(EXIT_FAILURE);
 }
 
-void	enable_raw_mode()
+// void	enable_raw_mode()
+// {
+// 	struct termios	raw;
+// 	t_rl			*rl;
+	
+// 	rl = get_rl(NULL);
+// 	tcgetattr(STDIN_FILENO, &rl->term->original_term);
+// 	raw = rl->term->original_term;
+// 	raw.c_lflag &= ~(ECHO | ICANON | ECHONL);
+// 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+// 	rl->term->original_term.c_cc[VMIN] = 0;
+// 	rl->term->original_term.c_cc[VTIME] = 1;
+// }
+
+// void	disable_raw_mode()
+// {
+// 	t_rl			*rl;
+	
+// 	rl = get_rl(NULL);
+// 	reset_terminal();
+// 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &rl->term->original_term);
+// }
+
+void	configure_terminal()
 {
 	struct termios	raw;
 	t_rl			*rl;
@@ -47,34 +70,26 @@ void	enable_raw_mode()
 	rl = get_rl(NULL);
 	tcgetattr(STDIN_FILENO, &rl->term->original_term);
 	raw = rl->term->original_term;
-	// raw.c_lflag &= ~(ECHO | ICANON);
 	raw.c_lflag &= ~(ECHO | ICANON | ECHONL);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-}
-
-void	disable_raw_mode()
-{
-	t_rl			*rl;
-	
-	rl = get_rl(NULL);
-	reset_terminal();
-	// tcsetattr(STDIN_FILENO, TCSAFLUSH, &rl->term->original_term);
-}
-
-
-void	configure_terminal()
-{
-	t_rl			*rl;
-	
-	rl = get_rl(NULL);
-	if (tcgetattr(0, &rl->term->original_term) < 0)
-		return ;
-	rl->term->original_term.c_lflag &= ~(ECHO | ICANON);
 	rl->term->original_term.c_cc[VMIN] = 0;
 	rl->term->original_term.c_cc[VTIME] = 1;
-	if (tcsetattr(0, 0, &rl->term->original_term) < 0)
-		return ;
+	rl->is_reading = true;
 }
+
+// void	configure_terminal()
+// {
+// 	t_rl			*rl;
+	
+// 	rl = get_rl(NULL);
+// 	if (tcgetattr(0, &rl->term->original_term) < 0)
+// 		return ;
+// 	rl->term->original_term.c_lflag &= ~(ECHO | ICANON);
+// 	rl->term->original_term.c_cc[VMIN] = 0;
+// 	rl->term->original_term.c_cc[VTIME] = 1;
+// 	if (tcsetattr(0, 0, &rl->term->original_term) < 0)
+// 		return ;
+// }
 
 void	unconfigure_terminal()
 {
@@ -84,6 +99,8 @@ void	unconfigure_terminal()
 	rl->term->original_term.c_lflag |= (ECHO | ICANON);
 	rl->term->original_term.c_cc[VMIN] = 1;
 	rl->term->original_term.c_cc[VTIME] = 0;
+	rl->is_reading = false;
+	reset_terminal();
 	if (tcsetattr(0, 0, &rl->term->original_term) < 0)
 		return ;
 }

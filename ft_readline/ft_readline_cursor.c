@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_cursor.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:04:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 16:48:07 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/13 03:34:04 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,9 @@ int	get_cursor_position(t_rl *rl)
 
 	if (!rl || !rl->term)
 		return (-1);
-	write(STDOUT_FILENO, "\033[6n", 4);
+	// write(STDOUT_FILENO, "\033[6n", 4);
+	printf("\033[6n");
+	fflush(stdout);
 	ret = read(STDIN_FILENO, buf, sizeof(buf) - 1);
 	if (ret <= 0)
 		return (-1);

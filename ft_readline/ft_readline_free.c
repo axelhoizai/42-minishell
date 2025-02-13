@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_free.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:42:15 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 09:52:14 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/12 22:43:18 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	free_var(void *var)
 		var = NULL;
 	}
 }
-
 
 void	free_tab(char **tab)
 {

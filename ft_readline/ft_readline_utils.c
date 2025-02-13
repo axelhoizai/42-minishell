@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:47:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 09:52:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/12 21:55:10 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@ t_data_term	*get_term_data(t_data_term *new_term)
 		term = *new_term;
 	return (&term);
 }
+
+// t_pipeline	*get_pipeline(t_pipeline *new_pip)
+// {
+// 	static t_pipeline pip;
+
+// 	if (new_pip) 
+// 		pip = *new_pip;
+// 	return (&pip);
+// }
 
 int actual_prompt_length(char *str)
 {

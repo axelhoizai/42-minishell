@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_init.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:36:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 14:48:49 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/13 03:00:50 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	init_history(t_rl *rl)
 void	init_readline(t_rl *rl)
 {
 	rl->buffer_size = 1024;
+	rl->buffer_lines_cnt = 0;
 	rl->cursor_pos = 0;
 	rl->cursor_limit_line = 0;
 	rl->line_length = 0;
@@ -62,6 +63,7 @@ void	init_readline(t_rl *rl)
 		free_var(rl->buffer);
 		return ;
 	}
+	rl->is_reading = false;
 	init_term(rl);
 	init_history(rl);
 	setup_signal_handlers();

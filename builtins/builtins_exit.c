@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/10 21:57:58 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/12 23:18:10 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ static int	validate_exit_args(t_pipeline *pip, int *exit_code, t_data *data)
 
 void	handle_exit(t_pipeline *pip, t_data *data)
 {
-	int	exit_code;
+	int		exit_code;
+	// t_rl	*rl;// pour ft_readline
 
+	// rl = get_rl(NULL);// pour ft_readline
 	exit_code = data->exit_code;
 	// print_pipeline(pip);
 	if (validate_exit_args(pip, &exit_code, data) == 1)
@@ -85,6 +87,20 @@ void	handle_exit(t_pipeline *pip, t_data *data)
 		// rl_clear_history();
 		// if (argv)
 		// 	free_tab(argv);
+
+		// if (rl) // pour ft_readline
+		// {
+		// 	free_var(rl->buffer);
+		// 	free_var(rl->prompt);
+		// 	free_history(rl);
+		// 	free_readline(rl);
+			
+		// 	// free_history(rl);
+		// 	// free_var(rl->buffer);
+		// 	// // free_var(rl->buffer_copy);
+		// 	// free_tab(rl->lines);
+		// 	// free_term(rl);
+		// }
 		exit(exit_code);
 	}
 }

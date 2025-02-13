@@ -3,16 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_signal.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 19:25:44 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/12 22:16:47 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//Interrompt un programme (CTRL+C)
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+// Interrompt un programme (CTRL+C)
 static void	handle_sigint(int sig)
 {
 	t_rl	*rl;
@@ -20,7 +25,6 @@ static void	handle_sigint(int sig)
 	(void)sig;
 	rl = get_rl(NULL);
 	write(STDOUT_FILENO, "^C\n", 4);
-	// free(rl->buffer);
 	rl->buffer_size = 0;
 	rl->cursor_pos = 0;
 	rl->line_length = 0;
@@ -33,23 +37,49 @@ static void	handle_sigint(int sig)
 	fflush(stdout);
 }
 
-// Quitte le programme (CTRL+\), ignore
+// Quitte le programme (CTRL+\), ignore en mode readline
 static void	handle_sigquit(int sig)
 {
+	t_rl	*rl;
+	t_data	*data;
+
+	data = get_data(NULL);
 	(void)sig;
-	write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
+	rl = get_rl(NULL);
+	if (rl->is_reading)
+	{
+		// write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
+		return;
+	}
+	write(STDOUT_FILENO, "\nQuit (core dumped)\n", 20);
+	ctrl_d_free(rl);
+	data->exit_code = 131;
+	// exit(131); // Code de sortie pour SIGQUIT
 }
 
-//Demande d'arret propre
+// Demande d'arrêt propre (kill <PID>)
 static void	handle_sigterm(int sig)
 {
+	t_rl	*rl;
+
 	(void)sig;
-	write(STDOUT_FILENO, "\nSIGTERM reçu, fermeture propre...\n", 35);
+	rl = get_rl(NULL);
+	// write(STDOUT_FILENO, "\nSIGTERM reçu, fermeture propre...\n", 35);
+	// debug_log("Fermeture propre\n");
+	ctrl_d_free(rl);
+
 	// Ajoute ici du code pour libérer la mémoire et quitter proprement
 	_exit(0);
 }
 
-//Redimensionnement du terminal
+// Empêche le programme d'être stoppé (CTRL+Z)
+static void	handle_sigtstp(int sig)
+{
+	(void)sig;
+	// write(STDOUT_FILENO, "\nSIGTSTP (CTRL+Z) ignoré\n", 25);
+}
+
+// Redimensionnement du terminal
 static void	handle_sigwinch(int sig)
 {
 	t_rl	*rl;
@@ -60,15 +90,6 @@ static void	handle_sigwinch(int sig)
 	get_terminal_size(rl);
 }
 
-// void sighup_handler(int sig)
-// {
-// 	(void)sig;
-// 	if (!isatty(STDIN_FILENO))
-// 		debug_log("Le terminal s'est détaché !\n");
-// 	if (isatty(STDIN_FILENO))
-// 		debug_log("istty\n");
-// }
-
 void	setup_signal_handlers(void)
 {
 	struct sigaction sa;
@@ -78,21 +99,21 @@ void	setup_signal_handlers(void)
 
 	// Gestion de CTRL+C (SIGINT)
 	sa.sa_handler = handle_sigint;
-	// sa.sa_handler = SIG_IGN; //ignore
 	sigaction(SIGINT, &sa, NULL);
 
-	// Gestion de CTRL+\ (SIGQUIT) - Ignore
+	// Gestion de CTRL+\ (SIGQUIT)
 	sa.sa_handler = handle_sigquit;
 	sigaction(SIGQUIT, &sa, NULL);
 
-	// Gestion du redimensionnement (SIGWINCH)
-	sa.sa_handler = handle_sigwinch;
-	sigaction(SIGWINCH, &sa, NULL);
-
-	// Gerer proprement SIGTERM
+	// Gestion de SIGTERM (kill <PID>)
 	sa.sa_handler = handle_sigterm;
 	sigaction(SIGTERM, &sa, NULL);
 
-	// sa.sa_handler = sighup_handler;
-	// sigaction(SIGHUP, &sa, NULL);
+	// Gestion de SIGTSTP (CTRL+Z) - Ignore
+	sa.sa_handler = handle_sigtstp;
+	sigaction(SIGTSTP, &sa, NULL);
+
+	// Gestion de SIGWINCH (Redimensionnement du terminal)
+	sa.sa_handler = handle_sigwinch;
+	sigaction(SIGWINCH, &sa, NULL);
 }
