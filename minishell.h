@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 15:28:43 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:29:51 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ void		unconfigure_terminal();
 // utils_free
 void		free_var(void *var);
 void		free_tab(char **tab);
+void		free_term(t_data *data);
 
 // utils signal
 void		setup_signal_handlers(void);

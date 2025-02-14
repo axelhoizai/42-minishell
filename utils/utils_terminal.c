@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:15:29 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 15:33:17 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:28:22 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,14 @@ void	unconfigure_terminal()
 	t_data			*data;
 	
 	data = get_data(NULL);
-	// data->term->original_term.c_lflag |= (ECHO | ICANON);
-	// data->term->original_term.c_cc[VMIN] = 1;
-	// data->term->original_term.c_cc[VTIME] = 0;
 	data->is_reading = false;
-	// reset_terminal();
-	// if (tcsetattr(0, 0, &data->term->original_term) < 0)
-	// 	return ;
+
 }
 
 void	configure_terminal()
 {
-	// struct termios	raw;
 	t_data			*data;
 	
 	data = get_data(NULL);
-	// tcgetattr(STDIN_FILENO, &data->term->original_term);
-	// raw = data->term->original_term;
-	// raw.c_lflag &= ~(ECHO | ICANON | ECHONL);
-	// tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-	// data->term->original_term.c_cc[VMIN] = 0;
-	// data->term->original_term.c_cc[VTIME] = 1;
 	data->is_reading = true;
 }

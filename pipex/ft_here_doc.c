@@ -28,7 +28,7 @@ void here_doc(t_command *cmd)
 		cmd->fd_in = open("here_doc", O_RDWR | O_CREAT, 0777);
 	}
 	print_tab(cmd->limiters);
-	while (cmd->limiters[limiter_count])
+	while (cmd->limiters && cmd->limiters[limiter_count])
 		limiter_count++;
 	j = 0;
 	while (j < limiter_count)

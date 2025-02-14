@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:19:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 15:20:12 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:12:35 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,13 @@ void	free_tab(char **tab)
 	}
 	free(tab);
 	tab = NULL;
+}
+
+void	free_term(t_data *data)
+{
+	if (data->term)
+	{
+		free(data->term);
+		data->term = NULL;	
+	}
 }

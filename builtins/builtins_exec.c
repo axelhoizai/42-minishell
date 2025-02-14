@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 14:54:16 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:18:08 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	exec(t_pipeline *pip, t_data *data)
 		waitpid(pid[0], &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) >= 0)
 		{
-			if (data->exit_code != 131)
+			if (data->exit_code < 128)
 				data->exit_code = WEXITSTATUS(status);
 		}
 	}

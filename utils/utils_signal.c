@@ -6,29 +6,13 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 15:38:30 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:28:45 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // Interrompt un programme (CTRL+C)
-// static void	handle_sigint(int sig)
-// {
-// 	(void)sig;
-// 	// configure_terminal();
-// 	printf("^C\n");
-// 	fflush(stdout);
-// }
-
-static void	handle_sigint(int sig)
-{
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
 
 int	get_pid(void)
 {
@@ -50,6 +34,23 @@ int	get_pid(void)
 	return (pid);
 }
 
+static void	handle_sigint(int sig)
+{
+	t_data	*data;
+
+	data = get_data(NULL);
+	(void)sig;
+	printf("^C\n");
+	data->exit_code = 130;
+	configure_terminal();
+	if (data->is_reading)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
+
 // Quitte le programme (CTRL+\), ignore en mode readline
 static void	handle_sigquit(int sig)
 {
@@ -62,7 +63,6 @@ static void	handle_sigquit(int sig)
 		// write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
 		return;
 	}
-	write(STDOUT_FILENO, "\nQuit (core dumped)\n", 20);
 	printf("\nQuit (core dumped)\n");
 	data->exit_code = 131;
 	// ctrl_d_free(rl);
@@ -70,6 +70,14 @@ static void	handle_sigquit(int sig)
 	kill(get_pid(), SIGQUIT);
 	// exit(131);
 }
+
+// void	handle_sigquit_child(int sig)
+// {
+// 	(void)sig;
+// 	signal(SIGQUIT, SIG_IGN);
+// 	write(STDOUT_FILENO, "\nQuit (core dumped)\n", 20);
+// 	exit(131);
+// }
 
 // Demande d'arrêt propre (kill <PID>)
 static void	handle_sigterm(int sig)
@@ -131,6 +139,8 @@ void	setup_signal_handlers(void)
 	// Gestion de CTRL+\ (SIGQUIT)
 	sa.sa_handler = handle_sigquit;
 	sigaction(SIGQUIT, &sa, NULL);
+	// sa.sa_handler = SIG_IGN;
+	// sigaction(SIGQUIT, &sa, NULL);
 
 	// Gestion de SIGTERM (kill <PID>)
 	sa.sa_handler = handle_sigterm;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/14 11:43:08 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:26:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,8 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	pid_t	child;
 	// t_rl 	*rl;
 	// int		status;
+
+	// status = 0;
 	// rl = NULL;
 	child = fork();
 	if (child == -1)
@@ -285,9 +287,9 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	ft_close_fdout(pip);
 	// waitpid(child, NULL, 0);
 	// waitpid(child, &status, 0);
-	// if (WIFEXITED(status))
+	// if (WIFEXITED(status) && data->exit_code < 128)
 	// 	return (WEXITSTATUS(status));
-	return (0);
+	return (data->exit_code);
 }
 
 /* Fonction principale qui gère l'exécution des pipes */

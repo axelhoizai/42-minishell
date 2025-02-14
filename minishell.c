@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 15:32:38 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:30:27 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ char	main_loop(t_data *data)
 	char	*prompt;
 	char	exit_code;
 
-	configure_terminal();
+	setup_signal_handlers();
 	while (1)
 	{
+		configure_terminal();
 		prompt = get_prompt(data->env_ms);
-		setup_signal_handlers();
 		input = readline(prompt);
+
 		exit_code = data->exit_code;
 		free(prompt);
 		if (!input)
@@ -34,11 +35,13 @@ char	main_loop(t_data *data)
 		}
 		if (*input)
 			add_history(input);
+		unconfigure_terminal();
 		get_argv(input, data);
+		// data->is_reading = false;
+		// printf("data->is_reading2 = %d\n", data->is_reading);
 		// free(input);
 		free_var(input);
 	}
-	unconfigure_terminal();
 	return (exit_code);
 }
 
@@ -52,6 +55,13 @@ int	main(int ac, char **av, char **envp)
 	exit_code = 0;
 	(void)ac;
 	(void)av;
+	rl_catch_signals = 0;
+	rl_catch_sigwinch = 0;
+	// rl_initialize();
+
+	// rl_set_keyboard_input_timeout(0);
+	// rl_already_prompted = 1;
+
 	ft_bzero(&data, sizeof(t_data));
 	ft_init(envp, &is_start, &data);
 	get_data(&data);
