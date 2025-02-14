@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_arrow.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:12 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 03:43:39 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/14 14:57:01 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,14 @@ void	handle_history(t_rl *rl, int direction)
 {
 	int		i;
 	char	*history_entry;
+
 	if (!rl || !rl->history || rl->history->history_count == 0)
-		return ;	
+		return ;
+	
+	move_cursor(rl->prompt_row, rl->prompt_len);
+	rl->term->cursor_col += 1;
+	write(STDOUT_FILENO, "\033[C", 3);
+	printf("\033[J");
 	if (direction == ARROW_UP && rl->history->history_index > 0)
 		rl->history->history_index--;
 	else if (direction == ARROW_DOWN &&
@@ -114,7 +120,7 @@ void	handle_history(t_rl *rl, int direction)
 	ft_bzero(rl->buffer, rl->buffer_size);
 	rl->line_length = 0;
 	rl->cursor_pos = 0;
-	printf("\033[%dH\033[%dG%s\033[J", rl->prompt_row, rl->prompt_col, rl->prompt);
+	// printf("\033[%dH\033[%dG%s\033[J", rl->prompt_row, rl->prompt_col, rl->prompt);
 	history_entry = rl->history->history_tab[rl->history->history_index];
 	i = 0;
 	while (history_entry[i])

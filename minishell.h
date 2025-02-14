@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 11:29:34 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/14 14:33:51 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,6 +251,7 @@ void		debug_log(const char *format, ...);
 t_data		*get_data(t_data *new_data);
 int			actual_prompt_length(char *str);
 int			get_prompt_length(char *prompt);
+void		print_prompt(t_rl *rl);
 
 //--------------------------FT_READLINE-END--------------------------
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_input.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:31:18 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 11:44:18 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/14 13:30:30 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,14 @@ int	handle_enter(t_rl *rl, int bytes_available, char c)
 	{
 		parse_historique(rl->buffer, rl->history);
 		if (ft_strcmp(rl->buffer, "clear") == 0)
+		{
 			printf("%s", rl->prompt);
+			rl->prompt_row = 0;
+			rl->term->cursor_row = 0;
+		}
+			// print_prompt(rl);
 		write(1, "\n", 1);
+		get_cursor_position(rl);
 		rl->buffer_lines_cnt = 0;
 		return (1);
 	}
@@ -52,7 +58,7 @@ int	handle_enter(t_rl *rl, int bytes_available, char c)
 void	insert_char_at_cursor(t_rl *rl, char c)
 {
 	if (!rl || !rl->buffer || rl->cursor_pos >= rl->buffer_size - 1)
-	rl->temp_prompt_row = rl->prompt_row;
+		rl->temp_prompt_row = rl->prompt_row;
 	if (rl->line_length >= rl->buffer_size - 1)
 		rl->buffer = ft_realloc(rl->buffer, rl->buffer_size *= 2);
 	ft_memmove(rl->buffer + rl->cursor_pos + 1,

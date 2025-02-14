@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 15:40:28 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 14:54:16 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	exec(t_pipeline *pip, t_data *data)
 	// int 	fd_files[2];
 
 	// fd_files[0] = -2;
+	status = 0;
 	if (pip->cmds[0]->fd_out == -1 || pip->cmds[0]->fd_in == -1)
 	{
 		if (pip->cmds[0]->fd_in > -1)
@@ -97,7 +98,10 @@ void	exec(t_pipeline *pip, t_data *data)
 			close(pip->cmds[0]->fd_out);
 		waitpid(pid[0], &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) >= 0)
-			data->exit_code = WEXITSTATUS(status);
+		{
+			if (data->exit_code != 131)
+				data->exit_code = WEXITSTATUS(status);
+		}
 	}
 }
 

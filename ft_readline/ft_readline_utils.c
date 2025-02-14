@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:47:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 21:55:10 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/14 13:22:58 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,3 +75,11 @@ int actual_prompt_length(char *str)
 // 	}
 // 	return (len);
 // }
+
+void	print_prompt(t_rl *rl)
+{
+	get_cursor_position(rl);
+	rl->prompt_row = rl->term->cursor_row;
+	printf("%s", rl->prompt);
+	printf("\033[C\033[J");
+}

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:39:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/11 09:52:16 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 12:54:27 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ void	update_display(t_rl *rl)
 {
 	if (!rl || !rl->buffer)
 		return;
+	get_terminal_size(rl);
 	move_cursor(rl->prompt_row, rl->prompt_col);
-	write(STDOUT_FILENO, "\033[K", 3);
+	// write(STDOUT_FILENO, "\033[K", 3);
+	printf("\033[K");
 	printf("%s", rl->prompt);
 	fflush(stdout);
-	write(STDOUT_FILENO, rl->buffer, rl->line_length);
+	// write(STDOUT_FILENO, rl->buffer, rl->line_length);
+	printf("%s", rl->buffer);
+
 	get_cursor_position(rl);
-	get_prompt_position(rl);
-	get_terminal_size(rl);
+	// get_prompt_position(rl);
 }
 
 int	is_real_enter()

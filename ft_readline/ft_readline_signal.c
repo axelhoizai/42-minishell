@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 10:47:31 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 15:01:18 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ static void	handle_sigint(int sig)
 
 	(void)sig;
 	rl = get_rl(NULL);
-	write(STDOUT_FILENO, "^C\n", 4);
+	configure_terminal();
+	// write(STDOUT_FILENO, "^C\n", 4);
+	printf("^C\n");
 	rl->buffer_size = 0;
 	rl->cursor_pos = 0;
 	rl->line_length = 0;
@@ -32,7 +34,8 @@ static void	handle_sigint(int sig)
 	get_prompt_position(rl);
 	get_terminal_size(rl);
 	move_cursor(rl->prompt_row + 1, 0);
-	write(STDOUT_FILENO, "\033[K", 3);
+	// write(STDOUT_FILENO, "\033[K", 3);
+	printf("\033[K");
 	printf("%s", rl->prompt);
 	fflush(stdout);
 }
@@ -72,11 +75,12 @@ static void	handle_sigquit(int sig)
 		return;
 	}
 	write(STDOUT_FILENO, "\nQuit (core dumped)\n", 20);
+	printf("\nQuit (core dumped)\n");
 	data->exit_code = 131;
-	ctrl_d_free(rl);
+	// ctrl_d_free(rl);
 	configure_terminal();
 	kill(get_pid(), SIGQUIT);
-	exit(131); // Code de sortie pour SIGQUIT
+	// exit(131);
 }
 
 // Demande d'arrêt propre (kill <PID>)
