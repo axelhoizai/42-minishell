@@ -6,17 +6,18 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:15:29 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 18:28:22 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:15:17 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	reset_terminal()
+void	reset_terminal(void)
 {
-	struct termios term;
+	struct termios	term;
 
-	if (tcgetattr(STDIN_FILENO, &term) == -1) {
+	if (tcgetattr(STDIN_FILENO, &term) == -1)
+	{
 		perror("tcgetattr");
 		exit(EXIT_FAILURE);
 	}
@@ -27,19 +28,18 @@ void	reset_terminal()
 		exit(EXIT_FAILURE);
 }
 
-void	unconfigure_terminal()
+void	unconfigure_terminal(void)
 {
-	t_data			*data;
-	
+	t_data	*data;
+
 	data = get_data(NULL);
 	data->is_reading = false;
-
 }
 
-void	configure_terminal()
+void	configure_terminal(void)
 {
-	t_data			*data;
-	
+	t_data	*data;
+
 	data = get_data(NULL);
 	data->is_reading = true;
 }

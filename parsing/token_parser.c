@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 10:49:34 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:02:33 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ char	*parse_token(char *line, int *i, t_data *data)
 			continue ;
 		}
 		if (line[*i] && (((line[*i] == '\'' && parse.in_double == 1)
-			|| (line[*i] == '"' && parse.in_single == 1))
-			|| (line[*i] != '"' && line[*i] != '\'')))
+					|| (line[*i] == '"' && parse.in_single == 1))
+				|| (line[*i] != '"' && line[*i] != '\'')))
 			append_char(&parse, line[*i]);
 		(*i)++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/10 22:26:46 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:09:52 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 void	print_error(char *mgs, char *arg, int exit_code)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = get_data(NULL);
 	(void)exit_code;
-	
 	if (arg)
 	{
 		ft_putstr_fd(mgs, 2);

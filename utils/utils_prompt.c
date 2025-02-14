@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 16:22:15 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:13:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*ft_get_currentpath(t_env_ms *lst, char *currentpath)
 	}
 	if (home && ft_strncmp(currentpath, home, ft_strlen(home)) == 0)
 	{
-		result = (char *)ft_safe_malloc(ft_strlen(currentpath) - ft_strlen(home) + 2);
+		result = ft_safe_malloc(ft_strlen(currentpath) - ft_strlen(home) + 2);
 		if (!result)
 			return (free_var(currentpath), NULL);
 		result[0] = '~';

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/14 18:26:59 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:23:57 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	if (!cmd || !cmd[0])
 	{
 		print_error("Invalid command", NULL, CMD_NOT_FOUND);
+		free_term(data);
 		exit(127);
 	}
 	cmd_path = get_path(cmd[0], data->my_envp);
@@ -29,6 +30,7 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 		write(2, "\n", 1);
 		ms_lstclear(&data->env_ms);
 		free_tab(data->my_envp);
+		free_term(data);
 		free_pipeline(pip);
 		exit(127);
 	}
@@ -51,16 +53,17 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 			free(cmd_path);
 			ms_lstclear(&data->env_ms);
 			free_tab(data->my_envp);
+			free_term(data);
 			free_pipeline(pip);
 			exit(126);
 		}
 	}
-
 	write(2, "Execution error: ", 17);
 	write(2, cmd[0], ft_strlen(cmd[0]));
 	write(2, "\n", 1);
 	ms_lstclear(&data->env_ms);
 	free_tab(data->my_envp);
+	free_term(data);
 	free_pipeline(pip);
 	exit(127);
 }
@@ -96,8 +99,6 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 {
 	pid_t	child;
 
-	// if (cmd->fd_in == -1)
-	// 	return ;
 	if (pipe(p_fd) == -1)
 		exit(PIPE_ERROR);
 	child = fork();
@@ -108,9 +109,6 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		close(p_fd[0]);
 		if (cmd->in_error == 1 || cmd->out_error == 1)
 		{
-			// print_lst(data->env_ms);
-			// rl = get_rl(NULL);
-			// clear_exit(pip, data, rl);
 			ms_lstclear(&data->env_ms);
 			free_tab(data->my_envp);
 			free_pipeline(pip);
@@ -140,28 +138,21 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			execute(cmd->args, pip, data);
 		}
 	}
-		close(p_fd[1]);
-		if (cmd->fd_in >= 0)
-			close(cmd->fd_in);
-		if (cmd->fd_in == -2)
-			cmd->fd_in = p_fd[0];
-		if (pip->cmds[1]->fd_in == -2)
-			pip->cmds[1]->fd_in = p_fd[0];
-		else
-			close(p_fd[0]);
-	// close(cmd->fd_in);
-	// wait(NULL);
-	// if (cmd->in_error == 1 || cmd->fd_out > -1)
-	// 	close(p_fd[0]);
-	// close(p_fd[1]);
-	// waitpid(child, NULL, 0);
+	close(p_fd[1]);
+	if (cmd->fd_in >= 0)
+		close(cmd->fd_in);
+	if (cmd->fd_in == -2)
+		cmd->fd_in = p_fd[0];
+	if (pip->cmds[1]->fd_in == -2)
+		pip->cmds[1]->fd_in = p_fd[0];
+	else
+		close(p_fd[0]);
 }
 
 /* Gestion des processus intermédiaires */
 static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *i)
 {
 	pid_t	child;
-	// int		p_fd[2];
 
 	if (pipe(p_fd) == -1)
 		exit(PIPE_ERROR);
@@ -186,12 +177,8 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 		else if (cmd->fd_out < 0 && cmd->out_error == 0 && cmd->in_error == 0)
 			dup2(p_fd[1], STDOUT_FILENO);
 		close(p_fd[1]);
-		// dup2(p_fd[0], STDIN_FILENO);
-		// dup2(p_fd[1], STDOUT_FILENO);
 		ft_close_fdin(pip);
 		ft_close_fdout(pip);
-		// close(p_fd[1]);
-		// close(p_fd[0]);
 		if (is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
@@ -236,11 +223,7 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 {
 	pid_t	child;
-	// t_rl 	*rl;
-	// int		status;
 
-	// status = 0;
-	// rl = NULL;
 	child = fork();
 	if (child == -1)
 		exit(FORK_ERROR);
@@ -249,9 +232,6 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		close(p_fd[1]);
 		if (cmd->in_error == 1 || cmd->out_error == 1)
 		{
-			// print_lst(data->env_ms);
-			// rl = get_rl(NULL);
-			// clear_exit(pip, data, rl);
 			ms_lstclear(&data->env_ms);
 			free_tab(data->my_envp);
 			free_pipeline(pip);
@@ -296,23 +276,21 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 int	pipex(t_pipeline *pip, t_data *data)
 {
 	int		p_fd[2];
-	// int		fd_files[2];
 	int		i;
 	int		status;
 
 	i = 0;
 	signal(SIGPIPE, SIG_IGN);
-	// if (pip->cmds[i]->heredoc == 1)
 	here_doc(pip->cmds[i]);
 	first_pipe(pip->cmds[0], pip, p_fd, data);
 	i++;
 	while (i < pip->cmd_count - 1)
 	{
-		// here_doc_checker(fd_files, pip, data, &i);
+		// here_doc_chck(fd_files, pip, data, &i);
 		multi_pipe(pip->cmds[i], pip, p_fd, data, &i);
 		i++;
 	}
-	// here_doc_checker(fd_files, pip, data, &i);
+	// here_doc_chck(fd_files, pip, data, &i);
 	status = last_pipe(pip->cmds[i], pip, p_fd, data);
 	while (i >= 0)
 	{

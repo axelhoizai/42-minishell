@@ -1,4 +1,3 @@
-
 // /* ************************************************************************** */
 // /*                                                                            */
 // /*                                                        :::      ::::::::   */
@@ -76,7 +75,6 @@
 // 	}
 // }
 
-
 // static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *fd_files)
 // {
 // 	pid_t	child;
@@ -112,9 +110,7 @@
 // 		if (cmd->fd_in == -1)
 // 			close(fd_files[0]);
 // 		// ft_close_fdin(pip);
-		
-		
-		
+	
 // 		ft_close_fdout(pip);
 // 		close(p_fd[1]);
 // 		if (is_builtin(cmd->args[0]))

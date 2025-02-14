@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/03 15:41:53 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:56:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	ft_echo(int argc, char **argv)
 	char	**builtin_tab;
 
 	builtin_tab = ft_echo_tab(argc, argv);
-	// free_pipeline(pip);
 	print_tab(builtin_tab);
 	if (!builtin_tab || !builtin_tab[0])
 	{

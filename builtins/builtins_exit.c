@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/14 18:29:33 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:00:29 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	handle_first_arg(t_pipeline *pip, int *exit_code, t_data *data)
 			data->exit_code = 2;
 			ft_print_error("exit", argv[1], "numeric argument required");
 			*exit_code = 2;
-			// free_tab(argv);
 			return (1);
 		}
 	}
@@ -67,7 +66,6 @@ void	handle_exit(t_pipeline *pip, t_data *data)
 	int		exit_code;
 
 	exit_code = data->exit_code;
-	// print_pipeline(pip);
 	if (validate_exit_args(pip, &exit_code, data) == 1)
 	{
 		printf("exit\n");
@@ -77,15 +75,13 @@ void	handle_exit(t_pipeline *pip, t_data *data)
 			data->my_envp = NULL;
 		}
 		ms_lstclear(&data->env_ms);
-		if(pip)
+		if (pip)
 		{
 			free_pipeline(pip);
 			pip = NULL;
 		}
 		unconfigure_terminal();
 		rl_clear_history();
-		// if (argv)
-		// 	free_tab(argv);
 		free_term(data);
 		exit(exit_code);
 	}
@@ -98,7 +94,7 @@ void	handle_exit_parent(t_pipeline *pip, t_data *data)
 	i = 2;
 	while (pip->cmds[0]->args && ft_isnumeric(pip->cmds[0]->args[1]) == 1
 		&& pip->cmds[0]->args[i])
-			i++;
+		i++;
 	if (i > 2)
 	{
 		data->exit_code = 1;
@@ -106,7 +102,7 @@ void	handle_exit_parent(t_pipeline *pip, t_data *data)
 	}
 	free_tab(data->my_envp);
 	ms_lstclear(&data->env_ms);
-	if(pip)
+	if (pip)
 		free_pipeline(pip);
 	rl_clear_history();
 	exit(data->exit_code);

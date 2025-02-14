@@ -6,14 +6,13 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 18:28:45 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:18:18 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // Interrompt un programme (CTRL+C)
-
 int	get_pid(void)
 {
 	int		fd;
@@ -59,57 +58,24 @@ static void	handle_sigquit(int sig)
 	data = get_data(NULL);
 	(void)sig;
 	if (data->is_reading)
-	{
-		// write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
 		return;
-	}
 	printf("\nQuit (core dumped)\n");
 	data->exit_code = 131;
-	// ctrl_d_free(rl);
 	configure_terminal();
 	kill(get_pid(), SIGQUIT);
-	// exit(131);
 }
-
-// void	handle_sigquit_child(int sig)
-// {
-// 	(void)sig;
-// 	signal(SIGQUIT, SIG_IGN);
-// 	write(STDOUT_FILENO, "\nQuit (core dumped)\n", 20);
-// 	exit(131);
-// }
 
 // Demande d'arrêt propre (kill <PID>)
 static void	handle_sigterm(int sig)
 {
-	// t_rl	*rl;
-
 	(void)sig;
-	// rl = get_rl(NULL);
-	// write(STDOUT_FILENO, "\nSIGTERM reçu, fermeture propre...\n", 35);
-	// debug_log("Fermeture propre\n");
-	// ctrl_d_free(rl);
-
-	// Ajoute ici du code pour libérer la mémoire et quitter proprement
-	_exit(0);
+	exit(0);
 }
 
 // Empêche le programme d'être stoppé (CTRL+Z)
 static void	handle_sigtstp(int sig)
 {
 	(void)sig;
-	// write(STDOUT_FILENO, "\nSIGTSTP (CTRL+Z) ignoré\n", 25);
-}
-
-// Redimensionnement du terminal
-static void	handle_sigwinch(int sig)
-{
-	// t_rl	*rl;
-
-	(void)sig;
-	// rl = get_rl(NULL);
-	// get_cursor_position(rl);
-	// get_terminal_size(rl);
 }
 
 void handle_sigpipe(int sig)
@@ -139,8 +105,6 @@ void	setup_signal_handlers(void)
 	// Gestion de CTRL+\ (SIGQUIT)
 	sa.sa_handler = handle_sigquit;
 	sigaction(SIGQUIT, &sa, NULL);
-	// sa.sa_handler = SIG_IGN;
-	// sigaction(SIGQUIT, &sa, NULL);
 
 	// Gestion de SIGTERM (kill <PID>)
 	sa.sa_handler = handle_sigterm;
@@ -150,10 +114,6 @@ void	setup_signal_handlers(void)
 	sa.sa_handler = handle_sigtstp;
 	sigaction(SIGTSTP, &sa, NULL);
 
-	// Gestion de SIGWINCH (Redimensionnement du terminal)
-	sa.sa_handler = handle_sigwinch;
-	sigaction(SIGWINCH, &sa, NULL);
-
 	// Gestion de SIGPIPE (Eviter les crashs sur pipe casse)
 	sa.sa_handler = handle_sigpipe;
 	sigaction(SIGPIPE, &sa, NULL);
@@ -162,4 +122,3 @@ void	setup_signal_handlers(void)
 	sa.sa_handler = handle_sigsegv;
 	sigaction(SIGSEGV, &sa, NULL);
 }
-

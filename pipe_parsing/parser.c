@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/14 10:38:29 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:08:49 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	is_redirection(char *token)
 }
 
 //? Tokenize args in the data structure
-void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
+void	handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data)
 {
 	if (ft_strcmp(tokens[*i], "<") == 0 && tokens[*i + 1])
 	{
@@ -47,7 +47,6 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 				if (cmd->in_error == 0)
 					ft_print_error(NULL, cmd->input_file, "No such file or directory");
 				cmd->in_error = 1;
-				// free(cmd->input_file);
 			}
 			else
 			{
@@ -76,10 +75,7 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 			{
 				if (cmd->out_error == 0)
 					ft_print_error(NULL, cmd->output_file, "No such file or directory");
-				// cmd->fd_out = open("/dev/null", O_RDONLY); //test
-				// close(cmd->fd_out);
-				cmd->fd_out = -1; //test pour null
-				// free(cmd->output_file);
+				cmd->fd_out = -1;
 			}
 			if (cmd->fd_in > -1)
 				close(cmd->fd_in);
@@ -110,10 +106,7 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 			{
 				if (cmd->out_error == 0)
 					ft_print_error(NULL, cmd->output_file, "No such file or directory");
-				// cmd->fd_out = open("/dev/null", O_RDONLY); //test
-				// close(cmd->fd_out);
-				cmd->fd_out = -1; //test pour null
-				// free(cmd->output_file);
+				cmd->fd_out = -1;
 			}
 			if (cmd->fd_in > -1)
 				close(cmd->fd_in);
@@ -126,17 +119,11 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 				close(cmd->fd_out);
 		}	
 	}
-	// else if (ft_strcmp(tokens[*i], "<<") == 0 && tokens[*i + 1])
-	// {
-	// 	cmd->limiter = ft_strdup(tokens[++(*i)]);
-	// 	cmd->heredoc = 1;
-	// }
 	else if (ft_strcmp(tokens[*i], "<<") == 0 && tokens[*i + 1])
 	{
 		cmd->limiters = add_to_tab(cmd->limiters, tokens[++(*i)]);
 		cmd->heredoc = 1;
 	}
-
 }
 
 //? Build cmds according to their token
@@ -152,10 +139,8 @@ t_command	*parse_command(char **tokens, int *i, t_data *data)
 	{
 		if (is_redirection(tokens[*i]))
 		{
-			handle_redirection(tokens, i, cmd, data);
+			handle_redirec(tokens, i, cmd, data);
 			printf("cmd->out_error : %d\n", cmd->out_error);
-			// if (cmd->in_error == 1 || cmd->out_error == 1)
-			// 	return (cmd);
 		}
 		else
 		{
@@ -192,11 +177,6 @@ t_pipeline	*parse_pipeline(char **tokens, t_data *data)
 	while (tokens[i])
 	{
 		cmd = parse_command(tokens, &i, data);
-		// if (cmd->in_error == 1 || cmd->out_error == 1)
-		// {
-		// 	// free_command(cmd);
-		// 	return (pipeline);
-		// }
 		if (!cmd)
 		{
 			free_pipeline(pipeline);
@@ -206,10 +186,9 @@ t_pipeline	*parse_pipeline(char **tokens, t_data *data)
 		add_command_to_pipeline(pipeline, cmd);
 		if (tokens[i] && ft_strcmp(tokens[i], "|") == 0)
 		{
-			pipeline->pipe_cnt++;	
+			pipeline->pipe_cnt++;
 			i++;
 		}
-		
 	}
 	return (pipeline);
 }
@@ -230,7 +209,7 @@ void	print_pipeline(t_pipeline *pipeline)
 		if (cmd->args)
 		{
 			j = 0;
-			printf("[%d] : Arguments: ", i);;
+			printf("[%d] : Arguments: ", i);
 			while (cmd->args[j])
 				printf("'%s' ", cmd->args[j++]);
 			printf("\n");
@@ -242,8 +221,6 @@ void	print_pipeline(t_pipeline *pipeline)
 			printf("[%d] : Out: %s (append: %d)\n", i, cmd->output_file, cmd->append);
 		if (cmd->heredoc)
 			printf("[%d] : Heredoc: enabled\n", i);
-		// if (cmd->limiter)
-		// 	printf("[%d] : limiter: %s\n", i, cmd->limiter);
 		if (cmd->heredoc)
 		{
 			j = 0;
@@ -256,7 +233,6 @@ void	print_pipeline(t_pipeline *pipeline)
 		i++;
 	}
 	printf("pipeline->pipe_cnt: %d\n", pipeline->pipe_cnt);
-
 	pipeline->cmd_count = i;
 }
 

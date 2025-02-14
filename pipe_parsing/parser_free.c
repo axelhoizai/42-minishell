@@ -6,72 +6,14 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:07:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 15:04:25 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:04:40 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	free_command(t_command *cmd)
-// {
-// 	int	i;
-
-// 	if (!cmd)
-// 		return ;
-// 	if (cmd->args)
-// 	{
-// 		i = 0;
-// 		while (cmd->args[i])
-// 		{
-// 			free(cmd->args[i]);
-// 			i++;
-// 		}
-// 		free(cmd->args);
-// 	}
-// 	if (cmd->input_file)
-// 		free(cmd->input_file);
-// 	if (cmd->fd_in > -1)
-// 		close(cmd->fd_in);
-// 	if (cmd->output_file)
-// 		free(cmd->output_file);
-// 	if (cmd->limiter)
-// 		free(cmd->limiter);
-// 	free(cmd);
-// }
-
-// void	free_pipeline(t_pipeline *pipeline)
-// {
-// 	int	i;
-
-// 	if (!pipeline)
-// 		return ;
-// 	if (pipeline->cmds)
-// 	{
-// 		i = 0;
-// 		while (pipeline->cmds[i])
-// 		{
-// 			free_command(pipeline->cmds[i]);
-// 			i++;
-// 		}
-// 		free(pipeline->cmds);
-// 	}
-// 	free(pipeline);
-// }
-
-void	free_command(t_command *cmd)
+void	free_fd(t_command *cmd)
 {
-	int i;
-
-	if (!cmd)
-		return;
-	if (cmd->args)
-	{
-		i = 0;
-		while (cmd->args[i])
-			free(cmd->args[i++]);
-		free(cmd->args);
-		cmd->args = NULL;
-	}
 	if (cmd->input_file)
 	{
 		free(cmd->input_file);
@@ -81,11 +23,6 @@ void	free_command(t_command *cmd)
 	{
 		free(cmd->output_file);
 		cmd->output_file = NULL;
-	}
-	if (cmd->limiters)
-	{
-		free_tab(cmd->limiters);
-		cmd->limiters = NULL;
 	}
 	if (cmd->fd_in > -1)
 	{
@@ -97,6 +34,28 @@ void	free_command(t_command *cmd)
 		close(cmd->fd_out);
 		cmd->fd_out = -1;
 	}
+}
+
+void	free_command(t_command *cmd)
+{
+	int	i;
+
+	if (!cmd)
+		return ;
+	if (cmd->args)
+	{
+		i = 0;
+		while (cmd->args[i])
+			free(cmd->args[i++]);
+		free(cmd->args);
+		cmd->args = NULL;
+	}
+	if (cmd->limiters)
+	{
+		free_tab(cmd->limiters);
+		cmd->limiters = NULL;
+	}
+	free_fd(cmd);
 	free(cmd);
 	cmd = NULL;
 }
@@ -106,7 +65,7 @@ void	free_pipeline(t_pipeline *pipeline)
 	int	i;
 
 	if (!pipeline)
-		return;
+		return ;
 	i = 0;
 	while (i < pipeline->cmd_count)
 	{

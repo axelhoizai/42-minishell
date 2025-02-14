@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 15:44:41 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:56:46 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	free_change_dir(t_pipeline *pip, char *cwd, char *tmpdir, char *tmp)
 		free(tmpdir);
 	if (tmpdir)
 		free (tmp);
-	// free_pipeline(pip);
 }
 
 int	check_dir(char	*dir)

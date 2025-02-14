@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:56:03 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 11:21:45 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:24:21 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_path(char *cmd, char **envp)
 	i = 0;
 	cmd_parsed = get_cmd(cmd);
 	if (!cmd_parsed)
-		return ("-1");
+		return (NULL);
 	if (access(cmd_parsed, F_OK) != -1)
 		return (cmd_parsed);
 	env_path = get_env_path(envp);

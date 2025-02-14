@@ -3,51 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/12 10:53:24 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:10:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// int	open_file(t_data *data, char *file, int mode, int *p_fd)
-// {
-// 	int	fd;
-// 	(void)data;
-// 	(void)p_fd;
-
-// 	if (mode == 0)
-// 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-// 	else if (mode == 1)
-// 		fd = open(file, O_RDONLY);
-// 	else
-// 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// 	// if (fd == -1 && mode == 1)
-// 	// {
-// 	// 	perror(file);
-// 	// 	// fd = open("/dev/null", O_RDONLY);
-// 	// }
-// 	// else if (access(file, R_OK) == -1 && mode == 1)
-// 	// {
-// 	// 	perror(file);
-// 	// 	close(fd);
-// 	// }
-// 	// if ((fd == -1 || access(file, W_OK) == -1) && mode != 1)
-// 	// {
-// 	// 	perror(file);
-// 	// 	// close(p_fd[0]);
-// 	// }
-// 	return (fd);
-// }
-
 int	open_file(t_data *data, char *file, int mode, int *p_fd)
 {
 	int	fd;
+
 	(void)data;
 	(void)p_fd;
-
 	if (mode == 0)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (mode == 1)
@@ -60,7 +30,7 @@ int	open_file(t_data *data, char *file, int mode, int *p_fd)
 int	open_outfile(char *file, t_data *data, int here_doc)
 {
 	int	fd;
-	
+
 	if (here_doc == 1)
 		fd = open_file(data, file, 0, NULL);
 	else
@@ -69,30 +39,3 @@ int	open_outfile(char *file, t_data *data, int here_doc)
 		data->exit_code = 1;
 	return (fd);
 }
-
-// void	here_doc_checker(int *fd_files, t_pipeline *pip, t_data *data, int *i)
-// {
-// 	int		p_fd[2];
-// 	pid_t	child;
-
-// 	(void)data;
-// 	if (!pip || !pip->cmds[*i] || !pip->cmds[*i]->limiters)
-// 		return;
-// 	if (pipe(p_fd) == -1)
-// 		exit(PIPE_ERROR);
-// 	child = fork();
-// 	if (child == -1)
-// 		exit(FORK_ERROR);
-// 	if (child == 0)
-// 	{
-// 		close(p_fd[0]);
-// 		here_doc(pip->cmds[*i]->limiters, p_fd);
-// 		close(p_fd[1]);
-// 		exit(0);
-// 	}
-// 	close(p_fd[1]);
-// 	waitpid(child, NULL, 0);
-// 	if (fd_files[0] > 0)
-// 		close(fd_files[0]);
-// 	fd_files[0] = p_fd[0];
-// }

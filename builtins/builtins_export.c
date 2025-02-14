@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/06 11:24:49 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:58:13 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_export(char **argv, t_data *data)
 {
 	char	*key;
 	int		i;
-	
+
 	key = NULL;
 	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
 		print_export(data->env_ms);

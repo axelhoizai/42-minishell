@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:19:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 18:12:35 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:18:57 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_var(void *var)
 {
 	if (!var)
-		return;
+		return ;
 	if (var)
 	{
 		free(var);
@@ -25,10 +25,10 @@ void	free_var(void *var)
 
 void	free_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	if (!tab)
-		return;
+		return ;
 	i = 0;
 	while (tab[i])
 	{
@@ -45,6 +45,6 @@ void	free_term(t_data *data)
 	if (data->term)
 	{
 		free(data->term);
-		data->term = NULL;	
+		data->term = NULL;
 	}
 }

@@ -3,30 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 16:20:29 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:16:45 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	handle_sigint(int sig)
-// {
-// 	(void)sig;
-// 	signal(SIGQUIT, SIG_IGN);
-// 	write(STDOUT_FILENO, "\n", 1);
-// 	rl_on_new_line();
-// 	rl_replace_line("", 0);
-// 	rl_redisplay();
-// }
-
 //? Check if pipe exists
 bool	is_pipe(char **argv)
 {
-	int 		i;
-	
+	int	i;
+
 	i = 0;
 	while (argv[i])
 	{
@@ -79,24 +69,19 @@ void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 	else if (ft_strcmp(cmd->args[0], "env") == 0)
 		ft_env(data, pip);
 	else if (ft_strcmp(cmd->args[0], "exit") == 0)
-	{
 		handle_exit(pip, data);
-	}
 	else if (ft_strcmp(cmd->args[0], "clear") == 0)
 		printf("\033[H\033[J");
-	// free_tab(data->my_envp);
-	// ms_lstclear(&data->env_ms);
-	// free_pipeline(pip);
 }
 
 //! Faire une fonction exclusivement handle_builtins
 //TODO : Send all builtins in the exec part
 void	send_to_exec(int argc, char **argv, t_data *data)
 {
-	(void)argc;
 	t_pipeline	*pip;
 	int			fd_std;
 
+	(void)argc;
 	fd_std = -1;
 	pip = parse_pipeline(argv, data);
 	print_pipeline(pip);
@@ -133,50 +118,6 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 	}
 }
 
-// void	send_to_exec(int argc, char **argv, t_data *data)
-// {
-// 	(void)argc;
-// 	t_pipeline	*pip;
-// 	int			fd_std;
-
-// 	fd_std = -1;
-// 	pip = parse_pipeline(argv, data);
-// 	if (!pip || !pip->cmds || !pip->cmds[0] || !pip->cmds[0]->args || !pip->cmds[0]->args[0])
-// 	{
-// 		free_pipeline(pip);
-// 		return;
-// 	}
-// 	//affiche pipeline
-// 	print_pipeline(pip);
-// 	// Vérifie si un pipe est présent
-// 	if (is_pipe(argv) || !is_builtin(pip->cmds[0]->args[0]))
-// 	{
-// 		data->exit_code = pipex(pip, data);
-// 	}
-// 	// Vérifie si la commande est un builtin
-// 	else if (is_builtin(pip->cmds[0]->args[0]))
-// 	{
-// 		// Si un fichier de sortie est défini, redirige stdout
-// 		if (pip->cmds[0]->output_file)
-// 		{
-// 			fd_std = dup(STDOUT_FILENO);
-// 			dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
-// 			close(pip->cmds[0]->fd_out);
-// 		}
-
-// 		// Exécute le builtin
-// 		handle_builtins(pip->cmds[0], pip, data);
-
-// 		// Restaure stdout si redirigé
-// 		if (fd_std != -1)
-// 		{
-// 			dup2(fd_std, STDOUT_FILENO);
-// 			close(fd_std);
-// 		}
-// 	}
-// 	free_pipeline(pip);
-// }
-
 //? Parse builtins to removes quotes and parse dollars
 static void	process_builtins(char *builtins, t_data *data)
 {
@@ -192,7 +133,6 @@ static void	process_builtins(char *builtins, t_data *data)
 		free(argv);
 		data->exit_code = 0;
 		return ;
-		// handle_exit(NULL, data);
 	}
 	while (argv && argv[argc])
 		argc++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:27 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 15:51:30 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:57:14 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,4 @@ void	ft_env(t_data *data, t_pipeline *pip)
 {
 	(void)pip;
 	print_lst(data->env_ms);
-	// free_pipeline(pip);
 }
