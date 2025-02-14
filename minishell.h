@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 14:33:51 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 15:28:43 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,6 @@ typedef struct s_env_ms
 typedef struct s_data_term
 {
 	struct termios original_term;
-	unsigned int	term_row; //hauteur terminal
-	unsigned int	term_col; //largeur terminal
-
-	int	cursor_row; //ligne
-	ssize_t	cursor_col; // col
 } t_data_term;
 
 typedef struct s_data
@@ -81,6 +76,7 @@ typedef struct s_data
 	char		**my_envp;
 	t_env_ms	*env_ms;
 	char		**argv;
+	bool		is_reading;
 	t_data_term	*term;
 }	t_data;
 
@@ -125,135 +121,6 @@ typedef struct s_pipeline
 // }	t_pipeline;
 
 char		*get_prompt(t_env_ms *lst);
-
-//--------------------------FT_READLINE-----------------------------
-
-# define BACKSPACE 127
-# define DELETE '~'
-# define ENTER '\n'
-# define ARROW_UP 'A'
-# define ARROW_DOWN 'B'
-# define ARROW_LEFT 'D'
-# define ARROW_RIGHT 'C'
-#ifdef ESC
-#	undef ESC
-#endif
-#	define ESC CTRL('[')
-# define CTRL_D 4
-# define CTRL_C 3
-# define CTRL_R 18
-# define CTRL_Z 26
-#ifdef TAB
-#	undef TAB
-#endif
-#	define TAB 9
-
-# define HISTORY_FILE ".minishell_history"
-
-typedef struct s_history
-{
-	int		history_capacity;
-	char	**history_tab;
-	int		history_count;
-	int		history_index;
-}	t_history;
-
-typedef struct	s_rl
-{
-	int	temp_prompt_row;
-	int	prompt_row;
-	unsigned int	prompt_col;
-	unsigned int	prompt_len;
-	char			*prompt;
-
-	char			**lines;
-	int				lines_needed;
-	unsigned int	line_count;
-	unsigned int	line_capacity;
-	unsigned int	line_length;
-	ssize_t			cursor_pos;
-	bool			cursor_limit_line;
-
-	char			*buffer;
-	unsigned int	buffer_size;
-	unsigned int	buffer_lines_cnt;
-	char			*buffer_copy;
-	t_history		*history;
-	t_data_term		*term;
-
-	bool			is_reading;
-}	t_rl;
-
-// ft_readline
-char	*ft_readline(t_rl *rl);
-void	ctrl_d_free(t_rl *rl);
-void	process_input(t_rl *rl, char c, int *bytes_available);
-
-// ft_readline_init
-void		init_readline(t_rl *rl);
-void		init_term(t_rl *rl);
-
-// ft_readline_free
-void		free_term(t_rl *rl);
-void		free_readline(t_rl *rl);
-void		free_var(void *var);
-void		free_tab(char **tab);
-
-//ft_readline_history
-void		parse_historique(char *buffer, t_history *history);
-void		add_to_history(char *cmd, t_history *history);
-void 		load_history(t_history *history);
-void		free_history(t_rl *rl);
-
-// ft_readline_termimal
-// void		reset_terminal();
-void		get_terminal_size(t_rl *rl);
-// void		enable_raw_mode();
-// void		disable_raw_mode();
-void	configure_terminal();
-void	unconfigure_terminal();
-
-
-// ft_readline_cursor
-void		move_cursor(int row, int col);
-void		get_prompt_position(t_rl *rl);
-void		recalculate_cursor_line_pos(t_rl *rl);
-int			get_cursor_pos_from_terminal(t_rl *rl);
-int			get_cursor_position(t_rl *rl);
-
-// ft_readline_input
-int			handle_enter(t_rl *rl, int bytes_available, char c);
-void		handle_delete(t_rl *rl);
-void		handle_backspace(t_rl *rl);
-void		insert_char_at_cursor(t_rl *rl, char c);
-void		handle_arrow_keys(t_rl *rl, char first_char);
-
-//ft_realine_arrow
-void		move_cursor_up(t_rl *rl);
-void		move_cursor_down(t_rl *rl);
-void		move_cursor_left(t_rl *rl);
-void		move_cursor_right(t_rl *rl);
-void		handle_history(t_rl *rl, int direction);
-
-// ft_readline_signal
-void		setup_signal_handlers(void);
-
-// ft_readline_helper
-void		update_display(t_rl *rl);
-int			is_real_enter();
-int			detect_scroll(t_rl *rl);
-t_rl		*get_rl(t_rl *new_rl);
-// void		print_prompt(t_rl *rl);
-
-// ft_readline_debug
-void		debug_log(const char *format, ...);
-
-t_data		*get_data(t_data *new_data);
-int			actual_prompt_length(char *str);
-int			get_prompt_length(char *prompt);
-void		print_prompt(t_rl *rl);
-
-//--------------------------FT_READLINE-END--------------------------
 
 //-------------------------------UTILS-------------------------------
 
@@ -303,6 +170,7 @@ void		lst_to_tab(t_env_ms *lst, t_data *data);
 
 //utils_data
 void		ft_init(char **envp, int *is_start, t_data *data);
+t_data		*get_data(t_data *new_data);
 
 //utils_get
 int			get_process_id(void);
@@ -315,6 +183,18 @@ void		get_dir(t_data *data, t_pipeline *pip);
 char		*handle_n(char *flag);
 char		*process_arg(char **builtin_tab, char **argv, int i);
 char		**ft_echo_tab(int argc, char **argv);
+
+// utils_terminal
+void		reset_terminal();
+void		configure_terminal();
+void		unconfigure_terminal();
+
+// utils_free
+void		free_var(void *var);
+void		free_tab(char **tab);
+
+// utils signal
+void		setup_signal_handlers(void);
 
 //-------------------------------UTILS-END---------------------------
 

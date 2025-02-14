@@ -1,43 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_readline_signal.c                               :+:      :+:    :+:   */
+/*   utils_signal.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 15:01:18 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 15:38:30 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-#include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-
 // Interrompt un programme (CTRL+C)
+// static void	handle_sigint(int sig)
+// {
+// 	(void)sig;
+// 	// configure_terminal();
+// 	printf("^C\n");
+// 	fflush(stdout);
+// }
+
 static void	handle_sigint(int sig)
 {
-	t_rl	*rl;
-
 	(void)sig;
-	rl = get_rl(NULL);
-	configure_terminal();
-	// write(STDOUT_FILENO, "^C\n", 4);
-	printf("^C\n");
-	rl->buffer_size = 0;
-	rl->cursor_pos = 0;
-	rl->line_length = 0;
-	get_cursor_position(rl);
-	get_prompt_position(rl);
-	get_terminal_size(rl);
-	move_cursor(rl->prompt_row + 1, 0);
-	// write(STDOUT_FILENO, "\033[K", 3);
-	printf("\033[K");
-	printf("%s", rl->prompt);
-	fflush(stdout);
+	write(STDOUT_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 int	get_pid(void)
@@ -63,13 +53,11 @@ int	get_pid(void)
 // Quitte le programme (CTRL+\), ignore en mode readline
 static void	handle_sigquit(int sig)
 {
-	t_rl	*rl;
 	t_data	*data;
 
 	data = get_data(NULL);
 	(void)sig;
-	rl = get_rl(NULL);
-	if (rl->is_reading)
+	if (data->is_reading)
 	{
 		// write(STDOUT_FILENO, "\nSIGQUIT ignoré\n", 17);
 		return;
@@ -86,13 +74,13 @@ static void	handle_sigquit(int sig)
 // Demande d'arrêt propre (kill <PID>)
 static void	handle_sigterm(int sig)
 {
-	t_rl	*rl;
+	// t_rl	*rl;
 
 	(void)sig;
-	rl = get_rl(NULL);
+	// rl = get_rl(NULL);
 	// write(STDOUT_FILENO, "\nSIGTERM reçu, fermeture propre...\n", 35);
 	// debug_log("Fermeture propre\n");
-	ctrl_d_free(rl);
+	// ctrl_d_free(rl);
 
 	// Ajoute ici du code pour libérer la mémoire et quitter proprement
 	_exit(0);
@@ -108,12 +96,12 @@ static void	handle_sigtstp(int sig)
 // Redimensionnement du terminal
 static void	handle_sigwinch(int sig)
 {
-	t_rl	*rl;
+	// t_rl	*rl;
 
 	(void)sig;
-	rl = get_rl(NULL);
-	get_cursor_position(rl);
-	get_terminal_size(rl);
+	// rl = get_rl(NULL);
+	// get_cursor_position(rl);
+	// get_terminal_size(rl);
 }
 
 void handle_sigpipe(int sig)
