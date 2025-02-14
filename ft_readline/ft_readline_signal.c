@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 15:50:53 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/14 10:47:31 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,19 @@ static void	handle_sigwinch(int sig)
 	get_terminal_size(rl);
 }
 
+void handle_sigpipe(int sig)
+{
+	(void)sig;
+	write(STDERR_FILENO, "Broken pipe\n", 12);
+}
+
+void handle_sigsegv(int sig)
+{
+	(void)sig;
+	write(STDERR_FILENO, "Segmentation fault detected\n", 28);
+	exit(139);
+}
+
 void	setup_signal_handlers(void)
 {
 	struct sigaction sa;
@@ -138,4 +151,13 @@ void	setup_signal_handlers(void)
 	// Gestion de SIGWINCH (Redimensionnement du terminal)
 	sa.sa_handler = handle_sigwinch;
 	sigaction(SIGWINCH, &sa, NULL);
+
+	// Gestion de SIGPIPE (Eviter les crashs sur pipe casse)
+	sa.sa_handler = handle_sigpipe;
+	sigaction(SIGPIPE, &sa, NULL);
+
+	// Gestion de SIGSEGV (Detection des Segmentation Faults)
+	sa.sa_handler = handle_sigsegv;
+	sigaction(SIGSEGV, &sa, NULL);
 }
+

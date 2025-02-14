@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/13 03:47:18 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/14 10:50:06 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	main_loop(t_data *data)
 	while (1)
 	{
 		prompt = get_prompt(data->env_ms);
+		setup_signal_handlers();
 		input = readline(prompt);
 		exit_code = data->exit_code;
 		free(prompt);
