@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/13 13:47:34 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 11:43:08 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ static void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 }
 
 /* Gestion des processus intermédiaires */
-static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
+static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data, int *i)
 {
 	pid_t	child;
 	// int		p_fd[2];
@@ -171,16 +171,18 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	if (child == 0)
 	{
 		close(p_fd[0]);
+		if (cmd->in_error == 1 || cmd->out_error == 1)
+		{
+			ms_lstclear(&data->env_ms);
+			free_tab(data->my_envp);
+			free_pipeline(pip);
+			close(p_fd[1]);
+			exit(1);
+		}
 		if (cmd->fd_in > -1)
-		{
 			dup2(cmd->fd_in, STDIN_FILENO);
-			close(cmd->fd_in);
-		}
 		if (cmd->fd_out > -1)
-		{
 			dup2(cmd->fd_out, STDOUT_FILENO);
-			close(cmd->fd_out);
-		}
 		else if (cmd->fd_out < 0 && cmd->out_error == 0 && cmd->in_error == 0)
 			dup2(p_fd[1], STDOUT_FILENO);
 		close(p_fd[1]);
@@ -190,7 +192,6 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		ft_close_fdout(pip);
 		// close(p_fd[1]);
 		// close(p_fd[0]);
-		// close(p_fd[1]);
 		if (is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
@@ -203,8 +204,8 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		close(cmd->fd_in);
 	if (cmd->fd_in == -2)
 		cmd->fd_in = p_fd[0];
-	if (pip->cmds[2]->fd_in == -2)
-		pip->cmds[2]->fd_in = p_fd[0];
+	if (pip->cmds[*i + 1]->fd_in == -2)
+		pip->cmds[*i + 1]->fd_in = p_fd[0];
 	else
 		close(p_fd[0]);
 }
@@ -264,6 +265,7 @@ static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			if (cmd->fd_out > -1)
 				dup2(cmd->fd_out, STDOUT_FILENO);
 			close(p_fd[0]);
+			close(p_fd[1]);
 			ft_close_fdin(pip);
 			ft_close_fdout(pip);
 			if (is_builtin(pip->cmds[pip->cmd_count - 1]->args[0]))
@@ -297,23 +299,23 @@ int	pipex(t_pipeline *pip, t_data *data)
 	int		status;
 
 	i = 0;
-	if (pip->cmds[i]->heredoc == 1)
-		here_doc(pip->cmds[i]);
+	signal(SIGPIPE, SIG_IGN);
+	// if (pip->cmds[i]->heredoc == 1)
+	here_doc(pip->cmds[i]);
 	first_pipe(pip->cmds[0], pip, p_fd, data);
 	i++;
 	while (i < pip->cmd_count - 1)
 	{
 		// here_doc_checker(fd_files, pip, data, &i);
-		multi_pipe(pip->cmds[i], pip, p_fd, data);
+		multi_pipe(pip->cmds[i], pip, p_fd, data, &i);
 		i++;
 	}
 	// here_doc_checker(fd_files, pip, data, &i);
 	status = last_pipe(pip->cmds[i], pip, p_fd, data);
-	i = 0;
-	while (i < pip->cmd_count)
+	while (i >= 0)
 	{
-		waitpid(0, NULL, 0);
-		i++;
+		waitpid(-1, NULL, 0);
+		i--;
 	}
 	return (status);
 }

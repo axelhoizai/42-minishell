@@ -21,8 +21,13 @@ void here_doc(t_command *cmd)
 	int		matched;
 
 	limiter_count = 0;
-	cmd->fd_in = open("here_doc", O_RDWR | O_CREAT, 0777);
-	// printf("cmd->fd_in here_doc first : %d\n", cmd->fd_in);
+	if (cmd->heredoc == 1)
+	{
+		if (cmd->fd_in > -1)
+			close(cmd->fd_in);
+		cmd->fd_in = open("here_doc", O_RDWR | O_CREAT, 0777);
+	}
+	print_tab(cmd->limiters);
 	while (cmd->limiters[limiter_count])
 		limiter_count++;
 	j = 0;
@@ -43,15 +48,18 @@ void here_doc(t_command *cmd)
 				matched = 1;
 			else
 			{
-				if (j == limiter_count - 1)
+				if (j == limiter_count - 1 && cmd->heredoc == 1)
 					ft_putstr_fd(next_line, cmd->fd_in);
 			}
 			free(next_line);
 		}
 		j++;
 	}
-	close(cmd->fd_in);
-	cmd->fd_in = open("here_doc", O_RDONLY);
+	if (cmd->heredoc == 1)
+	{
+		close(cmd->fd_in);
+		cmd->fd_in = open("here_doc", O_RDONLY);
+		unlink("here_doc");
+	}
 	// printf("cmd->fd_in here_doc last : %d\n", cmd->fd_in);
-	unlink("here_doc");
 }

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/13 16:02:44 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/14 10:38:29 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 {
 	if (ft_strcmp(tokens[*i], "<") == 0 && tokens[*i + 1])
 	{
+		cmd->heredoc = 0;
 		if (cmd->input_file || cmd->in_error == 1)
 		{
 			if (cmd->fd_in > -1)
@@ -75,8 +76,8 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 			{
 				if (cmd->out_error == 0)
 					ft_print_error(NULL, cmd->output_file, "No such file or directory");
-				cmd->fd_out = open("/dev/null", O_RDONLY); //test
-				close(cmd->fd_out);
+				// cmd->fd_out = open("/dev/null", O_RDONLY); //test
+				// close(cmd->fd_out);
 				cmd->fd_out = -1; //test pour null
 				// free(cmd->output_file);
 			}
@@ -109,8 +110,8 @@ void	handle_redirection(char **tokens, int *i, t_command *cmd, t_data *data)
 			{
 				if (cmd->out_error == 0)
 					ft_print_error(NULL, cmd->output_file, "No such file or directory");
-				cmd->fd_out = open("/dev/null", O_RDONLY); //test
-				close(cmd->fd_out);
+				// cmd->fd_out = open("/dev/null", O_RDONLY); //test
+				// close(cmd->fd_out);
 				cmd->fd_out = -1; //test pour null
 				// free(cmd->output_file);
 			}
