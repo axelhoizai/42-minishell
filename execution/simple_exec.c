@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 17:34:37 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 19:01:01 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 
 static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid[2])
 {
+	// int	tty_fd;
+
+	// tty_fd = -1;
 	if (pid[0] == 0)
 	{
 		if (pip->cmds[0]->fd_in > -1)
@@ -80,12 +83,23 @@ static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid[2])
 			dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
 			close(pip->cmds[0]->fd_out);
 		}
+		// if (!isatty(STDIN_FILENO)) // pour nano, vi, ...
+		// {
+		// 	tty_fd = open("/dev/tty", O_RDWR);
+		// 	if (tty_fd > -1)
+		// 	{
+		// 		dup2(tty_fd, STDIN_FILENO);
+		// 		close(tty_fd);
+		// 	}
+		// }
 		execute(pip->cmds[0]->args, pip, data);
 	}
 	if (pip->cmds[0]->fd_in > -1)
 		close(pip->cmds[0]->fd_in);
 	if (pip->cmds[0]->fd_out > -1)
 		close(pip->cmds[0]->fd_out);
+	// if (tty_fd > -1)
+	// 	close(tty_fd);
 }
 
 void	simple_exec(t_pipeline *pip, t_data *data)
