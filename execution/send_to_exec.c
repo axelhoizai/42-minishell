@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:47:45 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:40:37 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//? Check if pipe exists
 bool	is_pipe(char **argv)
 {
 	int	i;
@@ -74,8 +73,25 @@ void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 		printf("\033[3J\033[H\033[J");
 }
 
-//! Faire une fonction exclusivement handle_builtins
-//TODO : Send all builtins in the exec part
+void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
+{
+	if (pip->cmds[0]->fd_out > -1)
+	{
+		*fd_std = dup(STDOUT_FILENO);
+		dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
+		close(pip->cmds[0]->fd_out);
+	}
+	if (pip->cmds[0]->out_error == 0 && pip->cmds[0]->in_error == 0)
+		handle_builtins(pip->cmds[0], pip, data);
+	if (pip->cmds[0]->output_file)
+	{
+		dup2(*fd_std, STDOUT_FILENO);
+		if (*fd_std != -1)
+			close(*fd_std);
+	}
+	free_pipeline(pip);
+}
+
 void	send_to_exec(int argc, char **argv, t_data *data)
 {
 	t_pipeline	*pip;
@@ -91,23 +107,7 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 		free_pipeline(pip);
 	}
 	else if (is_builtin(pip->cmds[0]->args[0]))
-	{
-		if (pip->cmds[0]->fd_out > -1)
-		{
-			fd_std = dup(STDOUT_FILENO);
-			dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
-			close(pip->cmds[0]->fd_out);
-		}
-		if (pip->cmds[0]->out_error == 0 && pip->cmds[0]->in_error == 0)
-			handle_builtins(pip->cmds[0], pip, data);
-		if (pip->cmds[0]->output_file)
-		{
-			dup2(fd_std, STDOUT_FILENO);
-			if (fd_std != -1)
-				close(fd_std);
-		}
-		free_pipeline(pip);
-	}
+		fds_dup(&fd_std, pip, data);
 	else if (argv)
 	{
 		if (pip->cmds[0]->heredoc == 1)
