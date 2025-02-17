@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/14 19:08:49 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 11:44:24 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data)
 			free(cmd->input_file);
 		}
 		cmd->input_file = ft_strdup(tokens[++(*i)]);
-		cmd->fd_in = open_file(NULL, cmd->input_file, 1, NULL);
+		cmd->fd_in = open_file(cmd->input_file, 1);
 		if (cmd->fd_in == -1 || cmd->in_error == 1)
 		{
 			if (cmd->fd_in == -1)
@@ -68,7 +68,6 @@ void	handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data)
 		cmd->output_file = ft_strdup(tokens[++(*i)]);
 		if (cmd->out_error == 0)
 			cmd->fd_out = open_outfile(cmd->output_file, data, 0);
-		printf("fd_out : %d\n", cmd->fd_out);
 		if (cmd->fd_out == -1 && cmd->out_error == 0)
 		{
 			if (cmd->in_error == 0)
@@ -138,10 +137,7 @@ t_command	*parse_command(char **tokens, int *i, t_data *data)
 	while (tokens[*i] && ft_strcmp(tokens[*i], "|") != 0)
 	{
 		if (is_redirection(tokens[*i]))
-		{
 			handle_redirec(tokens, i, cmd, data);
-			printf("cmd->out_error : %d\n", cmd->out_error);
-		}
 		else
 		{
 			cmd->args = add_to_tab(cmd->args, tokens[*i]);
@@ -152,9 +148,9 @@ t_command	*parse_command(char **tokens, int *i, t_data *data)
 	j = 1;
 	while (cmd->args[j])
 	{
-		if (cmd->args[j][0] != '-' && !is_builtin(cmd->args[0]))
+		if (cmd->args[j][0] != '-' && !is_builtin(cmd->args[0]) && !cmd->heredoc)
 		{
-			cmd->fd_in = open_file(data, cmd->args[j], 1, NULL);
+			cmd->fd_in = open_file(cmd->args[j], 1);
 			if (cmd->fd_in == -1)
 				ft_print_error(NULL, cmd->args[j], "No such file or directory");
 		}

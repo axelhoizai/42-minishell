@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 18:54:18 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 11:09:04 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ int			args_checker(t_pipeline *pip);
 void		script_checker(char *cmd);
 
 //utils_files
-int			open_file(t_data *data, char *file, int mode, int *p_fd);
+int			open_file(char *file, int mode);
 int			open_outfile(char *file, t_data *data, int here_doc);
 // void		here_doc_chck(int *fd_files, t_pipeline *pip, t_data *data, int *i);
 

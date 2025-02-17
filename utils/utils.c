@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 19:16:45 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 11:23:06 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 	else if (ft_strcmp(cmd->args[0], "exit") == 0)
 		handle_exit(pip, data);
 	else if (ft_strcmp(cmd->args[0], "clear") == 0)
-		printf("\033[H\033[J");
+		printf("\033[3J\033[H\033[J");
 }
 
 //! Faire une fonction exclusivement handle_builtins
