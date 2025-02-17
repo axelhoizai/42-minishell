@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 13:36:40 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:54:00 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,6 @@ void	print_echo(char	**builtin_tab, int *i, int is_n)
 	if (is_n == 1)
 		printf("\n");
 }
-
-// char	*process_arg(char **builtin_tab, char **argv, int i)
-// {
-// 	char	*temp;
-// 	int		i;
-
-// 	i = 1;
-// 	builtin_tab[i] = ft_strdup(argv[i]);
-// 	if (((i > 0 && (ft_strcmp(builtin_tab[i - 1], "-n") == 0)) || i == 1)
-// 		&& (ft_strcmp("-n", builtin_tab[i]) != 0 && builtin_tab[i][0] == '-'))
-// 	{
-// 		temp = builtin_tab[i];
-// 		builtin_tab[i] = handle_n(builtin_tab[i]);
-// 		if (temp != builtin_tab[i])
-// 			free(temp);
-// 	}
-// 	return (builtin_tab[i]);
-// }
 
 char	*process_arg(char **builtin_tab, char **argv, int i)
 {
@@ -63,7 +45,6 @@ char	*process_arg(char **builtin_tab, char **argv, int i)
 			if (builtin_tab[i][j] == '\0')
 				builtin_tab[i] = ft_strdup("-n");
 		}
-		// builtin_tab[i] = handle_n(builtin_tab[i]);
 		if (temp != builtin_tab[i])
 			free(temp);
 	}

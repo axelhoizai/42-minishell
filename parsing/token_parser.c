@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:08:59 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:07:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ void	handle_parse_token(const char *line, int *i, t_parse *parse)
 	}
 }
 
+static void	check_closing_quote(char *line, int *i, t_parse *parse)
+{
+	if (line[*i] && (((line[*i] == '\'' && parse->in_double == 1)
+				|| (line[*i] == '"' && parse->in_single == 1))
+			|| (line[*i] != '"' && line[*i] != '\'')))
+		append_char(parse, line[*i]);
+}
+
 //? Big function handling parsing
 char	*parse_token(char *line, int *i, t_data *data)
 {
@@ -62,10 +70,7 @@ char	*parse_token(char *line, int *i, t_data *data)
 			handle_variable(line, i, &parse, data);
 			continue ;
 		}
-		if (line[*i] && (((line[*i] == '\'' && parse.in_double == 1)
-					|| (line[*i] == '"' && parse.in_single == 1))
-				|| (line[*i] != '"' && line[*i] != '\'')))
-			append_char(&parse, line[*i]);
+		check_closing_quote(line, i, &parse);
 		(*i)++;
 	}
 	return (parse.buffer);

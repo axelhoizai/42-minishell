@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:59:50 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:45:23 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:54:40 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,3 @@ t_data	*get_data(t_data *new_data)
 		data = new_data;
 	return (data);
 }
-

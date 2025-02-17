@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:45:32 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:55:42 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,20 @@ static void	handle_sigquit(int sig)
 	data = get_data(NULL);
 	(void)sig;
 	if (data->is_reading)
-		return;
+		return ;
 	printf("\nQuit (core dumped)\n");
 	data->exit_code = 131;
 	configure_terminal();
 	kill(get_process_id(), SIGQUIT);
 }
 
-void handle_sigpipe(int sig)
+void	handle_sigpipe(int sig)
 {
 	(void)sig;
 	write(STDERR_FILENO, "Broken pipe\n", 12);
 }
 
-void handle_sigsegv(int sig)
+void	handle_sigsegv(int sig)
 {
 	(void)sig;
 	write(STDERR_FILENO, "Segmentation fault detected\n", 28);
@@ -59,24 +59,16 @@ void handle_sigsegv(int sig)
 
 void	setup_signal_handlers(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
-
-	// Gestion de CTRL+C (SIGINT)
 	sa.sa_handler = handle_sigint;
 	sigaction(SIGINT, &sa, NULL);
-
-	// Gestion de CTRL+\ (SIGQUIT)
 	sa.sa_handler = handle_sigquit;
 	sigaction(SIGQUIT, &sa, NULL);
-
-	// Gestion de SIGPIPE (Eviter les crashs sur pipe casse)
 	sa.sa_handler = handle_sigpipe;
 	sigaction(SIGPIPE, &sa, NULL);
-
-	// Gestion de SIGSEGV (Detection des Segmentation Faults)
 	sa.sa_handler = handle_sigsegv;
 	sigaction(SIGSEGV, &sa, NULL);
 }

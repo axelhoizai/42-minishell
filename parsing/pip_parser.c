@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/17 14:28:51 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:56:31 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,3 @@ void	print_pipeline(t_pipeline *pipeline)
 	printf("pipeline->pipe_cnt: %d\n", pipeline->pipe_cnt);
 	pipeline->cmd_count = i;
 }
-
-//<< . cat | rev >> outfile
-// ./pipex file1 cmd1   cmd2   cmd3 ...   cmdn   file2
-//     <   file1 cmd1 | cmd2 | cmd3 ... | cmdn > file2
-
-// ./pipex here_doc LIMITER   cmd   cmd1   file
-//   cmd      <<    LIMITER | cmd1   >>    file
-
-//./pipex here_doc LIMITER cmd cmd1 file
