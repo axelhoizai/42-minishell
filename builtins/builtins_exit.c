@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/14 19:00:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:46:59 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,9 @@ void	handle_exit(t_pipeline *pip, t_data *data)
 			free_pipeline(pip);
 			pip = NULL;
 		}
-		unconfigure_terminal();
+		data->is_reading = false;
 		rl_clear_history();
 		free_term(data);
 		exit(exit_code);
 	}
-}
-
-void	handle_exit_parent(t_pipeline *pip, t_data *data)
-{
-	int	i;
-
-	i = 2;
-	while (pip->cmds[0]->args && ft_isnumeric(pip->cmds[0]->args[1]) == 1
-		&& pip->cmds[0]->args[i])
-		i++;
-	if (i > 2)
-	{
-		data->exit_code = 1;
-		return ;
-	}
-	free_tab(data->my_envp);
-	ms_lstclear(&data->env_ms);
-	if (pip)
-		free_pipeline(pip);
-	rl_clear_history();
-	exit(data->exit_code);
 }

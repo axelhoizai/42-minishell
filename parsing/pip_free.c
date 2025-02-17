@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_free.c                                      :+:      :+:    :+:   */
+/*   pip_free.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:07:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 19:04:40 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:42:20 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_fd(t_command *cmd)
+static void	free_fd(t_command *cmd)
 {
 	if (cmd->input_file)
 	{
@@ -36,7 +36,7 @@ void	free_fd(t_command *cmd)
 	}
 }
 
-void	free_command(t_command *cmd)
+static void	free_command(t_command *cmd)
 {
 	int	i;
 

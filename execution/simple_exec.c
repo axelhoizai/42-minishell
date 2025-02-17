@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 15:28:06 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:34:37 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_execute(t_pipeline *pip, t_data *data)
 	free_pipeline(pip);
 }
 
-char	*execute_checker(char **cmd, t_pipeline *pip, t_data *data)
+static char	*execute_checker(char **cmd, t_pipeline *pip, t_data *data)
 {
 	char	*cmd_path;
 
@@ -66,7 +66,7 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	exit(127);
 }
 
-void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid[2])
+static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid[2])
 {
 	if (pid[0] == 0)
 	{
@@ -88,7 +88,7 @@ void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid[2])
 		close(pip->cmds[0]->fd_out);
 }
 
-void	exec(t_pipeline *pip, t_data *data)
+void	simple_exec(t_pipeline *pip, t_data *data)
 {
 	int		status;
 	pid_t	pid[2];

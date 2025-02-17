@@ -13,8 +13,8 @@ BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exi
 			builtins/builtins_export.c builtins/builtins_unset.c  builtins/builtins_env.c 
 
 UTILS = utils/utils_prompt.c utils/utils_print_error.c utils/utils_debug.c \
-		utils/utils_list.c utils/utils_list2.c utils/utils_data.c utils/utils_get.c \
-		utils/utils_signal.c utils/utils_terminal.c utils/utils_free.c
+		utils/utils_list.c utils/utils_list2.c utils/utils_get.c \
+		utils/utils_signal.c utils/utils_free.c
 
 SRCS_BONUS = \
 

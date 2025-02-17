@@ -3,16 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 18:56:31 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:22:47 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	main_loop(t_data *data)
+static void	ft_init(char **envp, int *is_start, t_data *data)
+{
+	if (*is_start == 0)
+	{
+		data->exit_code = 0;
+		data->is_reading = 0;
+		init_env_ms(envp, data);
+		*is_start = 1;
+		data->term = (t_data_term *)ft_calloc(sizeof(t_data_term), 1);
+		if (!data->term)
+			return ;
+	}
+}
+
+static char	main_loop(t_data *data)
 {
 	char	*input;
 	char	*prompt;
@@ -21,7 +35,7 @@ char	main_loop(t_data *data)
 	setup_signal_handlers();
 	while (1)
 	{
-		configure_terminal();
+		data->is_reading = true;
 		prompt = get_prompt(data->env_ms);
 		input = readline(prompt);
 		exit_code = data->exit_code;
@@ -34,7 +48,7 @@ char	main_loop(t_data *data)
 		}
 		if (*input)
 			add_history(input);
-		unconfigure_terminal();
+		data->is_reading = false;
 		get_argv(input, data);
 		free_var(input);
 	}

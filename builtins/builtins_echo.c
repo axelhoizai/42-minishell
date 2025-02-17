@@ -6,13 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 14:54:00 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:09:16 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_echo(char	**builtin_tab, int *i, int is_n)
+static void	print_echo(char	**builtin_tab, int *i, int is_n)
 {
 	while (builtin_tab[*i])
 	{
@@ -26,7 +26,7 @@ void	print_echo(char	**builtin_tab, int *i, int is_n)
 		printf("\n");
 }
 
-char	*process_arg(char **builtin_tab, char **argv, int i)
+static char	*process_arg(char **builtin_tab, char **argv, int i)
 {
 	char	*temp;
 	int		j;
@@ -51,7 +51,7 @@ char	*process_arg(char **builtin_tab, char **argv, int i)
 	return (builtin_tab[i]);
 }
 
-char	**ft_echo_tab(int argc, char **argv)
+static char	**ft_echo_tab(int argc, char **argv)
 {
 	int		i;
 	char	**builtin_tab;

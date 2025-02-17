@@ -6,33 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:59:50 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 14:54:40 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:06:28 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	get_process_id(void)
-{
-	int		fd;
-	char	buffer[32];
-	int		pid;
-
-	fd = open("/proc/self/stat", O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	if (read(fd, buffer, 31) <= 0)
-	{
-		close(fd);
-		return (-1);
-	}
-	buffer[31] = '\0';
-	pid = ft_atoi(buffer);
-	close(fd);
-	return (pid);
-}
-
-char	*extract_uid(char *buffer)
+static char	*extract_uid(char *buffer)
 {
 	char	*uid_start;
 	char	*uid;
@@ -81,4 +61,24 @@ t_data	*get_data(t_data *new_data)
 	if (new_data)
 		data = new_data;
 	return (data);
+}
+
+int	get_process_id(void)
+{
+	int		fd;
+	char	buffer[32];
+	int		pid;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd < 0)
+		return (-1);
+	if (read(fd, buffer, 31) <= 0)
+	{
+		close(fd);
+		return (-1);
+	}
+	buffer[31] = '\0';
+	pid = ft_atoi(buffer);
+	close(fd);
+	return (pid);
 }

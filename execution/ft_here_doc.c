@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 10:50:45 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 15:48:25 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:46:20 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	here_doc(t_command *cmd, char *next_line, int limiter_cnt, int matched)
+static void	here_doc(t_command *cmd, char *next_line, int lmt_cnt, int matched)
 {
 	int		j;
 
 	j = 0;
-	while (j < limiter_cnt)
+	while (j < lmt_cnt)
 	{
 		matched = 0;
 		while (!matched)
@@ -32,7 +32,7 @@ void	here_doc(t_command *cmd, char *next_line, int limiter_cnt, int matched)
 				matched = 1;
 			else
 			{
-				if (j == limiter_cnt - 1 && cmd->heredoc == 1)
+				if (j == lmt_cnt - 1 && cmd->heredoc == 1)
 					ft_putstr_fd(next_line, cmd->fd_in);
 			}
 			free(next_line);

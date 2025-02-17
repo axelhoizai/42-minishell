@@ -6,14 +6,14 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 13:09:14 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 16:57:46 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 //? Check if VAR is ok
-char	*parse_var(const char *token, int *index, t_data *data)
+static char	*parse_var(const char *token, int *index, t_data *data)
 {
 	char		var_name[256];
 	const char	*value;
@@ -41,7 +41,7 @@ char	*parse_var(const char *token, int *index, t_data *data)
 	return (ft_strdup(value));
 }
 
-char	*handle_special_var(const char *line, int *i, t_data *data)
+static char	*handle_special_var(const char *line, int *i, t_data *data)
 {
 	char	*var;
 

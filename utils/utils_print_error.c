@@ -6,13 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 12:33:31 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:41:30 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 16:47:46 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_construct_error_msg(char *builting, char *arg, char *msg)
+static char	*ft_construct_error_msg(char *builting, char *arg, char *msg)
 {
 	char	*result;
 	char	*tmp;
@@ -40,12 +40,6 @@ char	*ft_construct_error_msg(char *builting, char *arg, char *msg)
 	}
 	return (result);
 }
-
-// @brief 
-/// @param builting ex :cd
-/// @param arg ex :src
-/// @param msg ex :Not a directory
-/// @param exit_code ex :1
 
 void	ft_print_error(char *builting, char *arg, char *msg)
 {

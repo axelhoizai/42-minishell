@@ -6,11 +6,20 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:28:38 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/28 11:45:05 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:46:49 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static t_env_ms	*ms_lstlast(t_env_ms *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
 
 t_env_ms	*ms_lstnew(char *env_key, char *env_value, bool equal_sign)
 {
@@ -45,15 +54,6 @@ void	ms_lstadd_back(t_env_ms **lst, t_env_ms *new)
 			last->next = new;
 		}
 	}
-}
-
-t_env_ms	*ms_lstlast(t_env_ms *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
 }
 
 int	ms_lstsize(t_env_ms *lst)

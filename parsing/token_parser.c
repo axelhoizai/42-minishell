@@ -6,13 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 15:07:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 16:56:26 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
+static void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
 {
 	if (line[i] == '\'' && *in_d == 0)
 		*in_s = !(*in_s);
@@ -28,7 +28,7 @@ void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
 // 		append_char(parse, line[*i]);
 // 	(*i)++;
 // }
-void	handle_parse_token(const char *line, int *i, t_parse *parse)
+static void	handle_parse_token(const char *line, int *i, t_parse *parse)
 {
 	if ((line[*i] == '\'' && parse->in_double)
 		|| (line[*i] == '"' && parse->in_single))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:27 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 18:57:14 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:30:45 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void	init_env_ms(char **envp, t_data *data)
 	lst_to_tab(data->env_ms, data);
 }
 
-void	ft_env(t_data *data, t_pipeline *pip)
+void	ft_env(t_data *data)
 {
-	(void)pip;
 	print_lst(data->env_ms);
 }

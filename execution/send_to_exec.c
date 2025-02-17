@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 15:48:36 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:34:57 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,18 @@ void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 	else if (ft_strcmp(cmd->args[0], "export") == 0)
 		ft_export(cmd->args, data);
 	else if (ft_strcmp(cmd->args[0], "unset") == 0)
-		ft_unset(cmd->arg_cnt, cmd->args, pip, data);
+		ft_unset(cmd->args, data);
 	else if (ft_strcmp(cmd->args[0], "env") == 0 && cmd->args[1])
 		ft_print_error(NULL, NULL, "Use \'env\' with no options or arguments");
 	else if (ft_strcmp(cmd->args[0], "env") == 0)
-		ft_env(data, pip);
+		ft_env(data);
 	else if (ft_strcmp(cmd->args[0], "exit") == 0)
 		handle_exit(pip, data);
 	else if (ft_strcmp(cmd->args[0], "clear") == 0)
 		printf("\033[3J\033[H\033[J");
 }
 
-void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
+static void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
 {
 	if (pip->cmds[0]->fd_out > -1)
 	{
@@ -112,7 +112,7 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 	{
 		if (pip->cmds[0]->heredoc == 1)
 			here_doc_init(pip->cmds[0]);
-		exec(pip, data);
+		simple_exec(pip, data);
 		if (pip)
 			free_pipeline(pip);
 	}

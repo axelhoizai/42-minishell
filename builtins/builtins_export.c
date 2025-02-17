@@ -6,37 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 14:52:26 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:29:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//? Check if an env key exists
-bool	is_key(t_env_ms *lst, char *var)
-{
-	while (lst)
-	{
-		if (ft_strcmp(lst->key, var) == 0)
-			return (true);
-		lst = lst->next;
-	}
-	return (false);
-}
-
-//? Find the node linked to the env key
-t_env_ms	*ms_find(t_env_ms *lst, char *var)
-{
-	while (lst)
-	{
-		if (ft_strcmp(lst->key, var) == 0)
-			return (lst);
-		lst = lst->next;
-	}
-	return (NULL);
-}
-
-void	print_export(t_env_ms *lst)
+static void	print_export(t_env_ms *lst)
 {
 	t_env_ms	*tmp;
 
@@ -94,4 +70,26 @@ void	ft_export(char **argv, t_data *data)
 		add_var(key, argv, data);
 		lst_to_tab(data->env_ms, data);
 	}
+}
+
+bool	is_key(t_env_ms *lst, char *var)
+{
+	while (lst)
+	{
+		if (ft_strcmp(lst->key, var) == 0)
+			return (true);
+		lst = lst->next;
+	}
+	return (false);
+}
+
+t_env_ms	*ms_find(t_env_ms *lst, char *var)
+{
+	while (lst)
+	{
+		if (ft_strcmp(lst->key, var) == 0)
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
 }

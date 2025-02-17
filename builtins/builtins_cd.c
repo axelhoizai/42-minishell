@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 18:56:46 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 16:47:07 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_change_dir(t_pipeline *pip, char *cwd, char *tmpdir, char *tmp)
+static void	free_change_dir(t_pipeline *pip, char *cwd, char *tmpdir, char *tmp)
 {
 	(void)pip;
 	if (cwd)
@@ -23,7 +23,7 @@ void	free_change_dir(t_pipeline *pip, char *cwd, char *tmpdir, char *tmp)
 		free (tmp);
 }
 
-int	check_dir(char	*dir)
+static int	check_dir(char	*dir)
 {
 	int		fd;
 	int		result;
@@ -37,7 +37,7 @@ int	check_dir(char	*dir)
 	return (result);
 }
 
-int	handle_cd_error(int argc, char *dir, t_data *data)
+static int	handle_cd_error(int argc, char *dir, t_data *data)
 {
 	if (argc > 2)
 	{

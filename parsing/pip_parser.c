@@ -6,13 +6,13 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/17 16:00:09 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:43:56 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_redirection(char *token)
+static int	is_redirection(char *token)
 {
 	if (ft_strcmp(token, "<") == 0)
 		return (1);
@@ -44,7 +44,7 @@ static void	check_if_is_file(t_command *cmd)
 	}
 }
 
-t_command	*parse_command(char **tokens, int *i, t_data *data)
+static t_command	*parse_command(char **tokens, int *i, t_data *data)
 {
 	t_command	*cmd;
 

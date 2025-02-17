@@ -6,20 +6,20 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:47:54 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 16:49:20 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	skip_whitespace(const char *str, int *i)
+static void	skip_whitespace(const char *str, int *i)
 {
 	while (str[*i] && ft_isspace(str[*i]))
 		(*i)++;
 }
 
 //? Remove all whitespaces and quotes
-char	**parse_args(char *str, t_data *data)
+static char	**parse_args(char *str, t_data *data)
 {
 	char	**tokens;
 	char	*token;

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:56:03 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 15:32:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:38:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	get_path_free(char *env_path, char *cmd_parsed, char **all_path)
+static void	get_path_free(char *env_path, char *cmd_parsed, char **all_path)
 {
 	free(env_path);
 	free_tab(all_path);
 	free(cmd_parsed);
 }
 
-char	*get_env_path(char **envp)
+static char	*get_env_path(char **envp)
 {
 	char	*env_path;
 	int		i;
@@ -40,6 +40,24 @@ char	*get_env_path(char **envp)
 	}
 	free_tab(tmp);
 	return (env_path);
+}
+
+static char	*get_cmd(char *cmd)
+{
+	char	**tmp;
+	char	*cmd_parsed;
+
+	if (!cmd || !*cmd)
+		return (NULL);
+	else if (ft_strchr(cmd, ' '))
+	{
+		tmp = ft_split(cmd, ' ');
+		cmd_parsed = ft_strjoin("/", tmp[0]);
+		free_tab(tmp);
+	}
+	else
+		cmd_parsed = ft_strjoin("/", cmd);
+	return (cmd_parsed);
 }
 
 char	*get_path(char *cmd, char **envp)
@@ -68,22 +86,4 @@ char	*get_path(char *cmd, char **envp)
 	}
 	get_path_free(env_path, cmd_parsed, all_path);
 	return (NULL);
-}
-
-char	*get_cmd(char *cmd)
-{
-	char	**tmp;
-	char	*cmd_parsed;
-
-	if (!cmd || !*cmd)
-		return (NULL);
-	else if (ft_strchr(cmd, ' '))
-	{
-		tmp = ft_split(cmd, ' ');
-		cmd_parsed = ft_strjoin("/", tmp[0]);
-		free_tab(tmp);
-	}
-	else
-		cmd_parsed = ft_strjoin("/", cmd);
-	return (cmd_parsed);
 }

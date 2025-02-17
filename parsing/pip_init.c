@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:06:04 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:17:30 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 17:41:25 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_command	*init_command(void)
 	return (cmd);
 }
 
-//? Build cmds like "cat -e"
 char	**add_to_tab(char **tab, const char *arg)
 {
 	char	**new_tab;
@@ -71,7 +70,6 @@ char	**add_to_tab(char **tab, const char *arg)
 	return (new_tab);
 }
 
-//? reBuild the input with tokenization
 void	add_command_to_pipeline(t_pipeline *pipeline, t_command *cmd)
 {
 	t_command	**new_cmds;
