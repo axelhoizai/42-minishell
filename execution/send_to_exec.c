@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 15:40:37 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:48:36 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 	else if (argv)
 	{
 		if (pip->cmds[0]->heredoc == 1)
-			here_doc(pip->cmds[0]);
+			here_doc_init(pip->cmds[0]);
 		exec(pip, data);
 		if (pip)
 			free_pipeline(pip);

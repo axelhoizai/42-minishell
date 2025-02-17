@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 15:24:18 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:49:21 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,8 @@ void		sh_tester(char **av, t_data *data);
 //here_doc
 // void		here_doc(t_pipeline *pip, int *p_fd, t_data *data);
 // void		here_doc(t_command *cmd, int *p_fd);
-void		here_doc(t_command *cmd);
+void		here_doc(t_command *cmd, char *next_line, int limiter_cnt, int matched);
+void		here_doc_init(t_command *cmd);
 
 //utils
 char		*get_env_path(char **envp);

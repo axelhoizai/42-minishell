@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 12:55:33 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:47:42 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ int	pipex(t_pipeline *pip, t_data *data)
 
 	i = 0;
 	signal(SIGPIPE, SIG_IGN);
-	here_doc(pip->cmds[i]);
+	here_doc_init(pip->cmds[i]);
 	first_pipe(pip->cmds[0], pip, p_fd, data);
 	i++;
 	while (i < pip->cmd_count - 1)
