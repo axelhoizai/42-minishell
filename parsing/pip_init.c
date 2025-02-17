@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:06:04 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 17:41:25 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 18:56:30 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_pipeline	*init_pipeline(void)
 		return (NULL);
 	pip->cmds = NULL;
 	pip->pipe_cnt = 0;
+	pip->pid = NULL;
 	return (pip);
 }
 
@@ -44,6 +45,16 @@ t_command	*init_command(void)
 	cmd->append = 0;
 	cmd->heredoc = 0;
 	return (cmd);
+}
+
+int	*init_pid(t_pipeline *pip)
+{
+	int	*pid;
+	
+	pid = ft_calloc(pip->pipe_cnt + 1, sizeof (int *));
+	if (!pid)
+		return (NULL);
+	return (pid);
 }
 
 char	**add_to_tab(char **tab, const char *arg)

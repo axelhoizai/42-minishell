@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 17:34:57 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 18:54:58 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 	(void)argc;
 	fd_std = -1;
 	pip = parse_pipeline(argv, data);
+	if (pip->pipe_cnt > 0)
+		pip->pid = init_pid(pip);
 	print_pipeline(pip);
 	if (is_pipe(argv))
 	{

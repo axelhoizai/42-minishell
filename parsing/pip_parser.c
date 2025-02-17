@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/17 17:43:56 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 18:34:36 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void	print_pipeline(t_pipeline *pipeline)
 		}
 		i++;
 	}
-	printf("pipeline->pipe_cnt: %d\n", pipeline->pipe_cnt);
 	pipeline->cmd_count = i;
+	printf("pipe count : [%d]\n", pipeline->pipe_cnt);
+	printf("cmd count  : [%d]\n", pipeline->cmd_count);
 }

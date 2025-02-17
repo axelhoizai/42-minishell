@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 17:44:56 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 18:52:45 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_pipeline
 {
 	t_command	**cmds;
 	int			pipe_cnt;
+	int			*pid;
 	int			cmd_count;
 }	t_pipeline;
 
@@ -216,6 +217,7 @@ void		multi_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *i);
 //pip_init
 t_pipeline	*init_pipeline(void);
 t_command	*init_command(void);
+int			*init_pid(t_pipeline *pip);
 char		**add_to_tab(char **tab, const char *arg);
 void		add_command_to_pipeline(t_pipeline *pipeline, t_command *cmd);
 

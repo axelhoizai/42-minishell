@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:19:03 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 16:32:35 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 18:18:41 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ static void	mlt_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 
 void	multi_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *i)
 {
-	pid_t	child;
-
 	if (pipe(p_fd) == -1)
 		exit(PIPE_ERROR);
-	child = fork();
-	if (child == -1)
+	pip->pid[*i] = fork();
+	if (pip->pid[*i] == -1)
 		exit(FORK_ERROR);
-	if (child == 0)
+	if (pip->pid[*i] == 0)
 		mlt_child(pip->cmds[*i], pip, p_fd, data);
 	close(p_fd[1]);
 	if (pip->cmds[*i]->fd_in >= 0)

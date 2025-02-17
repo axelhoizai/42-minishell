@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 16:38:50 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 19:02:36 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,22 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			dup2(cmd->fd_out, STDOUT_FILENO);
 		close(p_fd[0]);
 		close_fds(pip);
-		if (is_builtin(pip->cmds[pip->cmd_count - 1]->args[0]))
+		if (is_builtin(cmd->args[0]))
 		{
-			handle_builtins(pip->cmds[pip->cmd_count - 1], pip, data);
+			handle_builtins(cmd, pip, data);
 			free_execute(pip, data);
 			exit(0);
 		}
-		execute(pip->cmds[pip->cmd_count - 1]->args, pip, data);
+		execute(cmd->args, pip, data);
 	}
 }
 
 static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 {
-	pid_t	child;
-
-	child = fork();
-	if (child == -1)
+	pip->pid[pip->pipe_cnt - 1] = fork();
+	if (pip->pid[pip->pipe_cnt - 1] == -1)
 		exit(FORK_ERROR);
-	if (child == 0)
+	if (pip->pid[pip->pipe_cnt - 1] == 0)
 		last_child(cmd, pip, p_fd, data);
 	close(p_fd[0]);
 	close(p_fd[1]);
@@ -94,10 +92,12 @@ int	pipex(t_pipeline *pip, t_data *data)
 	}
 	here_doc_init(pip->cmds[i]);
 	status = last_pipe(pip->cmds[i], pip, p_fd, data);
-	while (i >= 0)
+	while (pip->pipe_cnt >= 0)
 	{
-		waitpid(-1, NULL, 0);
-		i--;
+		waitpid(pip->pid[pip->pipe_cnt], &status, 0);
+		pip->pipe_cnt--;
 	}
-	return (status);
+	if (WIFEXITED(status) && data->exit_code < 128)
+		return (WEXITSTATUS(status));
+	return (data->exit_code);
 }

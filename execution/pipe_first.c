@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:03:47 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 16:17:18 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 19:20:31 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ static void	fst_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 
 void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 {
-	pid_t	child;
-
 	if (pipe(p_fd) == -1)
 		exit(PIPE_ERROR);
-	child = fork();
-	if (child == -1)
+	pip->pid[0] = fork();
+	if (pip->pid[0] == -1)
 		exit(FORK_ERROR);
-	if (child == 0)
+	if (pip->pid[0] == 0)
 		fst_child(cmd, pip, p_fd, data);
 	close(p_fd[1]);
 	if (cmd->fd_in >= 0)
