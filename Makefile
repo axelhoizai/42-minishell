@@ -2,8 +2,9 @@ NAME = minishell
 
 SRCS = 	minishell.c 
 
-EXEC = execution/pipex.c execution/utils_exec.c execution/utils_error.c \
-		execution/utils_files.c execution/ft_here_doc.c execution/simple_exec.c execution/send_to_exec.c
+EXEC = 	execution/pipex.c execution/utils_exec.c execution/utils_error.c \
+		execution/utils_files.c execution/ft_here_doc.c execution/simple_exec.c execution/send_to_exec.c \
+		execution/pipe_first.c execution/pipe_multi.c
 
 PARSING = 	parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c parsing/ampersand_parse.c parsing/quote_parser.c \
 			parsing/var_parser.c parsing/pip_free.c parsing/pip_init.c parsing/pip_parser.c parsing/pip_redir.c

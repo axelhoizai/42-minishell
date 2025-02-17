@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 15:49:21 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 16:41:47 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,21 +104,6 @@ typedef struct s_pipeline
 	int			pipe_cnt;
 	int			cmd_count;
 }	t_pipeline;
-
-// typedef struct s_command
-// {
-// 	char	**args;
-// 	char	*input_file;
-// 	char	*output_file;
-// 	int		append;
-// 	int		heredoc;
-// }	t_command;
-
-// typedef struct s_pipeline
-// {
-// 	t_command	**commands;
-// 	int			cmd_count;
-// }	t_pipeline;
 
 char		*get_prompt(t_env_ms *lst);
 
@@ -229,6 +214,7 @@ void		ft_unset(int argc, char **argv, t_pipeline *pip, t_data *data);
 //builtin_exec
 void		exec(t_pipeline *pip, t_data *data);
 void		execute(char **cmd, t_pipeline *pip, t_data *data);
+void		free_execute(t_pipeline *pip, t_data *data);
 
 //----------------------------BUILTINS-END---------------------------
 
@@ -240,7 +226,8 @@ void		sh_tester(char **av, t_data *data);
 //here_doc
 // void		here_doc(t_pipeline *pip, int *p_fd, t_data *data);
 // void		here_doc(t_command *cmd, int *p_fd);
-void		here_doc(t_command *cmd, char *next_line, int limiter_cnt, int matched);
+void		here_doc(t_command *cmd, char *next_line,
+				int limiter_cnt, int matched);
 void		here_doc_init(t_command *cmd);
 
 //utils
@@ -249,7 +236,6 @@ char		*get_path(char *cmd, char **envp);
 char		*get_cmd(char *cmd);
 
 //utils error
-void		print_error(char *mgs, char *arg, int exit_code);
 int			args_checker(t_pipeline *pip);
 void		script_checker(char *cmd);
 
@@ -259,7 +245,14 @@ int			open_outfile(t_command *cmd, char *file, t_data *data, int append);
 // void		here_doc_chck(int *fd_files, t_pipeline *pip, t_data *data, int *i);
 
 char		**utils_parse_args(const char *str);
+void		ft_close_fdout(t_pipeline *pip);
+void		ft_close_fdin(t_pipeline *pip);
+void		close_fds(t_pipeline *pip);
+
 int			pipex(t_pipeline *pip, t_data *data);
+void		first_pipe(t_command *cmd, t_pipeline *pip,
+				int *p_fd, t_data *data);
+void		multi_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *i);
 
 //parse_init
 t_pipeline	*init_pipeline(void);
