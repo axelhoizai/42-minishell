@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:56:03 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:07:44 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:32:23 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	get_path_free(char *env_path, char *cmd_parsed, char **all_path)
+{
+	free(env_path);
+	free_tab(all_path);
+	free(cmd_parsed);
+}
 
 char	*get_env_path(char **envp)
 {
@@ -55,13 +62,11 @@ char	*get_path(char *cmd, char **envp)
 	{
 		cmd_path = ft_strjoin(all_path[i], cmd_parsed);
 		if (access(cmd_path, F_OK) != -1)
-			return (free_tab(all_path), free(env_path), free(cmd_parsed), cmd_path);
+			return (get_path_free(env_path, cmd_parsed, all_path), cmd_path);
 		free(cmd_path);
 		i++;
 	}
-	free(env_path);
-	free_tab(all_path);
-	free(cmd_parsed);
+	get_path_free(env_path, cmd_parsed, all_path);
 	return (NULL);
 }
 
