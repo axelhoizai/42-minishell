@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 11:23:06 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:47:45 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,56 +116,4 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 		if (pip)
 			free_pipeline(pip);
 	}
-}
-
-//? Parse builtins to removes quotes and parse dollars
-static void	process_builtins(char *builtins, t_data *data)
-{
-	char	**argv;
-	int		argc;
-
-	argv = NULL;
-	argc = 0;
-	argv = parse_args(builtins, data);
-	free(builtins);
-	if (argv && !argv[0])
-	{
-		free(argv);
-		data->exit_code = 0;
-		return ;
-	}
-	while (argv && argv[argc])
-		argc++;
-	if (argc > 0)
-		send_to_exec(argc, argv, data);
-}
-
-//? Get the input and 
-void	get_argv(char *input, t_data *data)
-{
-	char	*tmp;
-	char	*token;
-
-	if (!input)
-		return ;
-	tmp = ft_strdup(input);
-	if (tmp && ft_strlen(tmp) == 0)
-	{
-		free(tmp);
-		return ;
-	}
-	tmp = replace_double_ampersand(tmp);
-	if (ft_strchr(tmp, '\n'))
-	{
-		token = strtok(tmp, "\n");
-		while (token)
-		{
-			process_builtins(token, data);
-			if (data->exit_code > 0)
-				break ;
-			token = strtok(NULL, "\n");
-		}
-	}
-	else
-		process_builtins(tmp, data);
 }

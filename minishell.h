@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 11:09:04 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:09:54 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,8 @@ void		append_char(t_parse *parse, char c);
 
 // parsing_token.c
 char		*parse_var(const char *token, int *index, t_data *data);
+char		*handle_special_var(const char *line, int *i, t_data *data);
+void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 char		*parse_token(char *line, int *i, t_data *data);
 char		**parse_args(char *line, t_data *data);
 void		free_tokens(char **tokens);

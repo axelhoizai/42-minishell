@@ -6,40 +6,11 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/31 17:55:34 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:47:54 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-//? Check if VAR is ok
-char	*parse_var(const char *token, int *index, t_data *data)
-{
-	char		var_name[256];
-	const char	*value;
-	int			j;
-	t_env_ms	*to_find;
-
-	(*index)++;
-	j = 0;
-	to_find = NULL;
-	value = NULL;
-	while (ft_isalnum(token[*index]) || token[*index] == '_')
-		var_name[j++] = token[(*index)++];
-	var_name[j] = '\0';
-	if (is_key(data->env_ms, var_name))
-	{
-		to_find = ms_find(data->env_ms, var_name);
-		if (to_find && to_find->value)
-			value = to_find->value;
-	}
-	(*index)--;
-	if (!value && ft_strcmp(var_name, "UID") == 0)
-		return (get_uid());
-	if (!value)
-		return (ft_strdup(""));
-	return (ft_strdup(value));
-}
 
 void	skip_whitespace(const char *str, int *i)
 {
@@ -75,4 +46,56 @@ char	**parse_args(char *str, t_data *data)
 	}
 	tokens[count] = NULL;
 	return (tokens);
+}
+
+//? Parse builtins to removes quotes and parse dollars
+static void	process_builtins(char *builtins, t_data *data)
+{
+	char	**argv;
+	int		argc;
+
+	argv = NULL;
+	argc = 0;
+	argv = parse_args(builtins, data);
+	free(builtins);
+	if (argv && !argv[0])
+	{
+		free(argv);
+		data->exit_code = 0;
+		return ;
+	}
+	while (argv && argv[argc])
+		argc++;
+	if (argc > 0)
+		send_to_exec(argc, argv, data);
+}
+
+//? Get the input and 
+void	get_argv(char *input, t_data *data)
+{
+	char	*tmp;
+	char	*token;
+
+	if (!input)
+		return ;
+	tmp = ft_strdup(input);
+	if (tmp && ft_strlen(tmp) == 0)
+	{
+		free(tmp);
+		return ;
+	}
+	tmp = replace_double_ampersand(tmp);
+	if (ft_strchr(tmp, '\n'))
+	{
+		token = strtok(tmp, "\n");
+		while (token)
+		{
+			process_builtins(token, data);
+			if (data->exit_code > 0)
+				break ;
+			token = strtok(NULL, "\n");
+		}
+	}
+	else
+		process_builtins(tmp, data);
 }

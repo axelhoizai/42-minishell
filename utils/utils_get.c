@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_get.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:59:50 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 18:00:30 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:45:23 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,3 +73,13 @@ char	*get_uid(void)
 	buffer[bytes_read] = '\0';
 	return (extract_uid(buffer));
 }
+
+t_data	*get_data(t_data *new_data)
+{
+	static t_data	*data = NULL;
+
+	if (new_data)
+		data = new_data;
+	return (data);
+}
+

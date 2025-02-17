@@ -3,35 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_signal.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 19:18:18 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:45:32 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// Interrompt un programme (CTRL+C)
-int	get_pid(void)
-{
-	int		fd;
-	char	buffer[32];
-	int		pid;
-
-	fd = open("/proc/self/stat", O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	if (read(fd, buffer, 31) <= 0)
-	{
-		close(fd);
-		return (-1);
-	}
-	buffer[31] = '\0';
-	pid = ft_atoi(buffer);
-	close(fd);
-	return (pid);
-}
 
 static void	handle_sigint(int sig)
 {
@@ -62,20 +41,7 @@ static void	handle_sigquit(int sig)
 	printf("\nQuit (core dumped)\n");
 	data->exit_code = 131;
 	configure_terminal();
-	kill(get_pid(), SIGQUIT);
-}
-
-// Demande d'arrêt propre (kill <PID>)
-static void	handle_sigterm(int sig)
-{
-	(void)sig;
-	exit(0);
-}
-
-// Empêche le programme d'être stoppé (CTRL+Z)
-static void	handle_sigtstp(int sig)
-{
-	(void)sig;
+	kill(get_process_id(), SIGQUIT);
 }
 
 void handle_sigpipe(int sig)
@@ -105,14 +71,6 @@ void	setup_signal_handlers(void)
 	// Gestion de CTRL+\ (SIGQUIT)
 	sa.sa_handler = handle_sigquit;
 	sigaction(SIGQUIT, &sa, NULL);
-
-	// Gestion de SIGTERM (kill <PID>)
-	sa.sa_handler = handle_sigterm;
-	sigaction(SIGTERM, &sa, NULL);
-
-	// Gestion de SIGTSTP (CTRL+Z) - Ignore
-	sa.sa_handler = handle_sigtstp;
-	sigaction(SIGTSTP, &sa, NULL);
 
 	// Gestion de SIGPIPE (Eviter les crashs sur pipe casse)
 	sa.sa_handler = handle_sigpipe;

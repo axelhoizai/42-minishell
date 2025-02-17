@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 11:43:32 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 12:58:07 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	open_file(char *file, int mode)
 			fd = -1;
 		}
 		else if (mode == 0)
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else
 			fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	}

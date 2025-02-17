@@ -2,23 +2,22 @@ NAME = minishell
 
 SRCS = 	minishell.c 
 
-PIPEX = pipex/pipex.c pipex/utils_pipex.c pipex/utils_error.c \
-		pipex/utils_files.c pipex/ft_here_doc.c pipex/utils_parse.c pipex/pipex_2.c
+EXEC = execution/pipex.c execution/utils_exec.c execution/utils_error.c \
+		execution/utils_files.c execution/ft_here_doc.c execution/simple_exec.c execution/send_to_exec.c
 
-PARSING = parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c parsing/ampersand_parse.c
-
-PARSING_PIPE = pipe_parsing/parser_add.c pipe_parsing/parser_free.c pipe_parsing/parser_init.c pipe_parsing/parser.c
+PARSING = 	parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c parsing/ampersand_parse.c parsing/quote_parser.c \
+			parsing/var_parser.c parsing/pip_free.c parsing/pip_init.c parsing/pip_parser.c parsing/pip_redir.c
 
 BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exit.c builtins/builtins_echo.c \
-			builtins/builtins_export.c builtins/builtins_unset.c  builtins/builtins_env.c builtins/builtins_exec.c 
+			builtins/builtins_export.c builtins/builtins_unset.c  builtins/builtins_env.c 
 
-UTILS = utils/utils_prompt.c utils/utils_print_error.c utils/utils_parsing.c utils/utils_debug.c utils/utils_echo.c \
-		utils/utils_list.c utils/utils_list2.c utils/utils_data.c utils/utils_parsing_echo.c utils/utils_get.c \
-		utils/utils.c utils/utils_signal.c utils/utils_terminal.c utils/utils_free.c
+UTILS = utils/utils_prompt.c utils/utils_print_error.c utils/utils_debug.c \
+		utils/utils_list.c utils/utils_list2.c utils/utils_data.c utils/utils_get.c \
+		utils/utils_signal.c utils/utils_terminal.c utils/utils_free.c
 
 SRCS_BONUS = \
 
-ALL_SRCS = $(SRCS) $(PIPEX) $(PARSING_PIPE) $(PARSING) $(BUILTINS) $(UTILS)
+ALL_SRCS = $(SRCS) $(EXEC) $(PARSING) $(BUILTINS) $(UTILS)
 
 OBJS = $(ALL_SRCS:.c=.o)
 

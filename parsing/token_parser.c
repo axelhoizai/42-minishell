@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 19:02:33 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:08:59 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,49 +18,6 @@ void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
 		*in_s = !(*in_s);
 	else if (line[i] == '"' && *in_s == 0)
 		*in_d = !(*in_d);
-}
-
-static char	*handle_special_var(const char *line, int *i, t_data *data)
-{
-	char	*var;
-
-	var = NULL;
-	if (line[*i + 1] == '?')
-	{
-		var = ft_itoa(data->exit_code);
-		data->exit_code = 0;
-		(*i) += 2;
-	}
-	else if (line[*i + 1] == '$')
-	{
-		var = ft_itoa(get_process_id());
-		(*i) += 2;
-	}
-	return (var);
-}
-
-static void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
-{
-	char	*var;
-	int		k;
-
-	var = NULL;
-	if (line[*i + 1] == '?' || line[*i + 1] == '$')
-		var = handle_special_var(line, i, data);
-	else if (ft_isdigit(line[*i + 1]))
-	{
-		(*i) += 2;
-		return ;
-	}
-	else if ((ft_isalnum(line[*i + 1]) || line[*i] == '_'))
-	{
-		var = parse_var(line, i, data);
-		(*i)++;
-	}
-	k = 0;
-	while (var[k])
-		append_char(parse, var[k++]);
-	free(var);
 }
 
 //to use \ escape char

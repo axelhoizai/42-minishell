@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_print_error.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 12:33:31 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/29 16:00:05 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:41:30 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/// @brief 
-/// @param builting ex :cd
-/// @param arg ex :src
-/// @param msg ex :Not a directory
-/// @param exit_code ex :1
 
 char	*ft_construct_error_msg(char *builting, char *arg, char *msg)
 {
@@ -46,6 +40,12 @@ char	*ft_construct_error_msg(char *builting, char *arg, char *msg)
 	}
 	return (result);
 }
+
+// @brief 
+/// @param builting ex :cd
+/// @param arg ex :src
+/// @param msg ex :Not a directory
+/// @param exit_code ex :1
 
 void	ft_print_error(char *builting, char *arg, char *msg)
 {

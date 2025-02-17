@@ -1,72 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_2.c                                          :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 00:37:52 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/14 19:23:57 by mdemare          ###   ########.fr       */
+/*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
+/*   Updated: 2025/02/17 12:55:33 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	execute(char **cmd, t_pipeline *pip, t_data *data)
-{
-	char	*cmd_path;
-
-	if (!cmd || !cmd[0])
-	{
-		print_error("Invalid command", NULL, CMD_NOT_FOUND);
-		free_term(data);
-		exit(127);
-	}
-	cmd_path = get_path(cmd[0], data->my_envp);
-	if (!cmd_path)
-	{
-		write(2, "command not found: ", 19);
-		write(2, cmd[0], ft_strlen(cmd[0]));
-		write(2, "\n", 1);
-		ms_lstclear(&data->env_ms);
-		free_tab(data->my_envp);
-		free_term(data);
-		free_pipeline(pip);
-		exit(127);
-	}
-	/////////////////////
-	if (ft_strstr(cmd[0], "./"))
-	{
-		free(cmd_path);
-		cmd_path = cmd[0];
-	}
-	/////////////////////
-	execve(cmd_path, cmd, data->my_envp);
-
-	if (access(cmd_path, F_OK) == 0)
-	{
-		if (access(cmd_path, X_OK) == -1)
-		{
-			write(2, "Permission denied: ", 19);
-			write(2, cmd[0], ft_strlen(cmd[0]));
-			write(2, "\n", 1);
-			free(cmd_path);
-			ms_lstclear(&data->env_ms);
-			free_tab(data->my_envp);
-			free_term(data);
-			free_pipeline(pip);
-			exit(126);
-		}
-	}
-	write(2, "Execution error: ", 17);
-	write(2, cmd[0], ft_strlen(cmd[0]));
-	write(2, "\n", 1);
-	ms_lstclear(&data->env_ms);
-	free_tab(data->my_envp);
-	free_term(data);
-	free_pipeline(pip);
-	exit(127);
-}
 
 void	ft_close_fdin(t_pipeline *pip)
 {
@@ -196,28 +140,6 @@ static void	multi_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data,
 	else
 		close(p_fd[0]);
 }
-
-// void clear_exit(t_pipeline *pip, t_data *data, t_rl *rl)
-// {
-// 	// t_rl 	*rl;
-// 	// t_data *data;
-
-// 	// rl = NULL;
-// 	// rl = get_rl(NULL);
-// 	// data = get_data(NULL);
-// 	ms_lstclear(&data->env_ms);
-// 	free_tab(data->my_envp);
-// 	free_pipeline(pip);
-// 	// ctrl_d_free(rl);
-// 	free_history(rl);
-// 	// free_var(rl->buffer);
-// 	free_term(rl);
-// 	free_var(rl->buffer_copy);
-// 	free_tab(rl->lines);
-// 	// free_var(rl->prompt);
-// 	// free_readline(rl);
-// 	reset_terminal();
-// }
 
 /* Gestion du dernier processus de la pipeline */
 static int	last_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
