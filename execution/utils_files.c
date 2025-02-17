@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 14:31:13 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:43:56 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	open_file(t_command *cmd, char *file, int mode)
 
 	if (mode == 1)
 	{
-		if (access(file, R_OK | F_OK) != 0)
+		if (access(file, R_OK | F_OK) != 0 && access(file, F_OK) == 0)
 		{
 			ft_print_error(NULL, file, "Permission denied");
 			cmd->in_error = 1;
@@ -27,7 +27,7 @@ int	open_file(t_command *cmd, char *file, int mode)
 	}
 	else
 	{
-		if (access(file, R_OK | W_OK) != 0)
+		if (access(file, R_OK | W_OK) != 0 && access(file, F_OK) == 0)
 		{
 			ft_print_error(NULL, file, "Permission denied");
 			cmd->out_error = 1;
@@ -40,11 +40,11 @@ int	open_file(t_command *cmd, char *file, int mode)
 	return (fd);
 }
 
-int	open_outfile(t_command *cmd, char *file, t_data *data, int here_doc)
+int	open_outfile(t_command *cmd, char *file, t_data *data, int append)
 {
 	int	fd;
 
-	if (here_doc == 1)
+	if (append == 1)
 		fd = open_file(cmd, file, 0);
 	else
 		fd = open_file(cmd, file, 2);
