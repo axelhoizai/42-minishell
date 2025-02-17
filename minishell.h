@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 13:09:54 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:30:05 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,8 +253,8 @@ int			args_checker(t_pipeline *pip);
 void		script_checker(char *cmd);
 
 //utils_files
-int			open_file(char *file, int mode);
-int			open_outfile(char *file, t_data *data, int here_doc);
+int			open_file(t_command *cmd, char *file, int mode);
+int			open_outfile(t_command *cmd, char *file, t_data *data, int here_doc);
 // void		here_doc_chck(int *fd_files, t_pipeline *pip, t_data *data, int *i);
 
 char		**utils_parse_args(const char *str);

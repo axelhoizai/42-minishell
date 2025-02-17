@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:18:29 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 13:19:00 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:29:20 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data)
 			free(cmd->input_file);
 		}
 		cmd->input_file = ft_strdup(tokens[++(*i)]);
-		cmd->fd_in = open_file(cmd->input_file, 1);
+		cmd->fd_in = open_file(cmd, cmd->input_file, 1);
 		if (cmd->fd_in == -1 || cmd->in_error == 1)
 		{
 			if (cmd->fd_in == -1)
@@ -53,7 +53,7 @@ void	handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data)
 		}
 		cmd->output_file = ft_strdup(tokens[++(*i)]);
 		if (cmd->out_error == 0)
-			cmd->fd_out = open_outfile(cmd->output_file, data, 0);
+			cmd->fd_out = open_outfile(cmd, cmd->output_file, data, 0);
 		if (cmd->fd_out == -1 && cmd->out_error == 0)
 		{
 			if (cmd->in_error == 0)
@@ -84,7 +84,7 @@ void	handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data)
 		}
 		cmd->output_file = ft_strdup(tokens[++(*i)]);
 		if (cmd->out_error == 0)
-			cmd->fd_out = open_outfile(cmd->output_file, data, 1);
+			cmd->fd_out = open_outfile(cmd, cmd->output_file, data, 1);
 		if (cmd->fd_out == -1 && cmd->out_error == 0)
 		{
 			if (cmd->in_error == 0)

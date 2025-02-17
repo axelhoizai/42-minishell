@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   pip_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/17 13:18:56 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:28:51 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_command	*parse_command(char **tokens, int *i, t_data *data)
 	{
 		if (cmd->args[j][0] != '-' && !is_builtin(cmd->args[0]) && !cmd->heredoc)
 		{
-			cmd->fd_in = open_file(cmd->args[j], 1);
+			cmd->fd_in = open_file(cmd, cmd->args[j], 1);
 			if (cmd->fd_in == -1)
 				ft_print_error(NULL, cmd->args[j], "No such file or directory");
 		}
