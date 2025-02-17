@@ -6,13 +6,12 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/17 14:56:31 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/17 16:00:09 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//? Check if redirection exists
 int	is_redirection(char *token)
 {
 	if (ft_strcmp(token, "<") == 0)
@@ -26,11 +25,28 @@ int	is_redirection(char *token)
 	return (0);
 }
 
-//? Build cmds according to their token
+static void	check_if_is_file(t_command *cmd)
+{
+	int	j;
+
+	j = 1;
+	while (cmd->args[j])
+	{
+		if (cmd->args[j][0] != '-' && !is_builtin(cmd->args[0])
+			&& !cmd->heredoc)
+		{
+			cmd->fd_in = open_file(cmd, cmd->args[j], 1);
+			if (cmd->fd_in == -1 && cmd->in_error == 0)
+				ft_print_error(NULL, cmd->args[j],
+					"No such file or directory");
+		}
+		j++;
+	}
+}
+
 t_command	*parse_command(char **tokens, int *i, t_data *data)
 {
 	t_command	*cmd;
-	int			j;
 
 	cmd = init_command();
 	if (!cmd)
@@ -46,21 +62,10 @@ t_command	*parse_command(char **tokens, int *i, t_data *data)
 		}
 		(*i)++;
 	}
-	j = 1;
-	while (cmd->args[j])
-	{
-		if (cmd->args[j][0] != '-' && !is_builtin(cmd->args[0]) && !cmd->heredoc)
-		{
-			cmd->fd_in = open_file(cmd, cmd->args[j], 1);
-			if (cmd->fd_in == -1)
-				ft_print_error(NULL, cmd->args[j], "No such file or directory");
-		}
-		j++;
-	}
+	check_if_is_file(cmd);
 	return (cmd);
 }
 
-//? reBuild pipelines after tokenization 
 t_pipeline	*parse_pipeline(char **tokens, t_data *data)
 {
 	t_pipeline	*pipeline;
