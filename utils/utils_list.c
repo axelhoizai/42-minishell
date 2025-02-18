@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:28:38 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 17:46:49 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:03:58 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,33 +67,4 @@ int	ms_lstsize(t_env_ms *lst)
 		count++;
 	}
 	return (count);
-}
-
-t_env_ms	*sort_list(t_env_ms *lst)
-{
-	t_env_ms	*tmp;
-	char		*swap_key;
-	char		*swap_value;
-	bool		swap_bool;
-
-	tmp = lst;
-	while (lst && lst->next)
-	{
-		if (ft_strcmp(lst->key, lst->next->key) > 0)
-		{
-			swap_key = lst->key;
-			lst->key = lst->next->key;
-			lst->next->key = swap_key;
-			swap_value = lst->value;
-			lst->value = lst->next->value;
-			lst->next->value = swap_value;
-			swap_bool = lst->equal_sign;
-			lst->equal_sign = lst->next->equal_sign;
-			lst->next->equal_sign = swap_bool;
-			lst = tmp;
-		}
-		else
-			lst = lst->next;
-	}
-	return (tmp);
 }

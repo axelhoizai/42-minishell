@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 18:52:45 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/18 16:29:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,9 @@ typedef struct s_command
 typedef struct s_pipeline
 {
 	t_command	**cmds;
-	int			pipe_cnt;
 	int			*pid;
+	int			start;
+	int			pipe_cnt;
 	int			cmd_count;
 }	t_pipeline;
 
@@ -143,7 +144,7 @@ void		ms_lstclear(t_env_ms **lst);
 void		ms_lstdelone(t_env_ms **lst, char *env_key);
 void		lst_to_tab(t_env_ms *lst, t_data *data);
 t_env_ms	*ms_lstnew(char *env_key, char *env_value, bool equal_sign);
-t_env_ms	*sort_list(t_env_ms *lst);
+// t_env_ms	*sort_list(t_env_ms *lst);
 
 //utils_get
 t_data		*get_data(t_data *new_data);
@@ -193,7 +194,8 @@ void		free_execute(t_pipeline *pip, t_data *data);
 //-------------------------------PIPEX-------------------------------
 
 //here_doc
-void		here_doc_init(t_command *cmd);
+void		here_doc_init(t_pipeline *pip);
+bool		is_hd(t_pipeline *pip);
 
 //utils_exec
 char		*get_path(char *cmd, char **envp);
@@ -230,5 +232,6 @@ void		handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data);
 //pip_parser
 t_pipeline	*parse_pipeline(char **tokens, t_data *data);
 void		print_pipeline(t_pipeline *pipeline);
+void		init_pipe_start(t_pipeline *pip);
 
 #endif

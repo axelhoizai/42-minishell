@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 18:54:58 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/18 17:50:26 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,12 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 	(void)argc;
 	fd_std = -1;
 	pip = parse_pipeline(argv, data);
+	print_pipeline(pip);
+	init_pipe_start(pip);
+	if (is_hd(pip))
+		here_doc_init(pip);
 	if (pip->pipe_cnt > 0)
 		pip->pid = init_pid(pip);
-	print_pipeline(pip);
 	if (is_pipe(argv))
 	{
 		data->exit_code = pipex(pip, data);
@@ -112,8 +115,6 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 		fds_dup(&fd_std, pip, data);
 	else if (argv)
 	{
-		if (pip->cmds[0]->heredoc == 1)
-			here_doc_init(pip->cmds[0]);
 		simple_exec(pip, data);
 		if (pip)
 			free_pipeline(pip);

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 17:29:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:02:42 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	print_export(t_env_ms *lst)
 {
 	t_env_ms	*tmp;
 
-	tmp = sort_list(lst);
+	tmp = lst;
 	while (tmp)
 	{
 		if (strcmp(tmp->key, "_") != 0)

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/17 18:34:36 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/18 16:44:29 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,22 @@ t_pipeline	*parse_pipeline(char **tokens, t_data *data)
 		}
 	}
 	return (pipeline);
+}
+
+void	init_pipe_start(t_pipeline *pip)
+{
+	int	i;
+	
+	i = pip->pipe_cnt;
+	while (i >= 0)
+	{
+		if (pip->cmds[i]->limiters)
+		{
+			pip->start = i;
+			break ;
+		}
+		i--;
+	}
 }
 
 void	print_pipeline(t_pipeline *pipeline)
