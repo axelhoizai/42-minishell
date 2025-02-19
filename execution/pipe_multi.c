@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_multi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:19:03 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/18 17:50:10 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 10:13:20 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	mlt_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			dup2(p_fd[1], STDOUT_FILENO);
 		close(p_fd[1]);
 		close_fds(pip);
-		if (is_builtin(cmd->args[0]))
+		if (cmd->args[0] && is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
 			free_execute(pip, data);

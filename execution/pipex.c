@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/18 17:48:39 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 10:13:28 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	{
 		if (cmd->fd_in > -1)			
 			dup2(cmd->fd_in, STDIN_FILENO);
-		else if (pip->cmds[pip->pipe_cnt - 1]->fd_out < 0)			
+		else if (pip->cmds[pip->pipe_cnt - 1]->fd_out < 0)
 			dup2(p_fd[0], STDIN_FILENO);
 		if (cmd->fd_out > -1)		
 			dup2(cmd->fd_out, STDOUT_FILENO);
 		close(p_fd[0]);
 		close_fds(pip);
-		if (is_builtin(cmd->args[0]))
+		if (cmd->args[0] && is_builtin(cmd->args[0]))
 		{
 			handle_builtins(cmd, pip, data);
 			free_execute(pip, data);
@@ -80,7 +80,6 @@ int	pipex(t_pipeline *pip, t_data *data)
 
 	i = pip->start;
 	pipe_cmd = pip->pipe_cnt + 1;
-	signal(SIGPIPE, SIG_IGN);
 	first_pipe(pip->cmds[i], pip, p_fd, data);
 	i++;
 	while (i < pipe_cmd - 1)

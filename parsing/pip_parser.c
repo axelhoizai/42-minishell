@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/18 16:44:29 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 09:25:46 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	is_redirection(char *token)
 	return (0);
 }
 
-static void	check_if_is_file(t_command *cmd)
+void	check_if_is_file(t_command *cmd)
 {
 	int	j;
 
@@ -60,9 +60,10 @@ static t_command	*parse_command(char **tokens, int *i, t_data *data)
 			cmd->args = add_to_tab(cmd->args, tokens[*i]);
 			cmd->arg_cnt += 1;
 		}
+		fflush(stdout);
 		(*i)++;
 	}
-	check_if_is_file(cmd);
+	// check_if_is_file(cmd); //probleme pour grep
 	return (cmd);
 }
 
