@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 12:33:31 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 16:47:46 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 11:22:00 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_print_error(char *builting, char *arg, char *msg)
 	result = ft_construct_error_msg(builting, arg, msg);
 	if (result)
 	{
-		printf("%s\n", result);
+		ft_putendl_fd(result, 2);
 		free(result);
 	}
 }

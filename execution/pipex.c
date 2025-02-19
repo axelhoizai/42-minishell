@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/19 10:13:28 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:41:25 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	}
 	else
 	{
-		if (cmd->fd_in > -1)			
+		if (cmd->fd_in > -1)
 			dup2(cmd->fd_in, STDIN_FILENO);
-		else if (pip->cmds[pip->pipe_cnt - 1]->fd_out < 0)
+		else if (pip->cmds[pip->pipe_cnt - 1]->fd_out < 0 || !isatty(0))
 			dup2(p_fd[0], STDIN_FILENO);
-		if (cmd->fd_out > -1)		
-			dup2(cmd->fd_out, STDOUT_FILENO);
 		close(p_fd[0]);
+		if (cmd->fd_out > -1)
+			dup2(cmd->fd_out, STDOUT_FILENO);
 		close_fds(pip);
 		if (cmd->args[0] && is_builtin(cmd->args[0]))
 		{
@@ -58,13 +58,10 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 
 void	last_pipe(t_pipeline *pip, int *p_fd, t_data *data, int *i)
 {
-	int	pipe_cmd;
-
-	pipe_cmd = pip->pipe_cnt + 1;
-	pip->pid[pipe_cmd - *i] = fork();
-	if (pip->pid[pipe_cmd - *i] == -1)
+	pip->pid[*i - pip->start] = fork();
+	if (pip->pid[*i - pip->start] == -1)
 		exit(FORK_ERROR);
-	if (pip->pid[pipe_cmd - *i] == 0)
+	if (pip->pid[*i - pip->start] == 0)
 		last_child(pip->cmds[*i], pip, p_fd, data);
 	close(p_fd[0]);
 	close(p_fd[1]);
@@ -88,11 +85,11 @@ int	pipex(t_pipeline *pip, t_data *data)
 		i++;
 	}
 	last_pipe(pip, p_fd, data, &i);
-	i = pipe_cmd - i;
-	while (i >= 0)
+	i = 0;
+	while (i < pipe_cmd - pip->start)
 	{
 		waitpid(pip->pid[i], &status, 0);
-		i--;
+		i++;
 	}
 	if (WIFEXITED(status) && data->exit_code < 128)
 		return (WEXITSTATUS(status));

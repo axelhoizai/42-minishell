@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/18 16:29:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:36:17 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct s_command
 typedef struct s_pipeline
 {
 	t_command	**cmds;
-	int			*pid;
+	pid_t		*pid;
 	int			start;
 	int			pipe_cnt;
 	int			cmd_count;
@@ -168,7 +168,7 @@ void		setup_signal_handlers(void);
 // //-------------------------------BUILTINS----------------------------
 
 //builtins_exit
-void		handle_exit(t_pipeline *pip, t_data *data);
+void		handle_exit(t_command *cmd, t_pipeline *pip, t_data *data);
 
 //builtins_export
 bool		is_key(t_env_ms *lst, char *var);

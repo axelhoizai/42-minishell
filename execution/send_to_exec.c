@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/18 17:50:26 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 12:47:14 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 	else if (ft_strcmp(cmd->args[0], "env") == 0)
 		ft_env(data);
 	else if (ft_strcmp(cmd->args[0], "exit") == 0)
-		handle_exit(pip, data);
+		handle_exit(cmd, pip, data);
 	else if (ft_strcmp(cmd->args[0], "clear") == 0)
 		printf("\033[3J\033[H\033[J");
 }
@@ -106,7 +106,7 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 		here_doc_init(pip);
 	if (pip->pipe_cnt > 0)
 		pip->pid = init_pid(pip);
-	if (is_pipe(argv))
+	if (is_pipe(argv) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
 	{
 		data->exit_code = pipex(pip, data);
 		free_pipeline(pip);

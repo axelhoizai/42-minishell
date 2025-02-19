@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 19:01:01 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:38:39 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,21 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	exit(127);
 }
 
-static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid[2])
+static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid)
 {
 	// int	tty_fd;
-
 	// tty_fd = -1;
-	if (pid[0] == 0)
+	if (pid == 0)
 	{
-		if (pip->cmds[0]->fd_in > -1)
+		if (pip->cmds[pip->start]->fd_in > -1)
 		{
-			dup2(pip->cmds[0]->fd_in, STDIN_FILENO);
-			close(pip->cmds[0]->fd_in);
+			dup2(pip->cmds[pip->start]->fd_in, STDIN_FILENO);
+			close(pip->cmds[pip->start]->fd_in);
 		}
-		if (pip->cmds[0]->fd_out > -1)
+		if (pip->cmds[pip->start]->fd_out > -1)
 		{
-			dup2(pip->cmds[0]->fd_out, STDOUT_FILENO);
-			close(pip->cmds[0]->fd_out);
+			dup2(pip->cmds[pip->start]->fd_out, STDOUT_FILENO);
+			close(pip->cmds[pip->start]->fd_out);
 		}
 		// if (!isatty(STDIN_FILENO)) // pour nano, vi, ...
 		// {
@@ -92,12 +91,12 @@ static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid[2])
 		// 		close(tty_fd);
 		// 	}
 		// }
-		execute(pip->cmds[0]->args, pip, data);
+		execute(pip->cmds[pip->start]->args, pip, data);
 	}
-	if (pip->cmds[0]->fd_in > -1)
-		close(pip->cmds[0]->fd_in);
-	if (pip->cmds[0]->fd_out > -1)
-		close(pip->cmds[0]->fd_out);
+	if (pip->cmds[pip->start]->fd_in > -1)
+		close(pip->cmds[pip->start]->fd_in);
+	if (pip->cmds[pip->start]->fd_out > -1)
+		close(pip->cmds[pip->start]->fd_out);
 	// if (tty_fd > -1)
 	// 	close(tty_fd);
 }
@@ -105,23 +104,23 @@ static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid[2])
 void	simple_exec(t_pipeline *pip, t_data *data)
 {
 	int		status;
-	pid_t	pid[2];
+	pid_t	pid;
 
 	status = 0;
-	if (pip->cmds[0]->fd_out == -1 || pip->cmds[0]->fd_in == -1)
+	if (pip->cmds[pip->start]->fd_out == -1 || pip->cmds[pip->start]->fd_in == -1)
 	{
-		if (pip->cmds[0]->fd_in > -1)
-			close (pip->cmds[0]->fd_in);
+		if (pip->cmds[pip->start]->fd_in > -1)
+			close (pip->cmds[pip->start]->fd_in);
 		data->exit_code = 1;
 		return ;
 	}
-	if (pip->cmds[0]->args)
+	if (pip->cmds[pip->start]->args)
 	{
-		pid[0] = fork();
-		if (pid[0] == -1)
+		pid = fork();
+		if (pid == -1)
 			exit(1);
 		exec_child(pip, data, pid);
-		waitpid(pid[0], &status, 0);
+		waitpid(pid, &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) >= 0)
 		{
 			if (data->exit_code < 128)

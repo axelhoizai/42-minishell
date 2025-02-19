@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/19 09:25:46 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:37:19 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_pipeline	*parse_pipeline(char **tokens, t_data *data)
 void	init_pipe_start(t_pipeline *pip)
 {
 	int	i;
-	
+
 	i = pip->pipe_cnt;
 	while (i >= 0)
 	{

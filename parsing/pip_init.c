@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:06:04 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/18 15:01:44 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:36:54 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	*init_pid(t_pipeline *pip)
 {
 	int	*pid;
 	int	len;
-	
+
 	len = pip->pipe_cnt - pip->start + 1;
 	pid = ft_calloc(len, sizeof (int *));
 	if (!pid)

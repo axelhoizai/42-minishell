@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 10:50:45 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/18 17:49:12 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:38:14 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	here_doc(t_pipeline *pip, char *next_line, int lmt_cnt, int matched)
 				&& ft_strncmp(next_line, lim_tab[j],
 					ft_strlen(lim_tab[j])) == 0)
 				matched = 1;
-			else 
+			else
 			{
 				if (j == lmt_cnt - 1 && pip->cmds[pip->start]->heredoc)
 					ft_putstr_fd(next_line, pip->cmds[pip->start]->fd_in);

@@ -6,31 +6,28 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 17:46:59 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:35:14 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	handle_first_arg(t_pipeline *pip, int *exit_code, t_data *data)
+static int	handle_first_arg(t_command *cmd, int *exit_code, t_data *data)
 {
-	char	**argv;
-
-	argv = NULL;
-	if (pip)
+	if (cmd && cmd->args)
 	{
-		argv = pip->cmds[0]->args;
-		if (argv && argv[1] && ft_isnumeric(argv[1]) == 1)
+		print_tab(cmd->args);
+		if (cmd->args && cmd->args[1] && ft_isnumeric(cmd->args[1]) == 1)
 		{
-			*exit_code = ft_atoi(argv[1]);
+			*exit_code = ft_atoi(cmd->args[1]);
 			if (*exit_code == -1)
 				*exit_code = 255;
 			return (1);
 		}
-		if (argv && argv[1])
+		if (cmd->args && cmd->args[1])
 		{
 			data->exit_code = 2;
-			ft_print_error("exit", argv[1], "numeric argument required");
+			ft_print_error("exit", cmd->args[1], "numeric argument required");
 			*exit_code = 2;
 			return (1);
 		}
@@ -38,17 +35,17 @@ static int	handle_first_arg(t_pipeline *pip, int *exit_code, t_data *data)
 	return (1);
 }
 
-static int	validate_exit_args(t_pipeline *pip, int *exit_code, t_data *data)
+static int	validate_exit_args(t_command *cmd, int *exit_code, t_data *data)
 {
 	int	i;
 
-	if (handle_first_arg(pip, exit_code, data) == 0)
+	if (handle_first_arg(cmd, exit_code, data) == 0)
 		return (0);
 	i = 2;
-	if (pip)
+	if (cmd && cmd->args[0])
 	{
-		while (pip->cmds[0]->args && ft_isnumeric(pip->cmds[0]->args[1]) == 1
-			&& pip->cmds[0]->args[i])
+		while (cmd->args && ft_isnumeric(cmd->args[1]) == 1
+			&& cmd->args[i])
 			i++;
 		if (i > 2)
 		{
@@ -61,14 +58,16 @@ static int	validate_exit_args(t_pipeline *pip, int *exit_code, t_data *data)
 	return (1);
 }
 
-void	handle_exit(t_pipeline *pip, t_data *data)
+void	handle_exit(t_command *cmd, t_pipeline *pip, t_data *data)
 {
 	int		exit_code;
 
 	exit_code = data->exit_code;
-	if (validate_exit_args(pip, &exit_code, data) == 1)
+	if (validate_exit_args(cmd, &exit_code, data) == 1)
 	{
 		printf("exit\n");
+		if (pip && cmd != pip->cmds[pip->pipe_cnt] && pip->pipe_cnt > 0)
+			exit_code = 0;
 		if (data->my_envp)
 		{
 			free_tab(data->my_envp);

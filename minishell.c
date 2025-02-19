@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/18 15:53:28 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:36:26 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,13 @@ static char	main_loop(t_data *data)
 		if (!input)
 		{
 			free(input);
-			handle_exit(NULL, data);
+			handle_exit(NULL, NULL, data);
 			break ;
 		}
 		if (*input)
 			add_history(input);
 		data->is_reading = false;
 		get_argv(input, data);
-		// free_var(input);
 	}
 	return (exit_code);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/18 15:55:26 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:36:42 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static void	process_builtins(char *builtins, t_data *data)
 	argv = NULL;
 	argc = 0;
 	argv = parse_args(builtins, data);
-
 	if (argv && !argv[0])
 	{
 		free(argv);

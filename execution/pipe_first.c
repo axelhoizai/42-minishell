@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_first.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:03:47 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/19 10:06:09 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/19 13:39:38 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ static void	fst_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	}
 	else
 	{
-		if (cmd->fd_in > -1)		
+		if (cmd->fd_in > -1)
 			dup2(cmd->fd_in, STDIN_FILENO);
-		if (cmd->fd_out > -1)				
+		if (cmd->fd_out > -1)
 			dup2(cmd->fd_out, STDOUT_FILENO);
-		else if (cmd->in_error == 0)		
+		else if (cmd->in_error == 0)
 			dup2(p_fd[1], STDOUT_FILENO);
 		close(p_fd[1]);
 		close_fds(pip);
@@ -59,5 +59,4 @@ void	first_pipe(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		pip->cmds[pip->start + 1]->fd_in = p_fd[0];
 	else
 		close(p_fd[0]);
-	
 }
