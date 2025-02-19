@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:03:47 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/19 13:39:38 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 17:10:06 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	fst_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			dup2(p_fd[1], STDOUT_FILENO);
 		close(p_fd[1]);
 		close_fds(pip);
-		if (cmd->args[0] && is_builtin(cmd->args[0]))
+		if (cmd->args[0] && is_builtin(cmd))
 		{
 			handle_builtins(cmd, pip, data);
 			free_execute(pip, data);

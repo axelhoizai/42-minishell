@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/19 13:37:19 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 18:01:06 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,6 @@ static int	is_redirection(char *token)
 	if (ft_strcmp(token, "<<") == 0)
 		return (1);
 	return (0);
-}
-
-void	check_if_is_file(t_command *cmd)
-{
-	int	j;
-
-	j = 1;
-	while (cmd->args[j])
-	{
-		if (cmd->args[j][0] != '-' && !is_builtin(cmd->args[0])
-			&& !cmd->heredoc)
-		{
-			cmd->fd_in = open_file(cmd, cmd->args[j], 1);
-			if (cmd->fd_in == -1 && cmd->in_error == 0)
-				ft_print_error(NULL, cmd->args[j],
-					"No such file or directory");
-		}
-		j++;
-	}
 }
 
 static t_command	*parse_command(char **tokens, int *i, t_data *data)
@@ -63,7 +44,6 @@ static t_command	*parse_command(char **tokens, int *i, t_data *data)
 		fflush(stdout);
 		(*i)++;
 	}
-	// check_if_is_file(cmd); //probleme pour grep
 	return (cmd);
 }
 

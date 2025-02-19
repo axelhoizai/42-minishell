@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 13:36:17 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 18:00:07 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,14 +122,14 @@ void		append_char(t_parse *parse, char c);
 void		free_tokens(char **tokens);
 
 // token_parser
-char		*parse_token(char *line, int *i, t_data *data);
+char		*parse_token(char *line, int *i, t_data *data, char	**tokens);
 void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 
 // utils_ampersand
 char		*replace_double_ampersand(char *arg);
 
 // send_to_exec
-bool		is_builtin(char *cmd);
+bool		is_builtin(t_command *cmd);
 void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
 void		send_to_exec(int argc, char **argv, t_data *data);
 
@@ -144,7 +144,6 @@ void		ms_lstclear(t_env_ms **lst);
 void		ms_lstdelone(t_env_ms **lst, char *env_key);
 void		lst_to_tab(t_env_ms *lst, t_data *data);
 t_env_ms	*ms_lstnew(char *env_key, char *env_value, bool equal_sign);
-// t_env_ms	*sort_list(t_env_ms *lst);
 
 //utils_get
 t_data		*get_data(t_data *new_data);

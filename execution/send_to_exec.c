@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 12:47:14 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 17:11:47 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,27 @@ bool	is_pipe(char **argv)
 	return (false);
 }
 
-bool	is_builtin(char *cmd)
+bool	is_builtin(t_command *cmd)
 {
-	if (ft_strcmp(cmd, "echo") == 0)
-		return (true);
-	else if (ft_strcmp(cmd, "cd") == 0)
-		return (true);
-	else if (ft_strcmp(cmd, "pwd") == 0)
-		return (true);
-	else if (ft_strcmp(cmd, "export") == 0)
-		return (true);
-	else if (ft_strcmp(cmd, "unset") == 0)
-		return (true);
-	else if (ft_strcmp(cmd, "env") == 0)
-		return (true);
-	else if (ft_strcmp(cmd, "exit") == 0)
-		return (true);
-	else if (ft_strcmp(cmd, "clear") == 0)
-		return (true);
+	if (cmd->args)
+	{
+		if (ft_strcmp(cmd->args[0], "echo") == 0)
+			return (true);
+		else if (ft_strcmp(cmd->args[0], "cd") == 0)
+			return (true);
+		else if (ft_strcmp(cmd->args[0], "pwd") == 0)
+			return (true);
+		else if (ft_strcmp(cmd->args[0], "export") == 0)
+			return (true);
+		else if (ft_strcmp(cmd->args[0], "unset") == 0)
+			return (true);
+		else if (ft_strcmp(cmd->args[0], "env") == 0)
+			return (true);
+		else if (ft_strcmp(cmd->args[0], "exit") == 0)
+			return (true);
+		else if (ft_strcmp(cmd->args[0], "clear") == 0)
+			return (true);
+	}
 	return (false);
 }
 
@@ -111,7 +114,7 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 		data->exit_code = pipex(pip, data);
 		free_pipeline(pip);
 	}
-	else if (is_builtin(pip->cmds[0]->args[0]))
+	else if (is_builtin(pip->cmds[0]))
 		fds_dup(&fd_std, pip, data);
 	else if (argv)
 	{

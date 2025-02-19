@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 13:36:42 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 18:00:34 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,31 @@ static char	**parse_args(char *str, t_data *data)
 		skip_whitespace(str, &i);
 		if (str[i])
 		{
-			token = parse_token(str, &i, data);
-			if (!token)
-				return (free_tokens(tokens), NULL);
-			tokens[count++] = token;
+			if (str[i] == '|' && str[i + 1] == '|')
+			{
+				printf("\'||\' pas fait :) msg dans arg_parser\n");
+				i+=2;
+			}
+			else if ((str[i] == '<' || str[i] == '>' || str[i] == '|') && str[i + 1] != '|')
+			{
+				token = ft_calloc(2, 1);
+				token[0] = str[i];
+				if (!token)
+					return (free_tokens(tokens), NULL);
+				i += 1;
+				tokens[count++] = token;
+			}
+			else
+			{
+				token = parse_token(str, &i, data, tokens);
+				if (!token)
+					return (free_tokens(tokens), NULL);
+				tokens[count++] = token;
+			}
 		}
 	}
 	tokens[count] = NULL;
+	print_tab(tokens);
 	return (tokens);
 }
 

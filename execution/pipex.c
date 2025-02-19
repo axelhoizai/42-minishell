@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/19 13:41:25 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 17:10:18 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		if (cmd->fd_out > -1)
 			dup2(cmd->fd_out, STDOUT_FILENO);
 		close_fds(pip);
-		if (cmd->args[0] && is_builtin(cmd->args[0]))
+		if (cmd->args[0] && is_builtin(cmd))
 		{
 			handle_builtins(cmd, pip, data);
 			free_execute(pip, data);
