@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 18:00:34 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 19:03:25 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,20 @@ static char	**parse_args(char *str, t_data *data)
 		{
 			if (str[i] == '|' && str[i + 1] == '|')
 			{
-				printf("\'||\' pas fait :) msg dans arg_parser\n");
+				token = ft_substr(str, i, 2);
 				i+=2;
 			}
 			else if ((str[i] == '<' || str[i] == '>' || str[i] == '|') && str[i + 1] != '|')
 			{
 				token = ft_calloc(2, 1);
 				token[0] = str[i];
-				if (!token)
-					return (free_tokens(tokens), NULL);
-				i += 1;
-				tokens[count++] = token;
+				i++;
 			}
 			else
-			{
-				token = parse_token(str, &i, data, tokens);
-				if (!token)
-					return (free_tokens(tokens), NULL);
-				tokens[count++] = token;
-			}
+				token = parse_token(str, &i, data, tokens);			
+			if (!token)
+				return (free_tokens(tokens), NULL);
+			tokens[count++] = token;
 		}
 	}
 	tokens[count] = NULL;

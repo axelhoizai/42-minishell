@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 18:01:30 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 18:46:23 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*parse_token(char *line, int *i, t_data *data, char	**tokens)
 	{
 		if (*i > 0 && line[*i] == '|' && tokens[0] && ft_strcmp(tokens[0], "export") != 0) 
 			return (parse.buffer);
-		if (line[*i] == '>' && line[*i + 1] == '|')
+		if (line[*i] == '>' && line[*i + 1] == '|' && line[*i + 2] != '|')
 		{
 			line[*i + 1] = '>';
 			(*i)++;
