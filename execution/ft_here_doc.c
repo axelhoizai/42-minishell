@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 10:50:45 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 13:38:14 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 20:34:23 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,10 @@ static void	here_doc(t_pipeline *pip, char *next_line, int lmt_cnt, int matched)
 void	here_doc_init(t_pipeline *pip)
 {
 	char	*next_line;
-	int		j;
 	int		lim_cnt;
 	int		matched;
 
 	next_line = NULL;
-	j = 0;
 	matched = 0;
 	lim_cnt = limiter_count(pip);
 	if (pip->cmds[pip->start] && pip->cmds[pip->start]->heredoc == 1)

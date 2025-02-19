@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 17:09:16 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 21:59:28 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,5 @@ void	ft_echo(int argc, char **argv)
 			print_echo(builtin_tab, &i, 1);
 		free_tab(builtin_tab);
 	}
+	get_data(NULL)->exit_code = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 17:11:47 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 22:09:45 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	is_pipe(char **argv)
 		}
 		i++;
 	}
-	free_tab(argv);
+	// free_tab(argv);
 	return (false);
 }
 
@@ -123,3 +123,70 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 			free_pipeline(pip);
 	}
 }
+
+//pour || voir leak
+// void	execute_command(char **cmd, char **argv, t_data *data)
+// {
+// 	t_pipeline	*pip;
+// 	int			fd_std;
+
+// 	fd_std = -1;
+// 	if (!cmd || !cmd[0])
+// 		return;
+// 	pip = parse_pipeline(cmd, data);
+// 	print_pipeline(pip);
+// 	init_pipe_start(pip);
+// 	if (is_hd(pip))
+// 		here_doc_init(pip);
+// 	if (pip->pipe_cnt > 0)
+// 		pip->pid = init_pid(pip);
+// 	if (is_pipe(cmd) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
+// 	{
+// 		data->exit_code = pipex(pip, data);
+// 		free_pipeline(pip);
+// 	}
+// 	else if (is_builtin(pip->cmds[0]))
+// 		fds_dup(&fd_std, pip, data);
+// 	else if (cmd)
+// 	{
+// 		simple_exec(pip, data);
+// 		if (pip)
+// 			free_pipeline(pip);
+// 	}
+// 	else if (argv)
+// 	{
+// 		simple_exec(pip, data);
+// 		if (pip)
+// 			free_pipeline(pip);
+// 	}
+// }
+
+// void	send_to_exec(int argc, char **argv, t_data *data)
+// {
+// 	char		**cmd1;
+// 	char		**cmd2;
+// 	int			i;
+
+// 	(void)argc;
+// 	cmd1 = argv;
+// 	cmd2 = NULL;
+// 	i = 0;
+// 	while (argv[i])
+// 	{
+// 		if (ft_strcmp(argv[i], "||") == 0)
+// 		{
+// 			argv[i] = NULL;
+// 			cmd2 = &argv[i + 1];
+// 			break ;
+// 		}
+// 		i++;
+// 	}
+// 	if (cmd1 && cmd1[0])
+// 		execute_command(cmd1, argv, data);
+// 	if (cmd2 && cmd2[0] && data->exit_code > 0)
+// 	{
+// 		if (ft_strcmp(cmd2[0], "echo") == 0)
+// 			cmd2[1] = ft_itoa(data->exit_code);
+// 		execute_command(cmd2, argv, data);
+// 	}
+// }
