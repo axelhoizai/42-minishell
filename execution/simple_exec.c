@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 13:38:39 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/19 15:37:01 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,13 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 {
 	char	*cmd_path;
 
-	cmd_path = execute_checker(cmd, pip, data);
+	if (ft_strstr(cmd[0], "./"))
+	{
+		script_checker(cmd[0]);
+		cmd_path = cmd[0];
+	}
+	else
+		cmd_path = execute_checker(cmd, pip, data);
 	execve(cmd_path, cmd, data->my_envp);
 	if (access(cmd_path, F_OK) == 0)
 	{
