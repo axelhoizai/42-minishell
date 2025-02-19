@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 14:04:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/08 00:38:54 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/19 23:30:06 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ char			*ft_strrchr(const char *s, int c);
 char			*ft_strtok(char *str, const char *delim);
 char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
+char			*ft_str_toupper(char *str);
+char			*ft_str_tolower(char *str);
 
 //ft_to
 int				ft_atoi(const char *nptr);
