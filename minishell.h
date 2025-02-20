@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 18:00:07 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:30:23 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ bool		is_hd(t_pipeline *pip);
 char		*get_path(char *cmd, char **envp);
 
 //utils error
-void		script_checker(char *cmd);
+void		script_checker(char **cmd, char *cmd_path);
 
 //utils_files
 int			open_file(t_command *cmd, char *file, int mode);
