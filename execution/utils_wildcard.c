@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:37:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 09:56:22 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 10:24:44 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,25 @@ static void	get_wildcard(char **args, DIR *dir, int files_cnt, char **new_args)
 	new_args[j] = NULL;
 }
 
+static bool check_wildcard(char **args)
+{
+	int		i;
+	bool	has_wildcard;
+
+	i = 0;
+	has_wildcard = false;
+	while (args[i])
+	{
+		if (ft_strchr(args[i], '*'))
+		{
+			has_wildcard = true;
+			break ;
+		}
+		i++;
+	}
+	return (has_wildcard);
+}
+
 char	**expand_wildcard(char **args)
 {
 	DIR		*dir;
@@ -100,6 +119,8 @@ char	**expand_wildcard(char **args)
 
 	i = 0;
 	j = 0;
+	if (!check_wildcard(args))
+		return (args);
 	dir = opendir(".");
 	if (!dir)
 		return (args);

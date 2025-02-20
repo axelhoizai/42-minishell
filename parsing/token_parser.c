@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 18:46:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 10:13:01 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*parse_token(char *line, int *i, t_data *data, char	**tokens)
 		handle_parse_token(line, i, &parse);
 		if (line[*i] == '$' && parse.in_single == 0
 			&& (ft_isalnum(line[*i + 1])
-				|| line[*i + 1] == '?' || line[*i + 1] == '$'))
+				|| line[*i + 1] == '?' || line[*i + 1] == '$' || line[*i + 1] == '0'))
 		{
 			handle_variable(line, i, &parse, data);
 			continue ;

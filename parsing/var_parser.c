@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/17 16:57:46 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 10:16:39 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ static char	*handle_special_var(const char *line, int *i, t_data *data)
 		var = ft_itoa(get_process_id());
 		(*i) += 2;
 	}
+	else if (line[*i + 1] == '0')
+	{
+		var = ft_strdup("minishell");
+		(*i) += 2;
+	}
 	return (var);
 }
 
@@ -66,7 +71,7 @@ void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 	int		k;
 
 	var = NULL;
-	if (line[*i + 1] == '?' || line[*i + 1] == '$')
+	if (line[*i + 1] == '?' || line[*i + 1] == '$' || line[*i + 1] == '0')
 		var = handle_special_var(line, i, data);
 	else if (ft_isdigit(line[*i + 1]))
 	{
