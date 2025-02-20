@@ -16,13 +16,10 @@ UTILS = utils/utils_prompt.c utils/utils_print_error.c utils/utils_debug.c \
 		utils/utils_list.c utils/utils_list2.c utils/utils_get.c \
 		utils/utils_signal.c utils/utils_free.c
 
-SRCS_BONUS = \
-
 ALL_SRCS = $(SRCS) $(EXEC) $(PARSING) $(BUILTINS) $(UTILS)
 
 OBJS = $(ALL_SRCS:.c=.o)
 
-OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 LIBFT = ./libft/libft.a
 
 CC = cc
@@ -40,7 +37,7 @@ $(LIBFT):
 	make -C ./libft
 
 clean:
-	$(RM) $(OBJS) $(OBJS_BONUS)
+	$(RM) $(OBJS)
 	make clean -C ./libft
 
 fclean: clean
@@ -48,8 +45,5 @@ fclean: clean
 	make fclean -C ./libft
 
 re: fclean all
-
-bonus: $(OBJS_BONUS) $(LIBFT)
-	$(CC) $(OBJS_BONUS) $(LIBFT) -o $(NAME)
 
 .PHONY: all clean fclean re

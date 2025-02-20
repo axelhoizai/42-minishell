@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 09:56:54 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 10:05:10 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 // 	fd_std = -1;
 // 	if (!cmd || !cmd[0])
 // 		return;
+//  cmd = expand_wildcard(cmd);
 // 	pip = parse_pipeline(cmd, data);
 // 	print_pipeline(pip);
 // 	init_pipe_start(pip);
