@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 08:30:14 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:56:54 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,101 +95,6 @@ static void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
 	free_pipeline(pip);
 }
 
-// pour wildcard *, voir leak et norme  
-// void	sort_args(char **args, int count)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*tmp;
-// 	char	*tmp_i;
-// 	char	*tmp_j;
-
-// 	i = 0;
-// 	while (i < count - 1)
-// 	{
-// 		j = i + 1;
-// 		while (j < count)
-// 		{
-// 			tmp_i = ft_strdup(args[i]);
-// 			tmp_j = ft_strdup(args[j]);
-// 			ft_str_tolower(tmp_i);
-// 			ft_str_tolower(tmp_j);
-// 			if (ft_strcmp(tmp_i, tmp_j) > 0)
-// 			{
-// 				tmp = args[i];
-// 				args[i] = args[j];
-// 				args[j] = tmp;
-// 			}
-// 			free(tmp_i);
-// 			free(tmp_j);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
-// int	match_wildcard(const char *pattern, const char *filename)
-// {
-// 	while (*pattern && *filename)
-// 	{
-// 		if (*pattern == '*')
-// 		{
-// 			pattern++;
-// 			if (!*pattern)
-// 				return (1);
-// 			while (*filename)
-// 				if (match_wildcard(pattern, filename++))
-// 					return (1);
-// 			return (0);
-// 		}
-// 		else if (*pattern != *filename)
-// 			return (0);
-// 		pattern++;
-// 		filename++;
-// 	}
-// 	return (*pattern == *filename);
-// }
-
-// char	**expand_wildcard(char **args)
-// {
-// 	DIR				*dir;
-// 	struct dirent	*entry;
-// 	char			**new_args;
-// 	int				i;
-// 	int				j;
-// 	int				files_count;
-
-// 	dir = opendir(".");
-// 	if (!dir)
-// 		return (args);
-// 	new_args = ft_safe_malloc(sizeof(char *) * 1024);
-// 	if (!new_args)
-// 		return (args);
-// 	i = 0;
-// 	j = 0;
-// 	files_count = 0;
-// 	while (args[i])
-// 	{
-// 		if (ft_strchr(args[i], '*'))
-// 		{
-// 			while ((entry = readdir(dir)))
-// 			{
-// 				if (entry->d_name[0] != '.' && match_wildcard(args[i], entry->d_name))
-// 					new_args[j++] = ft_strdup(entry->d_name);
-// 			}
-// 			files_count = j;
-// 		}
-// 		else
-// 			new_args[j++] = ft_strdup(args[i]);
-// 		i++;
-// 	}
-// 	new_args[j] = NULL;
-// 	closedir(dir);
-// 	if (files_count > 0)
-// 		sort_args(new_args + 1, files_count - 1);
-// 	return (new_args);
-// }
-
 void	send_to_exec(int argc, char **argv, t_data *data)
 {
 	t_pipeline	*pip;
@@ -197,7 +102,7 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 
 	(void)argc;
 	fd_std = -1;
-	// argv = expand_wildcard(argv);
+	argv = expand_wildcard(argv);
 	pip = parse_pipeline(argv, data);
 	print_pipeline(pip);
 	init_pipe_start(pip);
@@ -219,7 +124,6 @@ void	send_to_exec(int argc, char **argv, t_data *data)
 			free_pipeline(pip);
 	}
 }
-
 
 //pour || voir leak et norme
 // void	execute_command(char **cmd, char **argv, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 09:30:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:48:34 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,9 @@ void		script_checker(char **cmd, char *cmd_path);
 //utils_files
 int			open_file(t_command *cmd, char *file, int mode);
 int			open_outfile(t_command *cmd, char *file, t_data *data, int append);
+
+//utils wildcard
+char		**expand_wildcard(char **args);
 
 //pipex
 void		close_fds(t_pipeline *pip);

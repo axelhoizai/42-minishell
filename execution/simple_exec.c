@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 09:33:21 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:46:15 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 {
 	char	*cmd_path;
 
+	cmd_path = NULL;
 	if (ft_strstr(cmd[0], "./"))
 		script_checker(cmd, cmd_path);
 	else
