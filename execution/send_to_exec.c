@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 12:51:27 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 17:31:08 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,41 @@ static void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
 // 	}
 // }
 
+static bool	check_redir_pipe(char **tokens)
+{
+	int		i;
+	char	*trim;
+	char	*trim2;
+
+	i = 0;
+	while (tokens[i])
+	{
+		trim = ft_strtrim(tokens[i], "<|>");
+		if (tokens[i][0] && trim[0] == '\0' && ft_strncmp(tokens[i], "||", 2))
+		{
+			if (!tokens[i + 1])
+			{
+				ft_print_error(NULL, NULL, "syntax error near unexpected token");
+				return (free(trim), false);
+			}
+			else
+			{
+				trim2 = ft_strtrim(tokens[i + 1], "<|>");
+				if (trim2[0] == '\0')
+				{
+					ft_print_error(NULL, NULL, "syntax error near unexpected token");
+					free(trim2);
+					return (free(trim), false);
+				}
+				free(trim2);
+			}
+		}
+		i++;
+		free(trim);
+	}
+	return (true);
+}
+
 void	execute_command(char **cmd, char **argv, t_data *data)
 {
 	t_pipeline	*pip;
@@ -135,6 +170,11 @@ void	execute_command(char **cmd, char **argv, t_data *data)
 	if (!cmd || !cmd[0])
 		return;
  	cmd = expand_wildcard(cmd);
+	if (!check_redir_pipe(cmd))
+	{
+		free_tab(cmd);
+		return ;
+	}
 	pip = parse_pipeline(cmd, data);
 	print_pipeline(pip);
 	init_pipe_start(pip);

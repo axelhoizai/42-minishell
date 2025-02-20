@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:27:45 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/01/30 17:11:32 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 19:32:03 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ms_lstdelone(t_env_ms **lst, char *env_key)
 		}
 		tmp = tmp->next;
 	}
-	tmp->next = NULL;
+	tmp = NULL;
 }
 
 void	lst_to_tab(t_env_ms *lst, t_data *data)

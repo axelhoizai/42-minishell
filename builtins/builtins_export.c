@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/18 11:02:42 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 19:16:00 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,58 @@ static void	print_export(t_env_ms *lst)
 	}
 }
 
-static void	add_var(char *key, char **argv, t_data *data)
+int	find_index(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_strcmp(str, "="))
+		return (1);
+	if (str[0] == '=')
+		return (ft_strlen(str));
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return(i) ;
+		i++;
+	}
+	return (i);
+}
+
+bool	chck_identifier(char *id, t_data *data)
 {
 	int		i;
+	char	*index;
+	
+	i = 0;
+	index = ft_substr(id, 0, find_index(id));
+	if (ft_isdigit(index[0]) || ft_strchr(index, '-') || ft_strchr(index, '.')
+		|| ft_strchr(index, '}') || ft_strchr(index, '{') 
+		|| ft_strchr(index, '*') || ft_strchr(index, '#')
+		|| ft_strchr(index, '@') || ft_strchr(index, '+')
+		|| !ft_strcmp(index, "=") || index[0] == '=')
+	{
+		ft_print_error("export", id, "not a valid identifier");
+		data->exit_code = 1;
+		free(index);
+		return (false);
+	}
+	free(index);
+	return (true);
+}
+
+static void	add_var(char *key, char **argv, t_data *data)
+{
+	int			i;
 
 	i = 1;
 	while (argv[i] && argv[i][0] != '$')
 	{
+		if (!chck_identifier(argv[i], data))
+			return ;
 		key = get_envkey(argv[i]);
+		printf("key : %s\n", key);
+		ft_unset(argv, data);
 		if (!ms_find(data->env_ms, key))
 		{
 			if (ft_strchr(argv[i], '='))
@@ -63,7 +107,7 @@ void	ft_export(char **argv, t_data *data)
 	char	*key;
 
 	key = NULL;
-	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
+	if (ft_strcmp(argv[0], "export") == 0 && (!argv[1] || argv[1][0] == '\0'))
 		print_export(data->env_ms);
 	else if (ft_strcmp(argv[0], "export") == 0 && argv[1] && argv[1][0] != '$')
 	{
