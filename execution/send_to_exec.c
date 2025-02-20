@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 23:37:59 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/20 08:30:14 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
 	free_pipeline(pip);
 }
 
-// pour wildcard *, voir leak et norme   
+// pour wildcard *, voir leak et norme  
 // void	sort_args(char **args, int count)
 // {
 // 	int		i;
@@ -128,6 +128,28 @@ static void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
 // 	}
 // }
 
+// int	match_wildcard(const char *pattern, const char *filename)
+// {
+// 	while (*pattern && *filename)
+// 	{
+// 		if (*pattern == '*')
+// 		{
+// 			pattern++;
+// 			if (!*pattern)
+// 				return (1);
+// 			while (*filename)
+// 				if (match_wildcard(pattern, filename++))
+// 					return (1);
+// 			return (0);
+// 		}
+// 		else if (*pattern != *filename)
+// 			return (0);
+// 		pattern++;
+// 		filename++;
+// 	}
+// 	return (*pattern == *filename);
+// }
+
 // char	**expand_wildcard(char **args)
 // {
 // 	DIR				*dir;
@@ -152,7 +174,7 @@ static void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
 // 		{
 // 			while ((entry = readdir(dir)))
 // 			{
-// 				if (entry->d_name[0] != '.')
+// 				if (entry->d_name[0] != '.' && match_wildcard(args[i], entry->d_name))
 // 					new_args[j++] = ft_strdup(entry->d_name);
 // 			}
 // 			files_count = j;
