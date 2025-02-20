@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 14:26:33 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 15:40:41 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*set_sheban(char **cmd)
+char	**set_sheban(char **cmd)
 {
 	char	**new_cmd;
 	char 	*script_path;
@@ -24,22 +24,21 @@ char	*set_sheban(char **cmd)
 	new_cmd[0] = ft_strdup("/bin/bash");
 	new_cmd[1] = script_path;
 	new_cmd[2] = NULL;
-	cmd = new_cmd;
-	return (script_path);
+	return (new_cmd);
 }
 
-
-char	*script_checker(char **cmd)
+char	**script_checker(char **cmd)
 {
-	if ((ft_strstr(cmd[0], "./") && ft_strchr(cmd[0], ' '))
-		|| access(cmd[0], X_OK) == -1)
+	if (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1)
+		ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
+	else if (ft_strstr(cmd[0], "./") && access(cmd[0], X_OK) == -1)
 	{
 		ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
 		return (NULL);
 	}
-	if (ft_strstr(cmd[0], ".sh"))
+	else if (ft_strstr(cmd[0], ".sh"))
 		return (set_sheban(cmd));
 	else if (ft_strstr(cmd[0], "./"))
-		return (ft_strdup(cmd[0]));
+		return (cmd);
 	return (NULL);
 }

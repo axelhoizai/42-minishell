@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 14:28:51 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 15:50:05 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,15 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	char	*cmd_path;
 
 	cmd_path = NULL;
-	if (ft_strstr(cmd[0], "./"))
+	if (ft_strstr(cmd[0], "./") || cmd[0][0] == '/')
 	{
-		cmd_path = script_checker(cmd);
+		cmd = script_checker(cmd);
 		print_tab(cmd);
 		printf("cmd[0] : %s\n", cmd[0]);
 		printf("cmd_path : %s\n", cmd_path);
 		if (!cmd_path)
-		{
-			// free(cmd_path);
-			free_execute(pip, data);
-			exit(127);
-		}
+			cmd_path = cmd[0];
+		printf("cmd_path2 : %s\n", cmd_path);
 	}
 	else
 		cmd_path = execute_checker(cmd, pip, data);
