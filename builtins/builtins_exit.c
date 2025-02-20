@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/20 18:04:34 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 20:22:13 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	validate_exit_args(t_command *cmd, int *exit_code, t_data *data)
 	return (1);
 }
 
-static void	free_data(t_data * data)
+void	free_data(t_data * data)
 {
 	free(data->oldpwd);
 	free(data->pwd);
