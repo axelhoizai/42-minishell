@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 18:00:00 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 22:42:31 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,8 @@ char		*get_uid(void);
 
 //utils_pwd
 void		get_dir(t_data *data, t_pipeline *pip);
+void		update_pwd(void);
+void		update_oldpwd(void);
 
 //builtins_echo
 void		ft_echo(int argc, char **argv);
@@ -188,7 +190,7 @@ void		ft_unset(char **argv, t_data *data);
 //builtin_exec
 void		simple_exec(t_pipeline *pip, t_data *data);
 void		execute(char **cmd, t_pipeline *pip, t_data *data);
-void		free_execute(t_pipeline *pip, t_data *data);
+void		free_execute(t_pipeline *pip, t_data *data, char *cmd_path);
 
 //----------------------------BUILTINS-END---------------------------
 

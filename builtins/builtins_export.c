@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 19:16:00 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 21:42:26 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,8 @@ int	find_index(char *str)
 
 bool	chck_identifier(char *id, t_data *data)
 {
-	int		i;
 	char	*index;
-	
-	i = 0;
+
 	index = ft_substr(id, 0, find_index(id));
 	if (ft_isdigit(index[0]) || ft_strchr(index, '-') || ft_strchr(index, '.')
 		|| ft_strchr(index, '}') || ft_strchr(index, '{') 

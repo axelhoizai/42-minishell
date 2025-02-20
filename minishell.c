@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 18:01:59 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 22:38:41 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 
 static void	ft_init(char **envp, int *is_start, t_data *data)
 {
+	char	*path_tmp;
+	
+	path_tmp = NULL;
 	if (*is_start == 0)
 	{
+		path_tmp = getcwd(NULL, 0);
 		data->exit_code = 0;
 		data->is_reading = 0;
 		init_env_ms(envp, data);
 		*is_start = 1;
 		data->term = (t_data_term *)ft_calloc(sizeof(t_data_term), 1);
-		data->oldpwd = getcwd(NULL, 0);
-		data->pwd = getcwd(NULL, 0);
+		data->oldpwd = ft_strdup(path_tmp);
+		data->pwd = ft_strdup(path_tmp);
+		free_var(path_tmp);
 		if (!data->term)
 			return ;
 	}

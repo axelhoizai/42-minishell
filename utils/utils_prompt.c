@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_prompt.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 20:20:07 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 21:52:26 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,21 +126,7 @@ char	*get_prompt(t_env_ms *lst)
 	hostname = ft_get_hostname();
 	tmp2 = ft_strjoin(username, hostname);
 	current_path = getcwd(NULL, 0);
-
-
-	char	**ex;
-
-
-	free(get_data(NULL)->pwd);
-	get_data(NULL)->pwd = getcwd(NULL, 0);
-	ex = malloc(sizeof (char *) * 4);
-	ex[0] = ft_strdup("export");
-	ex[1] = ft_strjoin("PWD=", get_data(NULL)->pwd);
-	ex[2] = NULL;
-	ft_export(ex, get_data(NULL));
-	free_tab(ex);
-
-	
+	update_pwd();
 	if (!current_path)
 		current_path = ft_strdup("~");
 	current_path = ft_get_currentpath(lst, current_path);

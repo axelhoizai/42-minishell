@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_wildcard.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:37:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 11:28:56 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 21:41:58 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	match_wildcard(const char *pattern, const char *filename)
 	return (*pattern == *filename);
 }
 
-static void	get_wildcard(char **args, DIR *dir, int files_cnt, char **new_args)
+static void	get_wildcard(char **args, DIR *dir, int *files_cnt, char **new_args)
 {
 	struct dirent	*entry;
 	int				i;
@@ -79,12 +79,12 @@ static void	get_wildcard(char **args, DIR *dir, int files_cnt, char **new_args)
 			{
 				if (entry->d_name[0] != '.'
 					&& match_wildcard(args[i], entry->d_name))
-					new_args[j++] = ft_strdup(entry->d_name); //leak
+					new_args[j++] = ft_strdup(entry->d_name);
 			}
-			files_cnt = j;
+			(*files_cnt) = j;
 		}
 		else
-			new_args[j++] = ft_strdup(args[i]); //leak
+			new_args[j++] = ft_strdup(args[i]);
 		i++;
 	}
 	new_args[j] = NULL;
@@ -128,7 +128,7 @@ char	**expand_wildcard(char **args)
 	if (!new_args)
 		return (args);
 	files_count = 0;
-	get_wildcard(args, dir, files_count, new_args);
+	get_wildcard(args, dir, &files_count, new_args);
 	if (files_count > 0)
 		sort_args(new_args + 1, files_count - 1, i, j);
 	free_tab(args);

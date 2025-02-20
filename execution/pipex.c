@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/19 17:10:18 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 22:43:07 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 	close(p_fd[1]);
 	if (cmd->in_error == 1 || cmd->out_error == 1)
 	{
-		free_execute(pip, data);
+		free_execute(pip, data, NULL);
 		close(p_fd[0]);
 		exit(1);
 	}
@@ -49,7 +49,7 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		if (cmd->args[0] && is_builtin(cmd))
 		{
 			handle_builtins(cmd, pip, data);
-			free_execute(pip, data);
+			free_execute(pip, data, NULL);
 			exit(0);
 		}
 		execute(cmd->args, pip, data);

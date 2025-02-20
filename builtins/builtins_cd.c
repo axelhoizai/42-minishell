@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 20:21:23 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 21:52:10 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,8 @@ static int	handle_cd_error(int argc, char *dir, t_data *data)
 
 static void	ft_chdir(char *path)
 {
-	char	**ex;
-	char	*tmp;
-
-	free(get_data(NULL)->oldpwd);
-	get_data(NULL)->oldpwd = ft_strdup(get_data(NULL)->pwd);
-	tmp = ft_strjoin("OLDPWD=", get_data(NULL)->pwd);
-
+	update_oldpwd();
 	chdir(path);
-	ex = malloc(sizeof (char *) * 4);
-	ex[0] = ft_strdup("export");
-	ex[1] = tmp;
-	ex[2] = NULL;
-	ft_export(ex, get_data(NULL));
-	free_tab(ex);
 }
 
 void	change_dir(int argc, char **argv, t_pipeline *pip, t_data *data)
