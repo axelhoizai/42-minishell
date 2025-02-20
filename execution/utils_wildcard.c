@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:37:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 10:24:44 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 11:28:56 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ static void	get_wildcard(char **args, DIR *dir, int files_cnt, char **new_args)
 			{
 				if (entry->d_name[0] != '.'
 					&& match_wildcard(args[i], entry->d_name))
-					new_args[j++] = ft_strdup(entry->d_name);
+					new_args[j++] = ft_strdup(entry->d_name); //leak
 			}
 			files_cnt = j;
 		}
 		else
-			new_args[j++] = ft_strdup(args[i]);
+			new_args[j++] = ft_strdup(args[i]); //leak
 		i++;
 	}
 	new_args[j] = NULL;
@@ -124,13 +124,14 @@ char	**expand_wildcard(char **args)
 	dir = opendir(".");
 	if (!dir)
 		return (args);
-	new_args = ft_safe_malloc(sizeof(char *) * 1024);
+	new_args = ft_safe_malloc(sizeof(char *) * 1024); //leak
 	if (!new_args)
 		return (args);
 	files_count = 0;
 	get_wildcard(args, dir, files_count, new_args);
-	closedir(dir);
 	if (files_count > 0)
 		sort_args(new_args + 1, files_count - 1, i, j);
+	free_tab(args);
+	closedir(dir);
 	return (new_args);
 }
