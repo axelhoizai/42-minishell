@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 15:50:05 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 17:48:29 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,35 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	char	*cmd_path;
 
 	cmd_path = NULL;
-	if (ft_strstr(cmd[0], "./") || cmd[0][0] == '/')
+	if (ft_str_startwith(cmd[0], "./") && ft_str_endwith(cmd[0], "sh"))
 	{
 		cmd = script_checker(cmd);
-		print_tab(cmd);
-		printf("cmd[0] : %s\n", cmd[0]);
-		printf("cmd_path : %s\n", cmd_path);
 		if (!cmd_path)
 			cmd_path = cmd[0];
-		printf("cmd_path2 : %s\n", cmd_path);
 	}
-	else
+	else if (ft_str_startwith(cmd[0], "../") || ft_str_countchar(cmd[0], '.') > 2)
+	{
+		if (ft_str_countchar(cmd[0], '.') == 2)
+			ft_print_error(NULL, ft_strtok(cmd[0], " "), "Is a directory");
+		else
+			ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
+		free_execute(pip, data);
+		exit(127);
+	}
+	else if ((ft_str_startwith(cmd[0], "./") && !ft_str_endwith(cmd[0], ".sh"))
+			|| (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1))
+	{
+		ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
+		free_execute(pip, data);
+		exit(127);
+	}
+	// else if (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1)
+	// {
+	// 	ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
+	// 	free_execute(pip, data);
+	// 	exit(127);
+	// }
+	else 
 		cmd_path = execute_checker(cmd, pip, data);
 	print_tab(cmd);
 	execve(cmd_path, cmd, data->my_envp);

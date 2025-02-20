@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 14:04:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 12:50:50 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 17:42:01 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,9 @@ char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_str_toupper(char *str);
 char			*ft_str_tolower(char *str);
 char			**ft_strdup_tab(char **args);
+int				ft_str_startwith(const char *str, const char *set);
+int				ft_str_endwith(const char *str, const char *set);
+int				ft_str_countchar(char *str, char c);
 
 //ft_to
 int				ft_atoi(const char *nptr);

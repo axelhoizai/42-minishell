@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 15:40:41 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 15:51:36 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@ char	**set_sheban(char **cmd)
 
 char	**script_checker(char **cmd)
 {
-	if (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1)
-		ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
-	else if (ft_strstr(cmd[0], "./") && access(cmd[0], X_OK) == -1)
+	
+	if (ft_strstr(cmd[0], "./") && access(cmd[0], X_OK) == -1)
 	{
 		ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
 		return (NULL);
