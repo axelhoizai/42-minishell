@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 10:13:01 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 13:04:13 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,20 @@ static void	check_closing_quote(char *line, int *i, t_parse *parse)
 char	*parse_token(char *line, int *i, t_data *data, char	**tokens)
 {
 	t_parse	parse;
+	(void)tokens;
 
 	init_parse(&parse, 256);
 	while (line[*i] && (parse.in_single || parse.in_double
 			|| !ft_isspace(line[*i])))
 	{
-		if (*i > 0 && line[*i] == '|' && tokens[0] && ft_strcmp(tokens[0], "export") != 0) 
+		if (*i > 0 && line[*i] == '|' && ft_strncmp(line, "export", 6) != 0) 
 			return (parse.buffer);
+		// if (line[*i] == '>' && line[*i + 1] == '>')
+		// {
+		// 	line[*i + 1] = '>';
+		// 	(*i)++;
+		// 	continue ;
+		// }
 		if (line[*i] == '>' && line[*i + 1] == '|' && line[*i + 2] != '|')
 		{
 			line[*i + 1] = '>';

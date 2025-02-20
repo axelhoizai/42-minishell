@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 09:46:15 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 14:28:51 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,21 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 
 	cmd_path = NULL;
 	if (ft_strstr(cmd[0], "./"))
-		script_checker(cmd, cmd_path);
+	{
+		cmd_path = script_checker(cmd);
+		print_tab(cmd);
+		printf("cmd[0] : %s\n", cmd[0]);
+		printf("cmd_path : %s\n", cmd_path);
+		if (!cmd_path)
+		{
+			// free(cmd_path);
+			free_execute(pip, data);
+			exit(127);
+		}
+	}
 	else
 		cmd_path = execute_checker(cmd, pip, data);
+	print_tab(cmd);
 	execve(cmd_path, cmd, data->my_envp);
 	if (access(cmd_path, F_OK) == 0)
 	{
@@ -66,6 +78,7 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 		}
 	}
 	ft_print_error(NULL, cmd[0], "Execution error");
+	free(cmd_path);
 	free_execute(pip, data);
 	exit(127);
 }

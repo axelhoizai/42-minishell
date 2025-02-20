@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 19:03:25 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 13:10:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,18 @@ static char	**parse_args(char *str, t_data *data)
 				token = ft_substr(str, i, 2);
 				i+=2;
 			}
-			else if ((str[i] == '<' || str[i] == '>' || str[i] == '|') && str[i + 1] != '|')
+			else if ((str[i] == '<' && str[i + 1] == '|'))
+			{
+				token = ft_calloc(2, 1);
+				token[0] = str[i];
+				i++;
+			}
+			else if ((str[i] == '>' && str[i + 1] == '>'))
+			{
+				token = ft_substr(str, i, 2);
+				i += 2;
+			}
+			else if ((str[i] == '>' || str[i] == '|') && str[i + 1] != '|')
 			{
 				token = ft_calloc(2, 1);
 				token[0] = str[i];
