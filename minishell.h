@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 15:40:56 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 18:00:00 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ typedef struct s_data
 	t_env_ms	*env_ms;
 	char		**argv;
 	bool		is_reading;
+	char		*oldpwd;
+	char		*pwd;
 	t_data_term	*term;
 }	t_data;
 

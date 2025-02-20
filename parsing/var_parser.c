@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/20 10:16:39 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/20 18:41:52 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,41 @@ static char	*handle_special_var(const char *line, int *i, t_data *data)
 	return (var);
 }
 
+static char	*handle_pwd_var(const char *line, int *i, t_data *data)
+{
+	char	*var;
+	char	*tmp_line;
+
+	tmp_line = ft_strdup(line);
+	var = NULL;
+	if (line[*i + 1] == 'O' && line[*i + 2] == 'L' && line[*i + 3] == 'D' &&
+		line[*i + 4] == 'P' && line[*i + 5] == 'W' && line[*i + 6] == 'D')
+	{
+		var = ft_strdup(data->oldpwd);
+		(*i) += 7;
+	}
+	else if (line[*i + 1] == 'P' && line[*i + 2] == 'W' && line[*i + 3] == 'D')
+	{
+		var = ft_strdup(data->pwd);
+		(*i) += 4;
+	}
+	printf("data->pwd = %s\n",data->pwd);
+	printf("data->oldpwd = %s\n",data->oldpwd);
+	free(tmp_line);
+	return (var);
+}
+
 void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 {
 	char	*var;
 	int		k;
 
 	var = NULL;
+
 	if (line[*i + 1] == '?' || line[*i + 1] == '$' || line[*i + 1] == '0')
 		var = handle_special_var(line, i, data);
+	if (line[*i + 1] == 'P' || line[*i + 1] == 'O')
+		var = handle_pwd_var(line, i, data);
 	else if (ft_isdigit(line[*i + 1]))
 	{
 		(*i) += 2;

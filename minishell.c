@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/19 13:36:26 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 18:01:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	ft_init(char **envp, int *is_start, t_data *data)
 		init_env_ms(envp, data);
 		*is_start = 1;
 		data->term = (t_data_term *)ft_calloc(sizeof(t_data_term), 1);
+		data->oldpwd = getcwd(NULL, 0);
+		data->pwd = getcwd(NULL, 0);
 		if (!data->term)
 			return ;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 16:47:07 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/20 19:05:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ static int	handle_cd_error(int argc, char *dir, t_data *data)
 	return (1);
 }
 
+static void	ft_chdir(char *path)
+{
+	get_data(NULL)->oldpwd = ft_strdup(get_data(NULL)->pwd);
+	chdir(path);
+}
+
 void	change_dir(int argc, char **argv, t_pipeline *pip, t_data *data)
 {
 	char	*tmp;
@@ -75,10 +81,10 @@ void	change_dir(int argc, char **argv, t_pipeline *pip, t_data *data)
 	if (data->exit_code != 1 && handle_cd_error(argc, dir, data) == 1)
 	{
 		if (access(dir, F_OK) == 0)
-			chdir(dir);
+			ft_chdir(dir);
 		else if (!ft_strnstr(tmpdir, "//", ft_strlen(tmpdir))
 			&& access(tmpdir, F_OK) == 0)
-			chdir(tmpdir);
+			ft_chdir(tmpdir);
 		else
 		{
 			data->exit_code = 1;
