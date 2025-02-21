@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_wildcard.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:37:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 17:31:16 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 23:19:43 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,26 +69,26 @@ static void	get_wildcard(char **args, DIR *dir, int *files_cnt, char **new_args)
 	int				i;
 	int				j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (args[i])
+	entry = readdir(dir);
+	while (args[++i])
 	{
-		if (ft_strchr(args[i], '*'))
+		if (!ft_strchr(args[i], '*'))
+			new_args[j++] = ft_strdup(args[i]);
+		else
 		{
-			entry = readdir(dir);
-			while (entry == readdir(dir))
+			while (entry)
 			{
 				if (entry->d_name[0] != '.'
 					&& match_wildcard(args[i], entry->d_name))
 					new_args[j++] = ft_strdup(entry->d_name);
+				entry = readdir(dir);
 			}
-			(*files_cnt) = j;
 		}
-		else
-			new_args[j++] = ft_strdup(args[i]);
-		i++;
 	}
 	new_args[j] = NULL;
+	*files_cnt = j;
 }
 
 static bool	check_wildcard(char **args)
