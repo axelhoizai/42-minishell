@@ -107,7 +107,10 @@ static char	*check_command_path(char **cmd, t_pipeline *pip, t_data *data, char 
 	}
 	else if (ft_str_startwith(cmd[0], "../") || ft_str_countchar(cmd[0], '.') > 2)
 	{
-		if (ft_str_countchar(cmd[0], '.') == 2)
+		// int fd = -1;
+		if(access(cmd[0], F_OK) == -1)
+			ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
+		else if (ft_str_countchar(cmd[0], '.') == 2)
 			ft_print_error(NULL, ft_strtok(cmd[0], " "), "Is a directory");
 		else
 			ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
