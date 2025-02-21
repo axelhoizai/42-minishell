@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 18:48:50 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 21:26:11 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,29 @@ static char	*skip_pips(char *str, int *i)
 	return (token);
 }
 
+// static bool	tokenize_string(char *str, char **tokens, int *count, t_data *data)
+// {
+// 	int		i;
+// 	char	*token;
+
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		skip_whitespace(str, &i);
+// 		if (str[i])
+// 		{
+// 			token = skip_pips(str, &i);
+// 			if (!token)
+// 				token = parse_token(str, &i, data);
+// 			if (!token)
+// 				return (free_tokens(tokens), false);
+// 			tokens[(*count)++] = token;
+// 		}
+// 	}
+// 	tokens[*count] = NULL;
+// 	return (true);
+// }
+
 static bool	tokenize_string(char *str, char **tokens, int *count, t_data *data)
 {
 	int		i;
@@ -60,10 +83,15 @@ static bool	tokenize_string(char *str, char **tokens, int *count, t_data *data)
 				token = parse_token(str, &i, data);
 			if (!token)
 				return (free_tokens(tokens), false);
-			tokens[(*count)++] = token;
+			if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
+				tokens[(*count)++] = token;
+			 else if (token)
+				free(token);
 		}
 	}
 	tokens[*count] = NULL;
+	if (*count == 0)
+		return (free_tokens(tokens), false);
 	return (true);
 }
 

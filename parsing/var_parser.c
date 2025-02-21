@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/21 19:05:37 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 21:26:41 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,17 @@ static char	*handle_pwd_var(const char *line, int *i, t_data *data)
 	return (var);
 }
 
-static bool	handle_empty_var(const char *line, int *i)
-{
-	if (line[*i + 1] == 'E' && line[*i + 2] == 'M' && line[*i + 3] == 'P'
-		&& line[*i + 4] == 'T' && line[*i + 5] == 'Y')
-	{
-		(*i) += 6;
-		skip_whitespace(line, i);
-		return (true);
-	}
-	return (false);
-}
+// static bool	handle_empty_var(const char *line, int *i)
+// {
+// 	if (line[*i + 1] == 'E' && line[*i + 2] == 'M' && line[*i + 3] == 'P'
+// 		&& line[*i + 4] == 'T' && line[*i + 5] == 'Y')
+// 	{
+// 		(*i) += 6;
+// 		skip_whitespace(line, i);
+// 		return (true);
+// 	}
+// 	return (false);
+// }
 
 void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 {
@@ -109,8 +109,8 @@ void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 		var = handle_special_var(line, i, data);
 	else if (line[*i + 1] == 'P' || line[*i + 1] == 'O')
 		var = handle_pwd_var(line, i, data);
-	else if (handle_empty_var(line, i))
-		return ;
+	// else if (handle_empty_var(line, i))
+	// 	return ;
 	else if (ft_isdigit(line[*i + 1]))
 	{
 		(*i) += 2;
