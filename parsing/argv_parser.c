@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 23:38:16 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/21 13:25:51 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ static void	process_builtins(char *builtins, t_data *data)
 		argc++;
 	if (argc > 0)
 	{
-		send_to_exec(argc, argv, data);
+		send_to_exec(argv, data);
 		return ;
 	}
 }
@@ -170,23 +170,23 @@ static void	process_builtins(char *builtins, t_data *data)
 //? Get the input and 
 void	get_argv(char *input, t_data *data)
 {
-	char	*token;	
+	// char	*token;
 
 	if (!input)
 		return ;
-	input = replace_double_ampersand(input);
-	if (ft_strchr(input, '\n'))
-	{
-		token = ft_strtok(input, "\n");
-		while (token)
-		{
-			process_builtins(token, data);
-			if (data->exit_code > 0)
-				break ;
-			token = ft_strtok(NULL, "\n");
-		}
-	}
-	else
-		process_builtins(input, data);
-	free(input);
+	// input = replace_double_ampersand(input);
+	// if (ft_strchr(input, '\n'))
+	// {
+	// 	token = ft_strtok(input, "\n");
+	// 	while (token)
+	// 	{
+	// 		process_builtins(token, data);
+	// 		if (data->exit_code > 0)
+	// 			break ;
+	// 		token = ft_strtok(NULL, "\n");
+	// 	}
+	// }
+	// else
+	process_builtins(input, data);
+	// free(input);
 }
