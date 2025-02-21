@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 21:42:26 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/21 11:28:06 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,13 @@ static void	print_export(t_env_ms *lst)
 	}
 }
 
-int	find_index(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!ft_strcmp(str, "="))
-		return (1);
-	if (str[0] == '=')
-		return (ft_strlen(str));
-	while (str[i])
-	{
-		if (str[i] == '=')
-			return(i) ;
-		i++;
-	}
-	return (i);
-}
-
-bool	chck_identifier(char *id, t_data *data)
+static bool	chck_identifier(char *id, t_data *data)
 {
 	char	*index;
 
 	index = ft_substr(id, 0, find_index(id));
 	if (ft_isdigit(index[0]) || ft_strchr(index, '-') || ft_strchr(index, '.')
-		|| ft_strchr(index, '}') || ft_strchr(index, '{') 
+		|| ft_strchr(index, '}') || ft_strchr(index, '{')
 		|| ft_strchr(index, '*') || ft_strchr(index, '#')
 		|| ft_strchr(index, '@') || ft_strchr(index, '+')
 		|| !ft_strcmp(index, "=") || index[0] == '=')
@@ -70,7 +52,7 @@ bool	chck_identifier(char *id, t_data *data)
 
 static void	add_var(char *key, char **argv, t_data *data)
 {
-	int			i;
+	int	i;
 
 	i = 1;
 	while (argv[i] && argv[i][0] != '$')
@@ -78,20 +60,17 @@ static void	add_var(char *key, char **argv, t_data *data)
 		if (!chck_identifier(argv[i], data))
 			return ;
 		key = get_envkey(argv[i]);
-		printf("key : %s\n", key);
 		ft_unset(argv, data);
 		if (!ms_find(data->env_ms, key))
 		{
 			if (ft_strchr(argv[i], '='))
 			{
-				ms_lstadd_back(&(data->env_ms),
-					ms_lstnew(get_envkey(argv[i]),
+				ms_lstadd_back(&(data->env_ms), ms_lstnew(get_envkey(argv[i]),
 						get_envval(argv[i]), true));
 			}
 			else
 			{
-				ms_lstadd_back(&(data->env_ms),
-					ms_lstnew(get_envkey(argv[i]),
+				ms_lstadd_back(&(data->env_ms), ms_lstnew(get_envkey(argv[i]),
 						get_envval(argv[i]), false));
 			}
 		}
@@ -112,26 +91,4 @@ void	ft_export(char **argv, t_data *data)
 		add_var(key, argv, data);
 		lst_to_tab(data->env_ms, data);
 	}
-}
-
-bool	is_key(t_env_ms *lst, char *var)
-{
-	while (lst)
-	{
-		if (ft_strcmp(lst->key, var) == 0)
-			return (true);
-		lst = lst->next;
-	}
-	return (false);
-}
-
-t_env_ms	*ms_find(t_env_ms *lst, char *var)
-{
-	while (lst)
-	{
-		if (ft_strcmp(lst->key, var) == 0)
-			return (lst);
-		lst = lst->next;
-	}
-	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:18:36 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 13:44:42 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,76 +160,63 @@ static bool	check_redir_pipe(char **tokens)
 	return (true);
 }
 
-void	execute_command(char **cmd, char **argv, t_data *data)
+void	execute_command(char **argv, t_data *data)
 {
 	t_pipeline	*pip;
 	int			fd_std;
 
-(void)argv;
 	fd_std = -1;
-	if (!cmd || !cmd[0])
+	if (!argv || !argv[0])
 		return;
- 	cmd = expand_wildcard(cmd);
-	if (!check_redir_pipe(cmd))
+ 	argv = expand_wildcard(argv);
+	if (!check_redir_pipe(argv))
 	{
-		free_tab(cmd);
+		free_tab(argv);
 		return ;
 	}
-	pip = parse_pipeline(cmd, data);
+	pip = parse_pipeline(argv, data);
 	print_pipeline(pip);
 	init_pipe_start(pip);
 	if (is_hd(pip))
 		here_doc_init(pip);
 	if (pip->pipe_cnt > 0)
 		pip->pid = init_pid(pip);
-	if (is_pipe(cmd) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
+	if (is_pipe(argv) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
 	{
 		data->exit_code = pipex(pip, data);
 		free_pipeline(pip);
 	}
 	else if (is_builtin(pip->cmds[0]))
 		fds_dup(&fd_std, pip, data);
-	else if (cmd)
+	else if (argv)
 	{
 		simple_exec(pip, data);
 		if (pip)
 			free_pipeline(pip);
 	}
-	// else if (argv)
-	// {
-	// 	simple_exec(pip, data);
-	// 	if (pip)
-	// 		free_pipeline(pip);
-	// }
 }
 
-void	send_to_exec(int argc, char **argv, t_data *data)
+void	send_to_exec(char **argv, t_data *data)
 {
-	char		**cmd1;
-	char		**cmd2;
-	int			i;
-	char		**tmp_argv;
+	int	i;
+	bool		or_and;
 
-	(void)argc;
-	tmp_argv = NULL;
-	cmd1 = argv;
-	cmd2 = NULL;
-	if (cmd1 && cmd1[0])
-		execute_command(cmd1, argv, data);
-	if (cmd2 && cmd2[0] && data->exit_code > 0)
+	or_and = false;
+	i = 0;
+	while (argv[i])
 	{
-		tmp_argv = ft_strdup_tab(argv);
-		i = 0;
-		while (tmp_argv[i])
+		if (ft_strcmp(argv[i], "||") == 0 || ft_strcmp(argv[i], "&&") == 0)
 		{
-			if (ft_strcmp(tmp_argv[i], "||") == 0)
-			{
-				tmp_argv[i] = NULL;
-				cmd2 = &tmp_argv[i + 1];
-				break ;
-			}
-			i++;
+			or_and = true;
+			break ;
 		}
-		execute_command(cmd2, tmp_argv, data);
+		i++;
+	}
+	if (argv && argv[0] && or_and == false)
+		execute_command(argv, data);
+	else
+	{
+		ft_print_error(NULL, NULL, "|| and && not implemented");
+		free_tab(argv);
 	}
 }

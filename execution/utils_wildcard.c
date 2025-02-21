@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_wildcard.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:37:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 21:41:58 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/21 11:20:39 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static void	get_wildcard(char **args, DIR *dir, int *files_cnt, char **new_args)
 	new_args[j] = NULL;
 }
 
-static bool check_wildcard(char **args)
+static bool	check_wildcard(char **args)
 {
 	int		i;
 	bool	has_wildcard;

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:21:32 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 13:45:02 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
 {
+	(void)cmd_path;
 	ms_lstclear(&data->env_ms);
 	free_tab(data->my_envp);
 	free_term(data);
@@ -95,6 +96,9 @@ static char	*execute_checker(char **cmd, t_pipeline *pip, t_data *data)
 
 static char	*check_command_path(char **cmd, t_pipeline *pip, t_data *data, char *cmd_path)
 {
+	(void)pip;
+	(void)data;
+	
 	if (ft_str_startwith(cmd[0], "./") && ft_str_endwith(cmd[0], "sh"))
 	{
 		cmd = script_checker(cmd);
@@ -107,6 +111,8 @@ static char	*check_command_path(char **cmd, t_pipeline *pip, t_data *data, char 
 			ft_print_error(NULL, ft_strtok(cmd[0], " "), "Is a directory");
 		else
 			ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
+		data->exit_code = 127;
+
 		free_execute(pip, data, cmd_path);
 		exit(127);
 	}
@@ -114,6 +120,7 @@ static char	*check_command_path(char **cmd, t_pipeline *pip, t_data *data, char 
 			|| (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1))
 	{
 		ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
+		data->exit_code = 127;
 		free_execute(pip, data, cmd_path);
 		exit(127);
 	}
@@ -134,11 +141,13 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 		if (access(cmd_path, X_OK) == -1)
 		{
 			ft_print_error(NULL, cmd[0], "Permission denied");
+			data->exit_code = 126;
 			free_execute(pip, data, cmd_path);
 			exit(126);
 		}
 	}
 	ft_print_error(NULL, cmd[0], "Execution error");
+	data->exit_code = 127;
 	free_execute(pip, data, cmd_path);
 	exit(127);
 }

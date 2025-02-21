@@ -6,7 +6,7 @@ EXEC = 	execution/pipex.c execution/utils_exec.c execution/utils_error.c \
 		execution/utils_files.c execution/ft_here_doc.c execution/simple_exec.c execution/send_to_exec.c \
 		execution/pipe_first.c execution/pipe_multi.c execution/utils_wildcard.c
 
-PARSING = 	parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c parsing/ampersand_parse.c parsing/quote_parser.c \
+PARSING = 	parsing/argv_parser.c parsing/token_parser.c parsing/utils_token.c parsing/quote_parser.c \
 			parsing/var_parser.c parsing/pip_free.c parsing/pip_init.c parsing/pip_parser.c parsing/pip_redir.c
 
 BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exit.c builtins/builtins_echo.c \

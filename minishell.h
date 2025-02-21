@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:25:49 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 13:44:10 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,10 @@ void		free_tokens(char **tokens);
 char		*parse_token(char *line, int *i, t_data *data);
 void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 
-// utils_ampersand
-char		*replace_double_ampersand(char *arg);
-
 // send_to_exec
 bool		is_builtin(t_command *cmd);
 void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
-void		send_to_exec(int argc, char **argv, t_data *data);
+void		send_to_exec(char **argv, t_data *data);
 
 // utils_debug
 void		print_tab(char **tab);

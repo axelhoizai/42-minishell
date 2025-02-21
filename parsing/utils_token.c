@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/03 04:38:38 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/21 12:37:43 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,14 @@ void	free_tokens(char **tokens)
 		i++;
 	}
 	free(tokens);
+}
+
+void	handle_parse_token(const char *line, int *i, t_parse *parse)
+{
+	if ((line[*i] == '\'' && parse->in_double)
+		|| (line[*i] == '"' && parse->in_single))
+	{
+		append_char(parse, line[*i]);
+		(*i)++;
+	}
 }

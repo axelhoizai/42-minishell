@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 15:51:36 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 11:21:48 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 char	**set_sheban(char **cmd)
 {
 	char	**new_cmd;
-	char 	*script_path;
-	
+	char	*script_path;
+
 	script_path = ft_strdup(cmd[0]);
 	new_cmd = (char **)ft_calloc(3, sizeof(char *));
 	if (!new_cmd)
@@ -29,10 +29,10 @@ char	**set_sheban(char **cmd)
 
 char	**script_checker(char **cmd)
 {
-	
 	if (ft_strstr(cmd[0], "./") && access(cmd[0], X_OK) == -1)
 	{
-		ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
+		ft_print_error(NULL, ft_strtok(cmd[0], " "),
+			"No such file or directory");
 		return (NULL);
 	}
 	else if (ft_strstr(cmd[0], ".sh"))

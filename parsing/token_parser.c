@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 13:04:13 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 12:37:37 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@ static void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
 // 	(*i)++;
 // }
 
-static void	handle_parse_token(const char *line, int *i, t_parse *parse)
-{
-	if ((line[*i] == '\'' && parse->in_double)
-		|| (line[*i] == '"' && parse->in_single))
-	{
-		append_char(parse, line[*i]);
-		(*i)++;
-	}
-}
-
 static void	check_closing_quote(char *line, int *i, t_parse *parse)
 {
 	if (line[*i] && (((line[*i] == '\'' && parse->in_double == 1)
@@ -47,41 +37,48 @@ static void	check_closing_quote(char *line, int *i, t_parse *parse)
 		append_char(parse, line[*i]);
 }
 
+bool	chck_redir_pip(char *line, int *i)
+{
+	if (line[*i] == '>' && line[*i + 1] == '|' && line[*i + 2] != '|')
+	{
+		line[*i + 1] = '>';
+		(*i)++;
+		return (true);
+	}
+	return (false);
+}
+
+bool	chck_quote_state(char *line, int *i, t_parse *parse)
+{
+	if ((line[*i] == '\'' && parse->in_double == 0)
+		|| (line[*i] == '"' && parse->in_single == 0))
+	{
+		update_quote_state(line, &(parse->in_single), &(parse->in_double), *i);
+		(*i)++;
+		return (true);
+	}
+	return (false);
+}
+
 //? Big function handling parsing
-char	*parse_token(char *line, int *i, t_data *data, char	**tokens)
+char	*parse_token(char *line, int *i, t_data *data)
 {
 	t_parse	parse;
-	(void)tokens;
 
 	init_parse(&parse, 256);
 	while (line[*i] && (parse.in_single || parse.in_double
 			|| !ft_isspace(line[*i])))
 	{
-		if (*i > 0 && line[*i] == '|' && ft_strncmp(line, "export", 6) != 0) 
+		if (*i > 0 && line[*i] == '|' && ft_strncmp(line, "export", 6) != 0)
 			return (parse.buffer);
-		// if (line[*i] == '>' && line[*i + 1] == '>')
-		// {
-		// 	line[*i + 1] = '>';
-		// 	(*i)++;
-		// 	continue ;
-		// }
-		if (line[*i] == '>' && line[*i + 1] == '|' && line[*i + 2] != '|')
-		{
-			line[*i + 1] = '>';
-			(*i)++;
+		if (chck_redir_pip(line, i))
 			continue ;
-		}
-		if ((line[*i] == '\'' && parse.in_double == 0)
-			|| (line[*i] == '"' && parse.in_single == 0))
-		{
-			update_quote_state(line, &parse.in_single, &parse.in_double, *i);
-			(*i)++;
+		if (chck_quote_state(line, i, &parse))
 			continue ;
-		}
 		handle_parse_token(line, i, &parse);
 		if (line[*i] == '$' && parse.in_single == 0
-			&& (ft_isalnum(line[*i + 1])
-				|| line[*i + 1] == '?' || line[*i + 1] == '$' || line[*i + 1] == '0'))
+			&& (ft_isalnum(line[*i + 1]) || line[*i + 1] == '?'
+				|| line[*i + 1] == '$' || line[*i + 1] == '0'))
 		{
 			handle_variable(line, i, &parse, data);
 			continue ;
