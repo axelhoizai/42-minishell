@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:57:44 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 16:48:13 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void	execute_command(char **argv, t_data *data)
 		return ;
 	}
 	pip = parse_pipeline(argv, data);
-	print_pipeline(pip);
+	// print_pipeline(pip);
 	init_pipe_start(pip);
 	if (is_hd(pip))
 		here_doc_init(pip);
@@ -216,7 +216,7 @@ void	send_to_exec(char **argv, t_data *data)
 		execute_command(argv, data);
 	else
 	{
-		ft_print_error(NULL, NULL, "|| and && not implemented");
+		// ft_print_error(NULL, NULL, "|| and && not implemented");
 		free_tab(argv);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/21 11:12:14 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 15:56:42 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	handle_first_arg(t_command *cmd, int *exit_code, t_data *data)
 {
 	if (cmd && cmd->args)
 	{
-		print_tab(cmd->args);
+		// print_tab(cmd->args);
 		if (cmd->args && cmd->args[1] && ft_isnumeric(cmd->args[1]) == 1)
 		{
 			*exit_code = ft_atoi(cmd->args[1]);

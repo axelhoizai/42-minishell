@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 12:37:37 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 16:46:17 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,14 @@ char	*parse_token(char *line, int *i, t_data *data)
 	while (line[*i] && (parse.in_single || parse.in_double
 			|| !ft_isspace(line[*i])))
 	{
-		if (*i > 0 && line[*i] == '|' && ft_strncmp(line, "export", 6) != 0)
+		if (*i > 0 && (line[*i] == '|' && ft_strncmp(line, "export", 6) != 0))
 			return (parse.buffer);
+		if (line[*i] == '<' && line[*i + 1] != '<')
+		{
+			append_char(&parse, line[*i]);
+			(*i)++;
+			return (parse.buffer);
+		}
 		if (chck_redir_pip(line, i))
 			continue ;
 		if (chck_quote_state(line, i, &parse))

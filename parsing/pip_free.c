@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:07:48 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 18:42:20 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 15:53:19 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	free_pipeline(t_pipeline *pipeline)
 	if (!pipeline)
 		return ;
 	i = 0;
-	while (i < pipeline->cmd_count)
+	while (i < pipeline->pipe_cnt + 1)
 	{
 		if (pipeline->cmds[i])
 			free_command(pipeline->cmds[i++]);

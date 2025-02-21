@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:03:10 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 11:08:23 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 16:09:25 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_unset(char **argv, t_data *data)
 		i = 1;
 		while (argv[i])
 		{
-			printf("argv[%d] : %s\n", i, argv[i]);
+			// printf("argv[%d] : %s\n", i, argv[i]);
 			ms_lstdelone(&data->env_ms, argv[i]);
 			i++;
 		}

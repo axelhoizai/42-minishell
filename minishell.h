@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:44:10 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 15:32:22 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ int			limiter_count(t_pipeline *pip);
 char		*get_path(char *cmd, char **envp);
 
 //utils error
-char		**script_checker(char **cmd);
+void		script_checker(char ***cmd);
 
 //utils_files
 int			open_file(t_command *cmd, char *file, int mode);

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 15:18:03 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 16:37:53 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
 	free_tab(data->my_envp);
 	free_term(data);
 	free_pipeline(pip);
-	free(cmd_path);
+	// free(cmd_path);
 	free(data->pwd);
 	free(data->oldpwd);
 }
@@ -52,7 +52,7 @@ static char	*cmd_path(char **cmd, t_pipeline *pip, t_data *data, char *cmd_path)
 {
 	if (ft_str_startwith(cmd[0], "./") && ft_str_endwith(cmd[0], ".sh"))
 	{
-		cmd = script_checker(cmd);
+		script_checker(&cmd);
 		if (!cmd_path)
 			cmd_path = cmd[0];
 	}
@@ -101,7 +101,8 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 				exit(126);
 			}
 		}
-		ft_print_error(NULL, cmd[0], "Execution error");
+		if (!ft_strstr(cmd[0], "./"))
+			ft_print_error(NULL, cmd[0], "Execution error");
 		data->exit_code = 127;
 		free_execute(pip, data, cmd_path_dir);
 		exit(127);

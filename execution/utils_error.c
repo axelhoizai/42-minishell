@@ -3,40 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 15:07:32 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 15:48:58 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	**set_sheban(char **cmd)
+void	set_sheban(char ***cmd)
 {
-	char	**new_cmd;
 	char	*script_path;
 
-	script_path = ft_strdup(cmd[0]);
-	new_cmd = (char **)ft_calloc(3, sizeof(char *));
-	if (!new_cmd)
-		return (NULL);
-	new_cmd[0] = script_path;
-	new_cmd[1] = NULL;
-	return (ft_strdup_tab(new_cmd));
+	script_path = ft_strdup(*cmd[0]);
+	free(*cmd[0]);
+	*cmd[0] = script_path;
+	*cmd[1] = NULL;
 }
 
-char	**script_checker(char **cmd)
+void	script_checker(char ***cmd)
 {
-	if (ft_strstr(cmd[0], "./") && access(cmd[0], X_OK) == -1)
+	if (ft_strstr(*cmd[0], "./") && access(*cmd[0], X_OK) == -1)
 	{
-		ft_print_error(NULL, ft_strtok(cmd[0], " "),
+		ft_print_error(NULL, ft_strtok(*cmd[0], " "),
 			"No such file or directory");
-		return (NULL);
+		if (access(*cmd[0], F_OK) == 0)
+			*cmd[0] = NULL;
 	}
-	else if (ft_str_startwith(cmd[0], "./") && ft_str_endwith(cmd[0], ".sh"))
-		return (set_sheban(cmd));
-	else if (ft_strstr(cmd[0], "./"))
-		return (cmd);
-	return (NULL);
+	else if (ft_str_startwith(*cmd[0], "./") && ft_str_endwith(*cmd[0], ".sh") && access(*cmd[0], F_OK) == 0)
+		set_sheban(cmd);
 }

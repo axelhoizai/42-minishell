@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:45:22 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 16:48:38 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static char	**parse_args(char *str, t_data *data)
 	count = 0;
 	if (!tokenize_string(str, tokens, &count, data))
 		return (NULL);
-	print_tab(tokens);
+	// print_tab(tokens);
 	return (tokens);
 }
 

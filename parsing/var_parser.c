@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/21 11:17:29 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 16:07:41 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ static char	*handle_pwd_var(const char *line, int *i, t_data *data)
 		var = ft_strdup(data->pwd);
 		(*i) += 4;
 	}
-	printf("data->pwd = %s\n", data->pwd);
-	printf("data->oldpwd = %s\n", data->oldpwd);
+	// printf("data->pwd = %s\n", data->pwd);
+	// printf("data->oldpwd = %s\n", data->oldpwd);
 	free(tmp_line);
 	return (var);
 }
@@ -97,7 +97,7 @@ void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 	var = NULL;
 	if (line[*i + 1] == '?' || line[*i + 1] == '$' || line[*i + 1] == '0')
 		var = handle_special_var(line, i, data);
-	if (line[*i + 1] == 'P' || line[*i + 1] == 'O')
+	else if (line[*i + 1] == 'P' || line[*i + 1] == 'O')
 		var = handle_pwd_var(line, i, data);
 	else if (ft_isdigit(line[*i + 1]))
 	{

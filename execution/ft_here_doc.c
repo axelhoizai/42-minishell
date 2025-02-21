@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 10:50:45 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:25:03 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 15:54:44 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	**hd_limiters(t_pipeline *pip)
 		i++;
 	}
 	lim_tab[k] = NULL;
-	print_tab(lim_tab);
+	// print_tab(lim_tab);
 	return (lim_tab);
 }
 

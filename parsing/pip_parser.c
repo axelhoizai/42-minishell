@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/19 18:01:06 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 16:39:42 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	init_pipe_start(t_pipeline *pip)
 
 void	print_pipeline(t_pipeline *pipeline)
 {
+	// (void)pipeline;
 	int			i;
 	int			j;
 	t_command	*cmd;
