@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 18:13:55 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 00:02:33 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,15 @@ static char	*cmd_path(char **cmd, t_pipeline *pip, t_data *data, char *cmd_path)
 		else
 			ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE);
 		free_execute(pip, data, cmd_path);
+		printf("ici\n");
 		exit(127);
 	}
 	else if ((ft_strstartwith(cmd[0], "./") && !ft_strendwith(cmd[0], ".sh"))
 		|| (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1))
 	{
-		ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE);
+		ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE); //126 ou 127 check directory(MSG_IS_DIR) or file (MSG_ERROR_FILE) or permission denied :(
 		free_execute(pip, data, cmd_path);
-		exit(127);
+		exit(127); 
 	}
 	return (cmd_path);
 }
@@ -93,6 +94,13 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 		exit(127);
 	}
 }
+// $PWD 
+// mini exit code = 127
+// bash exit code = 126
+// mini error = ( Execution error)
+// bash error = ( est un dossier)
+
+
 
 static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid)
 {
