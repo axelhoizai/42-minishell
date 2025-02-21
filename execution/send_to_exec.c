@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 17:31:08 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 13:18:36 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ static bool	check_redir_pipe(char **tokens)
 			else
 			{
 				trim2 = ft_strtrim(tokens[i + 1], "<|>");
-				if (trim2[0] == '\0')
+				if (trim2[0] == '\0' && !tokens[i + 2])
 				{
 					ft_print_error(NULL, NULL, "syntax error near unexpected token");
 					free(trim2);

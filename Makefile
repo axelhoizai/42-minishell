@@ -14,7 +14,7 @@ BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exi
 
 UTILS = utils/utils_prompt.c utils/utils_print_error.c utils/utils_debug.c \
 		utils/utils_list.c utils/utils_list2.c utils/utils_get.c \
-		utils/utils_signal.c utils/utils_free.c
+		utils/utils_signal.c utils/utils_free.c utils/utils_export.c utils/utils_hd.c
 
 ALL_SRCS = $(SRCS) $(EXEC) $(PARSING) $(BUILTINS) $(UTILS)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 22:42:31 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/21 13:25:49 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,11 @@ char		**utils_parse_args(const char *str);
 int			check_unclosed_quotes(const char *line);
 void		init_parse(t_parse *parse, int size);
 void		append_char(t_parse *parse, char c);
+void		handle_parse_token(const char *line, int *i, t_parse *parse);
 void		free_tokens(char **tokens);
 
 // token_parser
-char		*parse_token(char *line, int *i, t_data *data, char	**tokens);
+char		*parse_token(char *line, int *i, t_data *data);
 void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 
 // utils_ampersand
@@ -173,9 +174,10 @@ void		setup_signal_handlers(void);
 //builtins_exit
 void		handle_exit(t_command *cmd, t_pipeline *pip, t_data *data);
 
-//builtins_export
+//builtins_export & utils_export
 bool		is_key(t_env_ms *lst, char *var);
 t_env_ms	*ms_find(t_env_ms *lst, char *var);
+int			find_index(char *str);
 void		ft_export(char **argv, t_data *data);
 
 //builtins_env
@@ -199,6 +201,7 @@ void		free_execute(t_pipeline *pip, t_data *data, char *cmd_path);
 //here_doc
 void		here_doc_init(t_pipeline *pip);
 bool		is_hd(t_pipeline *pip);
+int			limiter_count(t_pipeline *pip);
 
 //utils_exec
 char		*get_path(char *cmd, char **envp);

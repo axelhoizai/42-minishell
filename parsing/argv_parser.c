@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 23:38:16 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/21 12:40:19 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ static char	*skip_pips(char *str, int *i)
 	char	*token;
 
 	token = NULL;
-	// if ((str[*i] == '|' && str[*i + 1] == '|') || (str[*i] == '>' && str[*i + 1] == '>'))
-	if (str[*i] == '|' && str[*i + 1] == '|') 
+	if ((str[*i] == '|' && str[*i + 1] == '|') || (str[*i] == '>' && str[*i + 1] == '>'))
 	{
 		token = ft_substr(str, *i, 2);
 		*i += 2;
@@ -35,11 +34,11 @@ static char	*skip_pips(char *str, int *i)
 		token[0] = str[*i];
 		(*i)++;
 	}
-	else if (str[*i] == '>' && str[*i + 1] == '>') //fusionner??
-	{
-		token = ft_substr(str, *i, 2);
-		*i += 2;
-	}
+	// else if (str[*i] == '>' && str[*i + 1] == '>') //fusionner??
+	// {
+	// 	token = ft_substr(str, *i, 2);
+	// 	*i += 2;
+	// }
 	else if ((str[*i] == '>' || str[*i] == '|') && str[*i + 1] != '|')
 	{
 		token = ft_calloc(2, 1);
@@ -62,7 +61,7 @@ static bool	tokenize_string(char *str, char **tokens, int *count, t_data *data)
 		{
 			token = skip_pips(str, &i);
 			if (!token)
-				token = parse_token(str, &i, data, tokens);
+				token = parse_token(str, &i, data);
 			if (!token)
 				return (free_tokens(tokens), false);
 			tokens[(*count)++] = token;
