@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 11:12:00 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 13:54:57 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static char	main_loop(t_data *data)
 			add_history(input);
 		data->is_reading = false;
 		get_argv(input, data);
+		// free(data->pwd);
+		// free(data->oldpwd);
 	}
 	return (exit_code);
 }

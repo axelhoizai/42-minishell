@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 11:14:36 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 14:02:37 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	var_export(t_data *data, char *var)
 	}
 	ft_export(ex, data);
 	free_tab(ex);
+	free(var);
 }
 
 void	update_pwd(void)
