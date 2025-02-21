@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:04:19 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 11:21:48 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 15:07:32 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ char	**set_sheban(char **cmd)
 	new_cmd = (char **)ft_calloc(3, sizeof(char *));
 	if (!new_cmd)
 		return (NULL);
-	new_cmd[0] = ft_strdup("/bin/bash");
-	new_cmd[1] = script_path;
-	new_cmd[2] = NULL;
-	return (new_cmd);
+	new_cmd[0] = script_path;
+	new_cmd[1] = NULL;
+	return (ft_strdup_tab(new_cmd));
 }
 
 char	**script_checker(char **cmd)
@@ -35,7 +34,7 @@ char	**script_checker(char **cmd)
 			"No such file or directory");
 		return (NULL);
 	}
-	else if (ft_strstr(cmd[0], ".sh"))
+	else if (ft_str_startwith(cmd[0], "./") && ft_str_endwith(cmd[0], ".sh"))
 		return (set_sheban(cmd));
 	else if (ft_strstr(cmd[0], "./"))
 		return (cmd);
