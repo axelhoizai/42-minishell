@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   argv_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 17:21:57 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 18:48:50 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	skip_whitespace(const char *str, int *i)
+void	skip_whitespace(const char *str, int *i)
 {
 	while (str[*i] && ft_isspace(str[*i]))
 		(*i)++;

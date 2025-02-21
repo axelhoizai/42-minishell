@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 18:15:53 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 18:49:32 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void		ft_print_error(char *builting, char *arg, char *msg);
 
 // argv_parser
 void		get_argv(char *input, t_data *data);
+void		skip_whitespace(const char *str, int *i);
 
 // quote_parser
 char		**utils_parse_args(const char *str);
