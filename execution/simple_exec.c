@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 16:37:53 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 18:13:55 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
-{
-	(void)cmd_path;
-	ms_lstclear(&data->env_ms);
-	free_tab(data->my_envp);
-	free_term(data);
-	free_pipeline(pip);
-	// free(cmd_path);
-	free(data->pwd);
-	free(data->oldpwd);
-}
 
 static char	*execute_checker(char **cmd, t_pipeline *pip, t_data *data)
 {
@@ -50,30 +38,27 @@ static char	*execute_checker(char **cmd, t_pipeline *pip, t_data *data)
 
 static char	*cmd_path(char **cmd, t_pipeline *pip, t_data *data, char *cmd_path)
 {
-	if (ft_str_startwith(cmd[0], "./") && ft_str_endwith(cmd[0], ".sh"))
+	if (ft_strstartwith(cmd[0], "./") && ft_strendwith(cmd[0], ".sh"))
 	{
 		script_checker(&cmd);
 		if (!cmd_path)
 			cmd_path = cmd[0];
 	}
-	else if (ft_str_startwith(cmd[0], "../") || ft_str_countchar(cmd[0], '.') > 2)
+	else if (ft_strstartwith(cmd[0], "../") || ft_strcountchar(cmd[0], '.') > 2)
 	{
-		// int fd = -1;
-		if(access(cmd[0], F_OK) == -1)
-			ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
-		else if (ft_str_countchar(cmd[0], '.') == 2)
-			ft_print_error(NULL, ft_strtok(cmd[0], " "), "Is a directory");
+		if (access(cmd[0], F_OK) == -1)
+			ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE);
+		else if (ft_strcountchar(cmd[0], '.') == 2)
+			ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_IS_DIR);
 		else
-			ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
-		data->exit_code = 127;
+			ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE);
 		free_execute(pip, data, cmd_path);
 		exit(127);
 	}
-	else if ((ft_str_startwith(cmd[0], "./") && !ft_str_endwith(cmd[0], ".sh"))
-			|| (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1))
+	else if ((ft_strstartwith(cmd[0], "./") && !ft_strendwith(cmd[0], ".sh"))
+		|| (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1))
 	{
-		ft_print_error(NULL, ft_strtok(cmd[0], " "), "No such file or directory");
-		data->exit_code = 127;
+		ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE);
 		free_execute(pip, data, cmd_path);
 		exit(127);
 	}
@@ -111,8 +96,6 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 
 static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid)
 {
-	// int	tty_fd;
-	// tty_fd = -1;
 	if (pid == 0)
 	{
 		if (pip->cmds[pip->start]->fd_in > -1)
@@ -125,23 +108,12 @@ static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid)
 			dup2(pip->cmds[pip->start]->fd_out, STDOUT_FILENO);
 			close(pip->cmds[pip->start]->fd_out);
 		}
-		// if (!isatty(STDIN_FILENO)) // pour nano, vi, ...
-		// {
-		// 	tty_fd = open("/dev/tty", O_RDWR);
-		// 	if (tty_fd > -1)
-		// 	{
-		// 		dup2(tty_fd, STDIN_FILENO);
-		// 		close(tty_fd);
-		// 	}
-		// }
 		execute(pip->cmds[pip->start]->args, pip, data);
 	}
 	if (pip->cmds[pip->start]->fd_in > -1)
 		close(pip->cmds[pip->start]->fd_in);
 	if (pip->cmds[pip->start]->fd_out > -1)
 		close(pip->cmds[pip->start]->fd_out);
-	// if (tty_fd > -1)
-	// 	close(tty_fd);
 }
 
 void	simple_exec(t_pipeline *pip, t_data *data)
@@ -150,7 +122,8 @@ void	simple_exec(t_pipeline *pip, t_data *data)
 	pid_t	pid;
 
 	status = 0;
-	if (pip->cmds[pip->start]->fd_out == -1 || pip->cmds[pip->start]->fd_in == -1)
+	if (pip->cmds[pip->start]->fd_out == -1
+		|| pip->cmds[pip->start]->fd_in == -1)
 	{
 		if (pip->cmds[pip->start]->fd_in > -1)
 			close (pip->cmds[pip->start]->fd_in);

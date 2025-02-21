@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:54:57 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:15:35 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,10 @@ static char	main_loop(t_data *data)
 			add_history(input);
 		data->is_reading = false;
 		get_argv(input, data);
-		// free(data->pwd);
-		// free(data->oldpwd);
 	}
 	return (exit_code);
 }
 
-// rl_already_prompted = 1;
 int	main(int ac, char **av, char **envp)
 {
 	int		is_start;

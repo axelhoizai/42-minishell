@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 13:19:42 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 13:31:03 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:16:20 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 char	**ft_dup_tab_index(char **tab_src, int index)
 {
-	int	j;
-	int	len;
-	char **tab_dest;
-	
+	int		j;
+	int		len;
+	char	**tab_dest;
+
 	j = 0;
 	len = 0;
 	while (tab_src[index + len])

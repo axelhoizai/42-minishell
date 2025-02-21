@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 16:46:17 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:28:04 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,8 @@ char	*parse_token(char *line, int *i, t_data *data)
 		if (chck_quote_state(line, i, &parse))
 			continue ;
 		handle_parse_token(line, i, &parse);
-		if (line[*i] == '$' && parse.in_single == 0
-			&& (ft_isalnum(line[*i + 1]) || line[*i + 1] == '?'
-				|| line[*i + 1] == '$' || line[*i + 1] == '0'))
-		{
-			handle_variable(line, i, &parse, data);
+		if (handle_check_var(line, i, data, &parse))
 			continue ;
-		}
 		check_closing_quote(line, i, &parse);
 		(*i)++;
 	}

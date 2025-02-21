@@ -3,56 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 16:48:13 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:55:16 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-bool	is_pipe(char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-	{
-		if (ft_strchr(argv[i], '|'))
-		{
-			free_tab(argv);
-			return (true);
-		}
-		i++;
-	}
-	free_tab(argv);
-	return (false);
-}
-
-bool	is_builtin(t_command *cmd)
-{
-	if (cmd->args)
-	{
-		if (ft_strcmp(cmd->args[0], "echo") == 0)
-			return (true);
-		else if (ft_strcmp(cmd->args[0], "cd") == 0)
-			return (true);
-		else if (ft_strcmp(cmd->args[0], "pwd") == 0)
-			return (true);
-		else if (ft_strcmp(cmd->args[0], "export") == 0)
-			return (true);
-		else if (ft_strcmp(cmd->args[0], "unset") == 0)
-			return (true);
-		else if (ft_strcmp(cmd->args[0], "env") == 0)
-			return (true);
-		else if (ft_strcmp(cmd->args[0], "exit") == 0)
-			return (true);
-		else if (ft_strcmp(cmd->args[0], "clear") == 0)
-			return (true);
-	}
-	return (false);
-}
 
 void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 {
@@ -95,88 +53,8 @@ static void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
 	free_pipeline(pip);
 }
 
-// void	send_to_exec(int argc, char **argv, t_data *data)
-// {
-// 	t_pipeline	*pip;
-// 	int			fd_std;
-
-// 	(void)argc;
-// 	fd_std = -1;
-// 	argv = expand_wildcard(argv);
-// 	pip = parse_pipeline(argv, data);
-// 	print_pipeline(pip);
-// 	init_pipe_start(pip);
-// 	if (is_hd(pip))
-// 		here_doc_init(pip);
-// 	if (pip->pipe_cnt > 0)
-// 		pip->pid = init_pid(pip);
-// 	if (is_pipe(argv) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
-// 	{
-// 		data->exit_code = pipex(pip, data);
-// 		free_pipeline(pip);
-// 	}
-// 	else if (is_builtin(pip->cmds[0]))
-// 		fds_dup(&fd_std, pip, data);
-// 	else if (pip)
-// 	{
-// 		simple_exec(pip, data);
-// 		if (pip)
-// 			free_pipeline(pip);
-// 	}
-// }
-
-static bool	check_redir_pipe(char **tokens)
+static void	handle_exec(char **argv, t_data *data, t_pipeline *pip, int *fd_std)
 {
-	int		i;
-	char	*trim;
-	char	*trim2;
-
-	i = 0;
-	while (tokens[i])
-	{
-		trim = ft_strtrim(tokens[i], "<|>");
-		if (tokens[i][0] && trim[0] == '\0' && ft_strncmp(tokens[i], "||", 2))
-		{
-			if (!tokens[i + 1])
-			{
-				ft_print_error(NULL, NULL, "syntax error near unexpected token");
-				return (free(trim), false);
-			}
-			else
-			{
-				trim2 = ft_strtrim(tokens[i + 1], "<|>");
-				if (trim2[0] == '\0' && !tokens[i + 2])
-				{
-					ft_print_error(NULL, NULL, "syntax error near unexpected token");
-					free(trim2);
-					return (free(trim), false);
-				}
-				free(trim2);
-			}
-		}
-		i++;
-		free(trim);
-	}
-	return (true);
-}
-
-void	execute_command(char **argv, t_data *data)
-{
-	t_pipeline	*pip;
-	int			fd_std;
-
-	fd_std = -1;
-	if (!argv || !argv[0])
-		return;
- 	argv = expand_wildcard(argv);
-	if (!check_redir_pipe(argv))
-	{
-		free_tab(argv);
-		return ;
-	}
-	pip = parse_pipeline(argv, data);
-	// print_pipeline(pip);
-	init_pipe_start(pip);
 	if (is_hd(pip))
 		here_doc_init(pip);
 	if (pip->pipe_cnt > 0)
@@ -187,7 +65,7 @@ void	execute_command(char **argv, t_data *data)
 		free_pipeline(pip);
 	}
 	else if (is_builtin(pip->cmds[0]))
-		fds_dup(&fd_std, pip, data);
+		fds_dup(fd_std, pip, data);
 	else if (argv)
 	{
 		simple_exec(pip, data);
@@ -196,10 +74,30 @@ void	execute_command(char **argv, t_data *data)
 	}
 }
 
+void	execute_command(char **argv, t_data *data)
+{
+	t_pipeline	*pip;
+	int			fd_std;
+
+	fd_std = -1;
+	if (!argv || !argv[0])
+		return ;
+	argv = expand_wildcard(argv);
+	if (!check_redir_pipe(argv))
+	{
+		free_tab(argv);
+		return ;
+	}
+	pip = parse_pipeline(argv, data);
+	// print_pipeline(pip);
+	init_pipe_start(pip);
+	handle_exec(argv, data, pip, &fd_std);
+}
+
 void	send_to_exec(char **argv, t_data *data)
 {
-	int	i;
-	bool		or_and;
+	int		i;
+	bool	or_and;
 
 	or_and = false;
 	i = 0;
@@ -215,8 +113,5 @@ void	send_to_exec(char **argv, t_data *data)
 	if (argv && argv[0] && or_and == false)
 		execute_command(argv, data);
 	else
-	{
-		// ft_print_error(NULL, NULL, "|| and && not implemented");
 		free_tab(argv);
-	}
 }

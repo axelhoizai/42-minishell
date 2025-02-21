@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_wildcard.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:37:28 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 11:20:39 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:31:16 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ static void	get_wildcard(char **args, DIR *dir, int *files_cnt, char **new_args)
 	{
 		if (ft_strchr(args[i], '*'))
 		{
-			while ((entry = readdir(dir)))
+			entry = readdir(dir);
+			while (entry == readdir(dir))
 			{
 				if (entry->d_name[0] != '.'
 					&& match_wildcard(args[i], entry->d_name))
@@ -124,7 +125,7 @@ char	**expand_wildcard(char **args)
 	dir = opendir(".");
 	if (!dir)
 		return (args);
-	new_args = ft_safe_malloc(sizeof(char *) * 1024); //leak
+	new_args = ft_safe_malloc(sizeof(char *) * 1024);
 	if (!new_args)
 		return (args);
 	files_count = 0;

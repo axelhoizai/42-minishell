@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:19:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/14 19:18:57 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 18:11:19 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,28 @@ void	free_term(t_data *data)
 		free(data->term);
 		data->term = NULL;
 	}
+}
+
+void	free_tokens(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
+}
+
+void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
+{
+	(void)cmd_path;
+	ms_lstclear(&data->env_ms);
+	free_tab(data->my_envp);
+	free_term(data);
+	free_pipeline(pip);
+	free(data->pwd);
+	free(data->oldpwd);
 }

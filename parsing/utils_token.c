@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 12:37:43 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:31:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,19 +77,6 @@ void	append_char(t_parse *parse, char c)
 	parse->buffer[parse->len] = '\0';
 }
 
-void	free_tokens(char **tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
-}
-
 void	handle_parse_token(const char *line, int *i, t_parse *parse)
 {
 	if ((line[*i] == '\'' && parse->in_double)
@@ -98,4 +85,16 @@ void	handle_parse_token(const char *line, int *i, t_parse *parse)
 		append_char(parse, line[*i]);
 		(*i)++;
 	}
+}
+
+bool	handle_check_var(char *line, int *i, t_data *data, t_parse *parse)
+{
+	if (line[*i] == '$' && parse->in_single == 0
+		&& (ft_isalnum(line[*i + 1]) || line[*i + 1] == '?'
+			|| line[*i + 1] == '$' || line[*i + 1] == '0'))
+	{
+		handle_variable(line, i, parse, data);
+		return (true);
+	}
+	return (false);
 }

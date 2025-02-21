@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_str_countchar.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 17:39:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 10:51:27 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 18:09:12 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft.h"
 
-int	ft_str_countchar(char *str, char c)
+int	ft_strcountchar(char *str, char c)
 {
 	int	i;
 	int	count;

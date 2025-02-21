@@ -6,13 +6,13 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 17:20:17 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 17:20:47 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 18:09:06 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft.h"
 
-int	ft_str_startwith(const char *str, const char *set)
+int	ft_strstartwith(const char *str, const char *set)
 {
 	int	set_len;
 

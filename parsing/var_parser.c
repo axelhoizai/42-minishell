@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/21 16:07:41 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:29:01 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ static char	*handle_pwd_var(const char *line, int *i, t_data *data)
 		var = ft_strdup(data->pwd);
 		(*i) += 4;
 	}
-	// printf("data->pwd = %s\n", data->pwd);
-	// printf("data->oldpwd = %s\n", data->oldpwd);
 	free(tmp_line);
 	return (var);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 15:32:22 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/21 18:15:53 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@
 # define DUPLICATE_ERROR 6
 # define EXEC_ERROR 7
 # define MEMORY_ERROR 8
+
+# define MSG_ERROR_FILE "No such file or directory"
+# define MSG_IS_DIR "Is a directory"
+# define MSG_ERROR_SYNTAX "syntax error near unexpected token"
 
 typedef struct s_parse
 {
@@ -123,15 +127,20 @@ void		init_parse(t_parse *parse, int size);
 void		append_char(t_parse *parse, char c);
 void		handle_parse_token(const char *line, int *i, t_parse *parse);
 void		free_tokens(char **tokens);
+bool		handle_check_var(char *line, int *i, t_data *data, t_parse *parse);
 
 // token_parser
 char		*parse_token(char *line, int *i, t_data *data);
 void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 
 // send_to_exec
-bool		is_builtin(t_command *cmd);
 void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
 void		send_to_exec(char **argv, t_data *data);
+
+// utils_check
+bool		check_redir_pipe(char **tokens);
+bool		is_pipe(char **argv);
+bool		is_builtin(t_command *cmd);
 
 // utils_debug
 void		print_tab(char **tab);

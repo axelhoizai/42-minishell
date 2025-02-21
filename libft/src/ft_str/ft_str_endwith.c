@@ -6,13 +6,13 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 17:19:45 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 17:22:54 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/21 18:09:10 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft.h"
 
-int	ft_str_endwith(const char *str, const char *set)
+int	ft_strendwith(const char *str, const char *set)
 {
 	int	str_len;
 	int	set_len;
