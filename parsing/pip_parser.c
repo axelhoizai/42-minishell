@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/22 15:03:53 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:25:08 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ static t_command	*parse_command(char **tokens, int *i, t_data *data)
 	while (tokens[*i] && ft_strcmp(tokens[*i], "|") != 0)
 	{
 		if (is_redirection(tokens[*i]))
+		{
 			handle_redirec(tokens, i, cmd, data);
+		}
 		else
 		{
 			cmd->args = add_to_tab(cmd->args, tokens[*i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 15:02:04 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:31:37 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@
 # define MSG_ERROR_FILE "No such file or directory"
 # define MSG_IS_DIR "Is a directory"
 # define MSG_ERROR_SYNTAX "syntax error near unexpected token"
+
+typedef struct s_tok
+{
+	int				type;
+	char			*str;
+	bool			quotes;
+	struct s_tok	*prev;
+	struct s_tok	*next;
+}				t_tok;
 
 typedef struct s_parse
 {

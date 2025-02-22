@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/21 21:26:41 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:24:57 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 		var = handle_special_var(line, i, data);
 	else if (line[*i + 1] == 'P' || line[*i + 1] == 'O')
 		var = handle_pwd_var(line, i, data);
-	// else if (handle_empty_var(line, i))
-	// 	return ;
 	else if (ft_isdigit(line[*i + 1]))
 	{
 		(*i) += 2;

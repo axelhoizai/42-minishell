@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 17:55:16 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 16:50:27 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	execute_command(char **argv, t_data *data)
 		return ;
 	}
 	pip = parse_pipeline(argv, data);
-	// print_pipeline(pip);
+	print_pipeline(pip);
 	init_pipe_start(pip);
 	handle_exec(argv, data, pip, &fd_std);
 }
@@ -101,15 +101,15 @@ void	send_to_exec(char **argv, t_data *data)
 
 	or_and = false;
 	i = 0;
-	while (argv[i])
-	{
-		if (ft_strcmp(argv[i], "||") == 0 || ft_strcmp(argv[i], "&&") == 0)
-		{
-			or_and = true;
-			break ;
-		}
-		i++;
-	}
+	// while (argv[i])
+	// {
+	// 	if (ft_strcmp(argv[i], "||") == 0 || ft_strcmp(argv[i], "&&") == 0)
+	// 	{
+	// 		or_and = true;
+	// 		break ;
+	// 	}
+	// 	i++;
+	// }
 	if (argv && argv[0] && or_and == false)
 		execute_command(argv, data);
 	else
