@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 17:31:59 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:42:09 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,10 @@ bool	handle_check_var(char *line, int *i, t_data *data, t_parse *parse)
 		handle_variable(line, i, parse, data);
 		return (true);
 	}
+	// if (line[*i] == '*' && parse->in_single == 0)
+	// {
+	// 	handle_wildcard(line, i, parse, data);
+	// 	return (true);
+	// }
 	return (false);
 }

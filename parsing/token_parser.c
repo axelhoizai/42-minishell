@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 17:28:04 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:31:48 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,23 @@ char	*parse_token(char *line, int *i, t_data *data)
 	while (line[*i] && (parse.in_single || parse.in_double
 			|| !ft_isspace(line[*i])))
 	{
-		if (*i > 0 && (line[*i] == '|' && ft_strncmp(line, "export", 6) != 0))
-			return (parse.buffer);
-		if (line[*i] == '<' && line[*i + 1] != '<')
-		{
-			append_char(&parse, line[*i]);
-			(*i)++;
-			return (parse.buffer);
-		}
-		if (chck_redir_pip(line, i))
-			continue ;
+		(void)data;
 		if (chck_quote_state(line, i, &parse))
 			continue ;
 		handle_parse_token(line, i, &parse);
 		if (handle_check_var(line, i, data, &parse))
 			continue ;
 		check_closing_quote(line, i, &parse);
+		// if (*i > 0 && (line[*i] == '|' && ft_strncmp(line, "export", 6) != 0))
+		// 	return (parse.buffer);
+		// if (line[*i] == '<' && line[*i + 1] != '<')
+		// {
+		// 	append_char(&parse, line[*i]);
+		// 	(*i)++;
+		// 	return (parse.buffer);
+		// }
+		// if (chck_redir_pip(line, i))
+		// 	continue ;
 		(*i)++;
 	}
 	return (parse.buffer);

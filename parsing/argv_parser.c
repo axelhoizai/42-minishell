@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 15:10:45 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:49:26 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	skip_whitespace(const char *str, int *i)
 		(*i)++;
 }
 
-static char	*skip_pips(char *str, int *i)
+char	*skip_pips(char *str, int *i)
 {
 	char	*token;
 
@@ -78,15 +78,15 @@ static bool	tokenize_string(char *str, char **tokens, int *count, t_data *data)
 		skip_whitespace(str, &i);
 		if (str[i])
 		{
-			token = skip_pips(str, &i);
-			if (!token)
+			// token = skip_pips(str, &i);
+			// if (!token)
 				token = parse_token(str, &i, data);
 			if (!token)
 				return (free_tokens(tokens), false);
-			if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
-				tokens[(*count)++] = token;
-			else if (token)
-				free(token);
+			// if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
+			tokens[(*count)++] = token;
+			// else if (token)
+			// 	free(token);
 		}
 	}
 	tokens[*count] = NULL;
@@ -102,13 +102,14 @@ static char	**parse_args(char *str, t_data *data)
 
 	if (!str || check_unclosed_quotes(str))
 		return (ft_print_error(NULL, NULL, "Error: unclosed quotes"), NULL);
+		
 	tokens = malloc(sizeof(char *) * 256);
 	if (!tokens)
 		return (NULL);
 	count = 0;
 	if (!tokenize_string(str, tokens, &count, data))
 		return (NULL);
-	// print_tab(tokens); //print_tab
+	print_tab(tokens); //print_tab
 	return (tokens);
 }
 
