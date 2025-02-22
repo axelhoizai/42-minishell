@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 21:26:11 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/22 15:10:45 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static bool	tokenize_string(char *str, char **tokens, int *count, t_data *data)
 				return (free_tokens(tokens), false);
 			if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
 				tokens[(*count)++] = token;
-			 else if (token)
+			else if (token)
 				free(token);
 		}
 	}
@@ -108,7 +108,7 @@ static char	**parse_args(char *str, t_data *data)
 	count = 0;
 	if (!tokenize_string(str, tokens, &count, data))
 		return (NULL);
-	// print_tab(tokens);
+	// print_tab(tokens); //print_tab
 	return (tokens);
 }
 

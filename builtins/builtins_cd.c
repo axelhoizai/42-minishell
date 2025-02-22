@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/20 21:52:10 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/22 15:16:42 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ static int	handle_cd_error(int argc, char *dir, t_data *data)
 	else if (check_dir(dir) == -1)
 	{
 		data->exit_code = 1;
-		ft_print_error("cd", dir, "Not a directory");
+		files_checker(dir, data);
+		if (data->exit_code > 2)
+			data->exit_code = 1;
 		return (0);
 	}
 	return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 18:49:32 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/22 15:02:04 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ void		script_checker(char ***cmd);
 //utils_files
 int			open_file(t_command *cmd, char *file, int mode);
 int			open_outfile(t_command *cmd, char *file, t_data *data, int append);
+void		files_checker(char	*file, t_data *data);
 
 //utils wildcard
 char		**expand_wildcard(char **args);

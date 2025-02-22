@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 00:02:33 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/22 15:39:51 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,16 @@ static char	*cmd_path(char **cmd, t_pipeline *pip, t_data *data, char *cmd_path)
 	}
 	else if (ft_strstartwith(cmd[0], "../") || ft_strcountchar(cmd[0], '.') > 2)
 	{
-		if (access(cmd[0], F_OK) == -1)
-			ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE);
-		else if (ft_strcountchar(cmd[0], '.') == 2)
-			ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_IS_DIR);
-		else
-			ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE);
+		files_checker(cmd[0], data);
 		free_execute(pip, data, cmd_path);
-		printf("ici\n");
-		exit(127);
+		exit (data->exit_code);
 	}
 	else if ((ft_strstartwith(cmd[0], "./") && !ft_strendwith(cmd[0], ".sh"))
-		|| (cmd[0][0] == '/' && access(cmd[0], R_OK) == -1))
+		|| (cmd[0][0] == '/'))
 	{
-		ft_print_error(NULL, ft_strtok(cmd[0], " "), MSG_ERROR_FILE); //126 ou 127 check directory(MSG_IS_DIR) or file (MSG_ERROR_FILE) or permission denied :(
+		files_checker(cmd[0], data);
 		free_execute(pip, data, cmd_path);
-		exit(127); 
+		exit (data->exit_code);
 	}
 	return (cmd_path);
 }
@@ -77,30 +71,20 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	if (cmd_path_dir)
 	{
 		execve(cmd_path_dir, cmd, data->my_envp);
-		if (access(cmd_path_dir, F_OK) == 0)
-		{
-			if (access(cmd_path_dir, X_OK) == -1)
-			{
-				ft_print_error(NULL, cmd[0], "Permission denied");
-				data->exit_code = 126;
-				free_execute(pip, data, cmd_path_dir);
-				exit(126);
-			}
-		}
-		if (!ft_strstr(cmd[0], "./"))
-			ft_print_error(NULL, cmd[0], "Execution error");
-		data->exit_code = 127;
+		files_checker(cmd[0], data);
 		free_execute(pip, data, cmd_path_dir);
-		exit(127);
+		exit(data->exit_code);
 	}
+	if (!ft_strstr(cmd[0], "./"))
+		files_checker(cmd[0], data);
+	free_execute(pip, data, cmd_path_dir);
+	exit(data->exit_code);
 }
 // $PWD 
 // mini exit code = 127
 // bash exit code = 126
 // mini error = ( Execution error)
 // bash error = ( est un dossier)
-
-
 
 static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid)
 {
