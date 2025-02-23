@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 00:54:31 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 03:05:12 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,10 @@ void		skip_whitespace(const char *str, int *i);
 
 // lexer_parser
 char		*parse_lexer(char *line, int *i, t_data *data);
+void		update_quote_state(const char *line, int *in_s, int *in_d, int i);
+
+// utils_wildcard
+void		check_and_expand_wildcard(char **input);
 
 // utils_lexer
 int			check_unclosed_quotes(const char *line);
@@ -120,11 +124,15 @@ void		init_parse(t_parse *parse, int size);
 void		append_char(t_parse *parse, char c);
 void		free_tokens(char **tokens);
 bool		handle_check_var(char *line, int *i, t_data *data, t_parse *parse);
+void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 
 //utils wildcard
 bool		handle_check_wildcard(char *line, int *i, t_parse *parse);
 void		expand_wildcard(char **str);
 // char		**expand_wildcard(char **argv);
+
+// token_parser
+void		parse_argv(char **argv, int argc, t_data *data);
 
 // utils_prompt
 char		*get_prompt(t_env_ms *lst);
@@ -140,8 +148,7 @@ char		**utils_parse_args(const char *str);
 
 
 // token_parser
-char		*parse_token(char *line, int *i, t_data *data);
-void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
+
 
 // send_to_exec
 void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
