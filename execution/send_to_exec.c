@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 14:17:36 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:37:45 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	handle_exec(char **argv, t_data *data, t_pipeline *pip, int *fd_std)
 		fds_dup(fd_std, pip, data);
 	else if (argv)
 	{
-		free_tab(argv);
+		// free_tab(argv);
 		simple_exec(pip, data);
 		if (pip)
 			free_pipeline(pip);

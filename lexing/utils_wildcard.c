@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:54:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 03:00:08 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:56:12 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ap_exp_word(char **new_str, char **word, int in_single, int in_double)
 
 	if (ft_strchr(*word, '*') && in_single == 0 && in_double == 0)
 		expand_wildcard(word);
-	temp = ft_strjoin(*new_str, " ");
+	temp = ft_strdup(*new_str);
 	tmp_new = *new_str;
 	*new_str = ft_strjoin(temp, *word);
 	free(temp);

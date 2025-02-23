@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 14:15:19 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:49:52 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,13 @@ bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 		skip_whitespace(str, &i);
 		if (str[i])
 		{
-			// if (!token)
 			token = parse_lexer(str, &i, data);
 			if (!token)
 				return (free_tab(lexingv), false);
-			// if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
-			lexingv[(*count)++] = token;
-			// else if (token)
-			// 	free(token);
-			// if (!token)
-			// 	token = skip_pips(str, &i);
+			if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
+				lexingv[(*count)++] = token;
+			else if (token)
+				free(token);
 		}
 	}
 	lexingv[*count] = NULL;
@@ -72,12 +69,14 @@ char	**lexer_args(char *input, t_data *data)
 	count = 0;
 	if (!lexing_string(input, lexingv, &count, data))
 	{
-		free_tab(lexingv);
+		if (count == 0)
+			lexingv = NULL;
+		if (lexingv)
+			free_tab(lexingv);
 		return (NULL);
 	}
 	return (lexingv);
 }
-
 
 //? Get the input and lexing
 void	input_lexer(char *input, t_data *data)
@@ -85,7 +84,7 @@ void	input_lexer(char *input, t_data *data)
 	char	**lexingv;
 	int		lexingc;
 	
-	if (!input)
+	if (!input || ft_strlen(input) == 0)
 		return ;
 	check_and_expand_wildcard(&input);
 	lexingv = NULL;
@@ -100,12 +99,10 @@ void	input_lexer(char *input, t_data *data)
 	}
 	while (lexingv && lexingv[lexingc])
 		lexingc++;
-	////////////////////////////////////////////
 	parse_argv(&lexingv, &lexingc, data);
 	if (lexingc > 0)
 	{
 		send_to_exec(lexingv, data);
-		// free_tab(lexingv);
 		return ;
 	}
 	free_tab(lexingv);
