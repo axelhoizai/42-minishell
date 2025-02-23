@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:54:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 14:56:12 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 22:07:50 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	append_space(char **new_input, char *input, int *i)
 	(*i)++;
 }
 
-static char *extract_word(char *input, int *i, int *in_single, int *in_double)
+char *extract_word(char *input, int *i, int *in_single, int *in_double)
 {
 	int		j;
 	char	*word;

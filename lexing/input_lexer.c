@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 14:49:52 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 23:07:03 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,11 @@ void	input_lexer(char *input, t_data *data)
 	if (!input || ft_strlen(input) == 0)
 		return ;
 	check_and_expand_wildcard(&input);
+	printf("input check_and_expand_wildcard = %s\n", input);
+	format_operators_and_redirections(&input);
+	printf("input format_operators_and_redirections = %s\n", input);
+	check_and_expand_operators(&input);
+	printf("input check_and_expand_operators = %s\n", input);
 	lexingv = NULL;
 	lexingc = 0;
 	lexingv = lexer_args(input, data);
@@ -99,11 +104,8 @@ void	input_lexer(char *input, t_data *data)
 	}
 	while (lexingv && lexingv[lexingc])
 		lexingc++;
-	parse_argv(&lexingv, &lexingc, data);
+	print_tab_lexing(lexingv);
 	if (lexingc > 0)
-	{
-		send_to_exec(lexingv, data);
-		return ;
-	}
+		return (send_to_exec(lexingv, data));
 	free_tab(lexingv);
 }

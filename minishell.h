@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 14:17:54 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 23:03:04 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,17 +137,30 @@ void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 //utils wildcard
 bool		handle_check_wildcard(char *line, int *i, t_parse *parse);
 void		expand_wildcard(char **str);
+char		*extract_word(char *input, int *i, int *in_single, int *in_double);
 // char		**expand_wildcard(char **argv);
 
-// token_parser
-void		parse_argv(char ***lexingv, int *lexingc, t_data *data);
+//check_and_expand_operators
+void		check_and_expand_operators(char **input);
+
+//format_operators_and_redirections
+void		format_operators_and_redirections(char **input);
+
+// // utils_token
+// int			check_unclosed_quotes(const char *line);
+// void		init_parse(t_parse *parse, int size);
+// void		append_char(t_parse *parse, char c);
+// void		handle_parse_token(const char *line, int *i, t_parse *parse);
+// void		free_tokens(char **tokens);
+// bool		handle_check_var(char *line, int *i, t_data *data, t_parse *parse);
+
+// // token_parser
+// char		*parse_token(char *line, int *i, t_data *data);
+// void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 
 // token_parser_utils
-void		init_argv(t_argv *argv, int capacity);
-void		free_argv(t_argv *argv);
-bool		chck_redir_pip(char *line, int *i);
-char		*parse_token(char *line, int *i, t_data *data);
-char		*skip_pips(char *str, int *i);
+int			is_double_operator(const char *input, int i);
+int			is_operator(char c);
 
 // utils_prompt
 char		*get_prompt(t_env_ms *lst);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_parser.c                                       :+:      :+:    :+:   */
+/*   utils_lexer_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/22 17:42:26 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/23 19:25:41 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,16 +112,3 @@ void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 		append_char(parse, var[k++]);
 	free(var);
 }
-
-// void	handle_wildcard(char *line, int *i, t_parse *parse, t_data *data)
-// {
-// 	char	*var;
-// 	int		k;
-
-// 	var = NULL;
-// 	var = expand_wildcard(line, i, data);
-// 	k = 0;
-// 	while (var[k])
-// 		append_char(parse, var[k++]);
-// 	free(var);
-// }
