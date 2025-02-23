@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 03:02:26 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:15:19 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,18 @@ char	**lexer_args(char *input, t_data *data)
 
 	if (!input || check_unclosed_quotes(input))
 		return (ft_print_error(NULL, NULL, "Error: unclosed quotes"), NULL);
-	lexingv = malloc(sizeof(char *) * 256);
+	lexingv = ft_calloc(256, sizeof(char *));
 	if (!lexingv)
 		return (NULL);
 	count = 0;
 	if (!lexing_string(input, lexingv, &count, data))
+	{
+		free_tab(lexingv);
 		return (NULL);
-	print_tab_lexing(lexingv);
+	}
 	return (lexingv);
 }
+
 
 //? Get the input and lexing
 void	input_lexer(char *input, t_data *data)
@@ -98,10 +101,12 @@ void	input_lexer(char *input, t_data *data)
 	while (lexingv && lexingv[lexingc])
 		lexingc++;
 	////////////////////////////////////////////
-	// parse_argv(lexingv, lexingc, data); //a revoir
+	parse_argv(&lexingv, &lexingc, data);
 	if (lexingc > 0)
 	{
 		send_to_exec(lexingv, data);
+		// free_tab(lexingv);
 		return ;
 	}
+	free_tab(lexingv);
 }

@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 22:38:57 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:02:09 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	check_unclosed_quotes(const char *line)
 
 void	init_parse(t_parse *parse, int size)
 {
-	parse->buffer = malloc(size);
+	parse->buffer = ft_calloc(size, 1);
 	if (!parse->buffer)
 		exit(1);
 	parse->len = 0;

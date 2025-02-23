@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 03:05:12 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:17:54 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,14 @@ typedef struct s_parse
 	int		in_single;
 	int		in_double;
 }	t_parse;
+
+typedef struct s_argv
+{
+	char	**tokens;      // Tableau des arguments finaux
+	int		token_count;   // Nombre d'arguments stockés
+	int		token_capacity; // Capacité max avant réallocation
+}	t_argv;
+
 
 typedef struct s_env_ms
 {
@@ -132,7 +140,14 @@ void		expand_wildcard(char **str);
 // char		**expand_wildcard(char **argv);
 
 // token_parser
-void		parse_argv(char **argv, int argc, t_data *data);
+void		parse_argv(char ***lexingv, int *lexingc, t_data *data);
+
+// token_parser_utils
+void		init_argv(t_argv *argv, int capacity);
+void		free_argv(t_argv *argv);
+bool		chck_redir_pip(char *line, int *i);
+char		*parse_token(char *line, int *i, t_data *data);
+char		*skip_pips(char *str, int *i);
 
 // utils_prompt
 char		*get_prompt(t_env_ms *lst);
@@ -157,6 +172,7 @@ void		send_to_exec(char **argv, t_data *data);
 // utils_check
 bool		check_redir_pipe(char **tokens);
 bool		is_pipe(char **argv);
+bool		is_token_pipe(char *token);
 bool		is_builtin(t_command *cmd);
 
 // utils_debug

@@ -7,7 +7,7 @@ LEXING = 	lexing/input_lexer.c lexing/lexer_parser.c lexing/lexer_expand.c \
 			lexing/utils_wildcard.c 
 
 PARSING = 	parsing/token_parser.c parsing/pip_free.c parsing/pip_init.c \
-			parsing/pip_parser.c parsing/pip_redir.c
+			parsing/pip_parser.c parsing/pip_redir.c parsing/token_parser_utils.c
 
 BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exit.c \
 			builtins/builtins_echo.c builtins/builtins_export.c builtins/builtins_unset.c \

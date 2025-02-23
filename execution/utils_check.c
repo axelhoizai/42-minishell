@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 17:46:26 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 18:16:06 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:18:19 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,13 @@ bool	is_pipe(char **argv)
 	}
 	free_tab(argv);
 	return (false);
+}
+
+bool	is_token_pipe(char *token)
+{
+	if (!token)
+		return (false);
+	return (ft_strcmp(token, "|") == 0 || ft_strcmp(token, "||") == 0);
 }
 
 bool	is_builtin(t_command *cmd)
