@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:19:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 18:11:19 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 19:04:02 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,18 @@ void	free_term(t_data *data)
 	}
 }
 
-void	free_tokens(char **tokens)
-{
-	int	i;
+// void	free_tokens(char **tokens)
+// {
+// 	int	i;
 
-	i = 0;
-	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
-}
+// 	i = 0;
+// 	while (tokens[i])
+// 	{
+// 		free(tokens[i]);
+// 		i++;
+// 	}
+// 	free(tokens);
+// }
 
 void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 17:15:35 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 19:05:05 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	main_loop(t_data *data)
 		if (*input)
 			add_history(input);
 		data->is_reading = false;
-		get_argv(input, data);
+		input_lexer(input, data);
 	}
 	return (exit_code);
 }

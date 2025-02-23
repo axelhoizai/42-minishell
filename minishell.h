@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 15:02:04 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/23 00:54:31 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define EXEC_ERROR 7
 # define MEMORY_ERROR 8
 
+# define MAX_FILES 1024
 # define MSG_ERROR_FILE "No such file or directory"
 # define MSG_IS_DIR "Is a directory"
 # define MSG_ERROR_SYNTAX "syntax error near unexpected token"
@@ -106,6 +107,25 @@ typedef struct s_pipeline
 
 //-------------------------------UTILS-------------------------------
 
+// input_lexer
+void		input_lexer(char *input, t_data *data);
+void		skip_whitespace(const char *str, int *i);
+
+// lexer_parser
+char		*parse_lexer(char *line, int *i, t_data *data);
+
+// utils_lexer
+int			check_unclosed_quotes(const char *line);
+void		init_parse(t_parse *parse, int size);
+void		append_char(t_parse *parse, char c);
+void		free_tokens(char **tokens);
+bool		handle_check_var(char *line, int *i, t_data *data, t_parse *parse);
+
+//utils wildcard
+bool		handle_check_wildcard(char *line, int *i, t_parse *parse);
+void		expand_wildcard(char **str);
+// char		**expand_wildcard(char **argv);
+
 // utils_prompt
 char		*get_prompt(t_env_ms *lst);
 
@@ -115,20 +135,9 @@ void		change_dir(int argc, char **argv, t_pipeline *pip, t_data *data);
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg);
 
-// argv_parser
-void		get_argv(char *input, t_data *data);
-void		skip_whitespace(const char *str, int *i);
-
 // quote_parser
 char		**utils_parse_args(const char *str);
 
-// utils_token
-int			check_unclosed_quotes(const char *line);
-void		init_parse(t_parse *parse, int size);
-void		append_char(t_parse *parse, char c);
-void		handle_parse_token(const char *line, int *i, t_parse *parse);
-void		free_tokens(char **tokens);
-bool		handle_check_var(char *line, int *i, t_data *data, t_parse *parse);
 
 // token_parser
 char		*parse_token(char *line, int *i, t_data *data);
@@ -220,9 +229,6 @@ void		script_checker(char ***cmd);
 int			open_file(t_command *cmd, char *file, int mode);
 int			open_outfile(t_command *cmd, char *file, t_data *data, int append);
 void		files_checker(char	*file, t_data *data);
-
-//utils wildcard
-char		**expand_wildcard(char **args);
 
 //pipex
 void		close_fds(t_pipeline *pip);

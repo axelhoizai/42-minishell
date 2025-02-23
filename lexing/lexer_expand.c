@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_token.c                                      :+:      :+:    :+:   */
+/*   lexer_expand.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 17:42:09 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/22 22:38:57 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,6 @@ void	append_char(t_parse *parse, char c)
 	parse->buffer[parse->len] = '\0';
 }
 
-void	handle_parse_token(const char *line, int *i, t_parse *parse)
-{
-	if ((line[*i] == '\'' && parse->in_double)
-		|| (line[*i] == '"' && parse->in_single))
-	{
-		append_char(parse, line[*i]);
-		(*i)++;
-	}
-}
-
 bool	handle_check_var(char *line, int *i, t_data *data, t_parse *parse)
 {
 	if (line[*i] == '$' && parse->in_single == 0
@@ -96,10 +86,5 @@ bool	handle_check_var(char *line, int *i, t_data *data, t_parse *parse)
 		handle_variable(line, i, parse, data);
 		return (true);
 	}
-	// if (line[*i] == '*' && parse->in_single == 0)
-	// {
-	// 	handle_wildcard(line, i, parse, data);
-	// 	return (true);
-	// }
 	return (false);
 }
