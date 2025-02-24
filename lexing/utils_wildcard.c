@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_wildcard.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:54:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 22:07:50 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:35:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	check_and_expand_wildcard(char **input)
 		word = extract_word(*input, &i, &in_single, &in_double);
 		if (!word)
 			return;
-        ap_exp_word(&new_input, &word, in_single, in_double);
+		ap_exp_word(&new_input, &word, in_single, in_double);
 	}
 	free(*input);
 	*input = new_input;

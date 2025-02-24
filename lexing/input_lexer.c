@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 16:00:22 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:54:04 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	input_lexer(char *input, t_data *data)
 		free(input);
 		return ;
 	}
-	check_and_expand_operators(&input);
+	// check_and_expand_operators(&input);
 	// printf("input check_and_expand_operators = %s\n", input);
 	lexingv = NULL;
 	lexingc = 0;

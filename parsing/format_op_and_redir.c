@@ -6,13 +6,13 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 16:12:33 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:56:11 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	append_operator(char **new_input, char *input, int *i)
+void	append_operator(char **new_input, char *input, int *i)
 {
 	int		start;
 	char	*operator;
@@ -31,7 +31,6 @@ static void	append_operator(char **new_input, char *input, int *i)
 	free(operator);
 	free(tmp_new);
 }
-
 
 static void	append_char_or_space(char **new_input, char *input, int *i)
 {
@@ -65,42 +64,13 @@ static void	handle_operator_spacing(char **new_input, char *input, int *i)
 	}
 }
 
-// static void	handle_operator_spacing(char **new_input, char *input, int *i)
-// {
-// 	char	*tmp_new;
-
-// 	if (*i > 0 && (!ft_isspace(input[*i - 1]) && ft_isalpha(input[*i - 1])))
-// 	{
-// 		tmp_new = *new_input;
-// 		*new_input = ft_strjoin(tmp_new, " ");
-// 		free(tmp_new);
-// 	}
-// 	append_operator(new_input, input, i);
-// 	if (input[*i] && !ft_isspace(input[*i]) && ft_isalpha(input[*i - 1]))
-// 	{
-// 		tmp_new = *new_input;
-// 		*new_input = ft_strjoin(tmp_new, " ");
-// 		free(tmp_new);
-// 	}
-// }
-
-static void	process_input_chars(char **new_input, char *input, int *i,
-								int *in_single, int *in_double)
-{
-	update_quote_state(input, in_single, in_double, *i);
-	if (!(*in_single) && !(*in_double) && is_operator(input[*i]))
-		handle_operator_spacing(new_input, input, i);
-	else
-		append_char_or_space(new_input, input, i);
-}
-
 void	format_operators_and_redirections(char **input)
 {
 	int		i;
 	int		in_single;
 	int		in_double;
 	char	*new_input;
-
+	
 	i = 0;
 	in_single = 0;
 	in_double = 0;
@@ -108,7 +78,13 @@ void	format_operators_and_redirections(char **input)
 	if (!new_input)
 		return ;
 	while ((*input)[i])
-		process_input_chars(&new_input, *input, &i, &in_single, &in_double);
+	{
+			update_quote_state(*input, &in_single, &in_double, i);
+			if (in_single == 0 && in_double == 0 && is_operator((*input)[i]))
+				handle_operator_spacing(&new_input, *input, &i);
+			else
+				append_char_or_space(&new_input, *input, &i);
+	}
 	free(*input);
 	*input = new_input;
 }
@@ -119,3 +95,6 @@ void	format_operators_and_redirections(char **input)
 //<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|
 //"<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|"
 //'<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|'
+
+//'<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|'
+//echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<" | cat -e
