@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 00:16:17 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/24 10:47:10 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 	return (true);
 }
 
-static int	check_unclosed_parentheses(char *input, int open_parens)
+int	check_unclosed_parentheses(char *input, int open_parens)
 {
 	int		i;
 
@@ -88,11 +88,11 @@ char	**lexer_args(char *input, t_data *data)
 	open_parens = 0;
 	if (!input || check_unclosed_quotes(input))
 		return (ft_print_error(NULL, NULL, "Error: unclosed quotes"), NULL);
-	if (check_unclosed_parentheses(input, open_parens) == 1)
-	{
-		data->exit_code = 2;
-		return (NULL);
-	}
+	// if (check_unclosed_parentheses(input, open_parens) == 1)
+	// {
+	// 	data->exit_code = 2;
+	// 	return (NULL);
+	// }
 	lexingv = ft_calloc(256, sizeof(char *));
 	if (!lexingv)
 		return (NULL);
