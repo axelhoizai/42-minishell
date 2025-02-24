@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_trim_whitespace.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 01:11:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 01:12:07 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/24 20:57:29 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,5 @@ char	*ft_trim_whitespace(const char *str)
 		return (NULL);
 	str_trimmed = ft_trim_end_whitespace(trimmed_start);
 	free(trimmed_start);
-
 	return (str_trimmed);
 }

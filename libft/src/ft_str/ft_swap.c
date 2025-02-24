@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 01:00:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 01:07:34 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/24 20:57:54 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 void	ft_swap(char *a, char *b)
 {
-	char *tmp;
-	
+	char	*tmp;
+
 	tmp = a;
 	a = b;
 	b = tmp;

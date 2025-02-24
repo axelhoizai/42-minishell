@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format_op_and_redir.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 17:56:11 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 20:52:48 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	append_operator(char **new_input, char *input, int *i)
 	char	*tmp_new;
 
 	start = *i;
-	if ((input[*i] == '>' && input[*i + 1] == '|') ||
-		(input[*i] == '<' && input[*i + 1] == '|'))
+	if ((input[*i] == '>' && input[*i + 1] == '|')
+		|| (input[*i] == '<' && input[*i + 1] == '|'))
 		*i += 2;
 	else
 		while (input[*i] && input[*i] == input[start])
@@ -37,11 +37,23 @@ static void	append_char_or_space(char **new_input, char *input, int *i)
 	char	*temp;
 	char	*tmp_new;
 
+	if (*i > 0 && is_operator(input[*i]))
+	{
+		tmp_new = *new_input;
+		*new_input = ft_strjoin(tmp_new, "\t");
+		free(tmp_new);
+	}
 	temp = ft_substr(input, *i, 1);
 	tmp_new = *new_input;
 	*new_input = ft_strjoin(tmp_new, temp);
 	free(temp);
 	free(tmp_new);
+	if (input[*i] && is_operator(input[*i]))
+	{
+		tmp_new = *new_input;
+		*new_input = ft_strjoin(tmp_new, "\t");
+		free(tmp_new);
+	}
 	(*i)++;
 }
 
@@ -70,7 +82,7 @@ void	format_operators_and_redirections(char **input)
 	int		in_single;
 	int		in_double;
 	char	*new_input;
-	
+
 	i = 0;
 	in_single = 0;
 	in_double = 0;
@@ -79,11 +91,11 @@ void	format_operators_and_redirections(char **input)
 		return ;
 	while ((*input)[i])
 	{
-			update_quote_state(*input, &in_single, &in_double, i);
-			if (in_single == 0 && in_double == 0 && is_operator((*input)[i]))
-				handle_operator_spacing(&new_input, *input, &i);
-			else
-				append_char_or_space(&new_input, *input, &i);
+		update_quote_state(*input, &in_single, &in_double, i);
+		if (in_single == 0 && in_double == 0 && is_operator((*input)[i]))
+			handle_operator_spacing(&new_input, *input, &i);
+		else
+			append_char_or_space(&new_input, *input, &i);
 	}
 	free(*input);
 	*input = new_input;
