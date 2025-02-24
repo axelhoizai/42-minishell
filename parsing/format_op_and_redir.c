@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format_op_and_redir.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 23:40:02 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:28:30 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ static void	handle_operator_spacing(char **new_input, char *input, int *i)
 		free(tmp_new);
 	}
 	append_operator(new_input, input, i);
-	if (input[*i] && !ft_isspace(input[*i]))
+	if (input[*i] && !ft_isspace(input[*i]) && ft_isalnum(input[*i + 1]))
 	{
 		tmp_new = *new_input;
+
 		*new_input = ft_strjoin(tmp_new, " ");
 		free(tmp_new);
 	}
@@ -100,3 +101,4 @@ void	format_operators_and_redirections(char **input)
 //<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|
 //"<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|"
 //'<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|'
+//echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<" | cat -e
