@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 11:28:06 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/24 16:54:09 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,16 @@ static void	add_var(char *key, char **argv, t_data *data)
 		if (!chck_identifier(argv[i], data))
 			return ;
 		key = get_envkey(argv[i]);
-		ft_unset(argv, data);
+		if (ms_find(data->env_ms, key))
+			ft_unset(argv, data);
 		if (!ms_find(data->env_ms, key))
 		{
 			if (ft_strchr(argv[i], '='))
-			{
 				ms_lstadd_back(&(data->env_ms), ms_lstnew(get_envkey(argv[i]),
 						get_envval(argv[i]), true));
-			}
 			else
-			{
 				ms_lstadd_back(&(data->env_ms), ms_lstnew(get_envkey(argv[i]),
 						get_envval(argv[i]), false));
-			}
 		}
 		free(key);
 		i++;

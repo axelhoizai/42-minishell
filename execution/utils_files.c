@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils_files.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 15:38:57 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:17:39 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void	chck_perm_in(t_command *cmd, char *file)
+{
+	if (access(file, R_OK | F_OK) != 0 && access(file, F_OK) == 0 
+		&& cmd->in_error == 0 && cmd->out_error == 0)
+		{
+			ft_print_error(NULL, file, "Permission denied");
+			cmd->in_error = 1;
+		}
+}
 
 int	open_file(t_command *cmd, char *file, int mode)
 {
@@ -18,16 +28,13 @@ int	open_file(t_command *cmd, char *file, int mode)
 
 	if (mode == 1)
 	{
-		if (access(file, R_OK | F_OK) != 0 && access(file, F_OK) == 0)
-		{
-			ft_print_error(NULL, file, "Permission denied");
-			cmd->in_error = 1;
-		}
+		chck_perm_in(cmd, file);
 		fd = open(file, O_RDONLY);
 	}
 	else
 	{
-		if (access(file, R_OK | W_OK) != 0 && access(file, F_OK) == 0)
+		if (access(file, R_OK | W_OK) != 0 && access(file, F_OK) == 0
+			&& cmd->in_error == 0 && cmd->out_error == 0)
 		{
 			ft_print_error(NULL, file, "Permission denied");
 			cmd->out_error = 1;

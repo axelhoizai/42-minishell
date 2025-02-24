@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:18:29 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/22 15:37:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:06:30 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	handle_input(char **tokens, int *i, t_command *cmd, t_data *data)
 	{
 		if (cmd->fd_in == -1)
 		{
-			if (cmd->in_error == 0)
+			if (cmd->in_error == 0 && cmd->out_error == 0)
 				ft_print_error(NULL, cmd->input_file,
 					"No such file or directory"); //dois resortir exit 2 en fonction des cas??
 			cmd->in_error = 1;
@@ -45,7 +45,7 @@ static void	handle_fd_error(t_command *cmd, t_data *data)
 {
 	if (cmd->in_error == 0)
 	{
-		if (cmd->out_error == 0)
+		if (cmd->out_error == 0 && cmd->in_error == 0)
 			ft_print_error(NULL, cmd->output_file, "No such file or directory");
 		cmd->fd_out = -1;
 	}
