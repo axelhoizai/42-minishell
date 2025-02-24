@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 03:04:57 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/24 18:49:28 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ char	*parse_lexer(char *line, int *i, t_data *data)
 {
 	t_parse	parse;
 
+	if (line[*i] && line[*i + 1] && line[*i] == '$'
+		&& (line[*i + 1] == '\'' || line[*i + 1] == '"'))
+		(*i)++;
 	init_parse(&parse, 256);
 	while (line[*i] && (parse.in_single || parse.in_double
 			|| !ft_isspace(line[*i])))

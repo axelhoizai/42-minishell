@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 17:54:04 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 18:50:40 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 			token = parse_lexer(str, &i, data);
 			if (!token)
 				return (free_tab(lexingv), false);
-			if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
+			// if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
+			if (ft_strlen(token) > 0)
 				lexingv[(*count)++] = token;
 			else if (token)
 				free(token);
