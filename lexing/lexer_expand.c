@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 14:02:09 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 23:56:26 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	check_unclosed_quotes(const char *line)
 			double_quote = !double_quote;
 		i++;
 	}
+	if (single_quote > 0 || double_quote > 0)
+		get_data(NULL)->exit_code = 2;
 	return (single_quote || double_quote);
 }
 

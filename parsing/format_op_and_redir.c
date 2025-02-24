@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_parser.c                                     :+:      :+:    :+:   */
+/*   format_op_and_redir.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 22:56:44 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/23 23:40:02 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,24 @@
 
 static void	append_operator(char **new_input, char *input, int *i)
 {
-	char	*temp;
+	int		start;
+	char	*operator;
 	char	*tmp_new;
 
+	start = *i;
 	if ((input[*i] == '>' && input[*i + 1] == '|') ||
 		(input[*i] == '<' && input[*i + 1] == '|'))
-	{
-		temp = ft_substr(input, *i, 2);
 		*i += 2;
-	}
-	else if (is_double_operator(input, *i))
-	{
-		temp = ft_substr(input, *i, 2);
-		*i += 2;
-	}
 	else
-	{
-		temp = ft_substr(input, *i, 1);
-		*i += 1;
-	}
+		while (input[*i] && input[*i] == input[start])
+			(*i)++;
+	operator = ft_substr(input, start, *i - start);
 	tmp_new = *new_input;
-	*new_input = ft_strjoin(*new_input, temp);
-	free(temp);
+	*new_input = ft_strjoin(tmp_new, operator);
+	free(operator);
 	free(tmp_new);
 }
+
 
 static void	append_char_or_space(char **new_input, char *input, int *i)
 {
@@ -46,7 +40,7 @@ static void	append_char_or_space(char **new_input, char *input, int *i)
 
 	temp = ft_substr(input, *i, 1);
 	tmp_new = *new_input;
-	*new_input = ft_strjoin(*new_input, temp);
+	*new_input = ft_strjoin(tmp_new, temp);
 	free(temp);
 	free(tmp_new);
 	(*i)++;
@@ -59,14 +53,14 @@ static void	handle_operator_spacing(char **new_input, char *input, int *i)
 	if (*i > 0 && !ft_isspace(input[*i - 1]))
 	{
 		tmp_new = *new_input;
-		*new_input = ft_strjoin(*new_input, " ");
+		*new_input = ft_strjoin(tmp_new, " ");
 		free(tmp_new);
 	}
 	append_operator(new_input, input, i);
 	if (input[*i] && !ft_isspace(input[*i]))
 	{
 		tmp_new = *new_input;
-		*new_input = ft_strjoin(*new_input, " ");
+		*new_input = ft_strjoin(tmp_new, " ");
 		free(tmp_new);
 	}
 }
@@ -100,6 +94,9 @@ void	format_operators_and_redirections(char **input)
 	*input = new_input;
 }
 
-//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action echo > >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<
-//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<"
-// <<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<'
+//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne| echo > >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<
+//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne| echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<"
+//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne| echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<'
+//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|
+//"<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|"
+//'<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|'

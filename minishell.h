@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 23:03:04 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/24 00:10:18 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,9 @@ void		check_and_expand_operators(char **input);
 
 //format_operators_and_redirections
 void		format_operators_and_redirections(char **input);
+
+//check_syntax_error
+int			check_syntax_errors(char *input);
 
 // // utils_token
 // int			check_unclosed_quotes(const char *line);

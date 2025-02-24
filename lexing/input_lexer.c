@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 23:07:03 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/24 00:16:17 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@ void	print_tab_lexing(char **tab)
 	}
 }
 
-void	skip_whitespace(const char *str, int *i)
-{
-	while (str[*i] && ft_isspace(str[*i]))
-		(*i)++;
-}
-
 bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 {
 	int		i;
@@ -38,7 +32,8 @@ bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 	i = 0;
 	while (str && str[i])
 	{
-		skip_whitespace(str, &i);
+		while (str[i] && ft_isspace(str[i]))
+			i++;
 		if (str[i])
 		{
 			token = parse_lexer(str, &i, data);
@@ -56,13 +51,48 @@ bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 	return (true);
 }
 
+static int	check_unclosed_parentheses(char *input, int open_parens)
+{
+	int		i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '(')
+			open_parens++;
+		else if (input[i] == ')')
+		{
+			if (open_parens == 0)
+			{
+				ft_print_error(NULL, NULL, "Syntax error: unexpected token ')'");
+				return (1);
+			}
+			open_parens--;
+		}
+		i++;
+	}
+	if (open_parens > 0)
+	{
+		ft_print_error(NULL, NULL, "Syntax error: unexpected token '('");
+		return (1);
+	}
+	return (0);
+}
+
 char	**lexer_args(char *input, t_data *data)
 {
 	char	**lexingv;
 	int		count;
+	int		open_parens;
 
+	open_parens = 0;
 	if (!input || check_unclosed_quotes(input))
 		return (ft_print_error(NULL, NULL, "Error: unclosed quotes"), NULL);
+	if (check_unclosed_parentheses(input, open_parens) == 1)
+	{
+		data->exit_code = 2;
+		return (NULL);
+	}
 	lexingv = ft_calloc(256, sizeof(char *));
 	if (!lexingv)
 		return (NULL);
@@ -90,6 +120,12 @@ void	input_lexer(char *input, t_data *data)
 	printf("input check_and_expand_wildcard = %s\n", input);
 	format_operators_and_redirections(&input);
 	printf("input format_operators_and_redirections = %s\n", input);
+	if (check_syntax_errors(input))
+	{
+		data->exit_code = 2;
+		free(input);
+		return ;
+	}
 	check_and_expand_operators(&input);
 	printf("input check_and_expand_operators = %s\n", input);
 	lexingv = NULL;
