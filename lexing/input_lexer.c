@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 15:26:00 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 16:00:22 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 			token = parse_lexer(str, &i, data);
 			if (!token)
 				return (free_tab(lexingv), false);
-			if (ft_strlen(token) > 0)
+			if (!ft_isspace(token[0]) && ft_strlen(token) > 0)
 				lexingv[(*count)++] = token;
 			else if (token)
 				free(token);
@@ -51,6 +51,34 @@ bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 	return (true);
 }
 
+int	check_unclosed_parentheses(char *input, int open_parens)
+{
+	int		i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '(')
+			open_parens++;
+		else if (input[i] == ')')
+		{
+			if (open_parens == 0)
+			{
+				ft_print_error(NULL, NULL, "Syntax error: unexpected token ')'");
+				return (1);
+			}
+			open_parens--;
+		}
+		i++;
+	}
+	if (open_parens > 0)
+	{
+		ft_print_error(NULL, NULL, "Syntax error: unexpected token '('");
+		return (1);
+	}
+	return (0);
+}
+
 char	**lexer_args(char *input, t_data *data)
 {
 	char	**lexingv;
@@ -60,6 +88,11 @@ char	**lexer_args(char *input, t_data *data)
 	open_parens = 0;
 	if (!input || check_unclosed_quotes(input))
 		return (ft_print_error(NULL, NULL, "Error: unclosed quotes"), NULL);
+	// if (check_unclosed_parentheses(input, open_parens) == 1)
+	// {
+	// 	data->exit_code = 2;
+	// 	return (NULL);
+	// }
 	lexingv = ft_calloc(256, sizeof(char *));
 	if (!lexingv)
 		return (NULL);
@@ -86,9 +119,9 @@ void	input_lexer(char *input, t_data *data)
 	if (check_unclosed_quotes(input))
 		return( ft_print_error(NULL, NULL, "Error: unclosed quotes"));
 	check_and_expand_wildcard(&input);
-	printf("input check_and_expand_wildcard = %s\n", input);
+	// printf("input check_and_expand_wildcard = %s\n", input);
 	format_operators_and_redirections(&input);
-	printf("input format_operators_and_redirections = %s\n", input);
+	// printf("input format_operators_and_redirections = %s\n", input);
 	if (check_syntax_errors(input))
 	{
 		data->exit_code = 2;
@@ -96,7 +129,7 @@ void	input_lexer(char *input, t_data *data)
 		return ;
 	}
 	check_and_expand_operators(&input);
-	printf("input check_and_expand_operators = %s\n", input);
+	// printf("input check_and_expand_operators = %s\n", input);
 	lexingv = NULL;
 	lexingc = 0;
 	lexingv = lexer_args(input, data);
@@ -109,18 +142,8 @@ void	input_lexer(char *input, t_data *data)
 	}
 	while (lexingv && lexingv[lexingc])
 		lexingc++;
-	print_tab_lexing(lexingv);
+	// print_tab_lexing(lexingv);
 	if (lexingc > 0)
 		return (send_to_exec(lexingv, data));
 	free_tab(lexingv);
 }
-
-
-	// update_quote_state(input, in_single, in_double, *i);
-	// if (!(*in_single) && !(*in_double) && check_syntax_errors(input))
-	// {
-	// 	get_data(NULL)->exit_code = 2;
-	// 	free(input);
-	// 	free_var(new_input);
-	// 	return ;
-	// }

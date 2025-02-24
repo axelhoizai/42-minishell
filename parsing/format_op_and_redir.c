@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 12:28:30 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 16:12:33 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,32 @@ static void	handle_operator_spacing(char **new_input, char *input, int *i)
 		free(tmp_new);
 	}
 	append_operator(new_input, input, i);
-	if (input[*i] && !ft_isspace(input[*i]) && ft_isalnum(input[*i + 1]))
+	if (input[*i] && !ft_isspace(input[*i]))
 	{
 		tmp_new = *new_input;
-
 		*new_input = ft_strjoin(tmp_new, " ");
 		free(tmp_new);
 	}
 }
+
+// static void	handle_operator_spacing(char **new_input, char *input, int *i)
+// {
+// 	char	*tmp_new;
+
+// 	if (*i > 0 && (!ft_isspace(input[*i - 1]) && ft_isalpha(input[*i - 1])))
+// 	{
+// 		tmp_new = *new_input;
+// 		*new_input = ft_strjoin(tmp_new, " ");
+// 		free(tmp_new);
+// 	}
+// 	append_operator(new_input, input, i);
+// 	if (input[*i] && !ft_isspace(input[*i]) && ft_isalpha(input[*i - 1]))
+// 	{
+// 		tmp_new = *new_input;
+// 		*new_input = ft_strjoin(tmp_new, " ");
+// 		free(tmp_new);
+// 	}
+// }
 
 static void	process_input_chars(char **new_input, char *input, int *i,
 								int *in_single, int *in_double)
@@ -101,4 +119,3 @@ void	format_operators_and_redirections(char **input)
 //<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|
 //"<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|"
 //'<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|'
-//echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<" | cat -e
