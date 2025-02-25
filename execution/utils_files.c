@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 17:17:39 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 12:47:57 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	open_outfile(t_command *cmd, char *file, t_data *data, int append)
 void	files_checker(char	*file, t_data *data)
 {
 	// printf("exit_code = %d\n", data->exit_code);
-	if (data->exit_code == 0)
-	{
+	// if (data->exit_code == 0)
+	// {
 		if (access(file, R_OK != 0) && access(file, F_OK) == 0)
 		{
 			ft_print_error(NULL, file, "Permission denied");
@@ -80,5 +80,5 @@ void	files_checker(char	*file, t_data *data)
 			ft_print_error(NULL, ft_strtok(file, " "), MSG_ERROR_FILE);
 			data->exit_code = 127;
 		}
-	}
+	// }
 }

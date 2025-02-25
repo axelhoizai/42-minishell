@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 20:50:50 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 13:53:43 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ bool	lexing_string(char *str, char **lexingv, int *count, t_data *data)
 			token = parse_lexer(str, &i, data);
 			if (!token)
 				return (free_tab(lexingv), false);
-			if (ft_strlen(token) > 0)
-				lexingv[(*count)++] = token;
-			else if (token)
-				free(token);
+			// if (ft_strlen(token) > 0)
+			lexingv[(*count)++] = token;
+			// else if (token)
+			// 	free(token);
 		}
 	}
 	lexingv[*count] = NULL;
@@ -107,7 +107,7 @@ void	input_lexer(char *input, t_data *data)
 	}
 	while (lexingv && lexingv[lexingc])
 		lexingc++;
-	// print_tab_lexing(lexingv);
+	print_tab_lexing(lexingv);
 	if (lexingc > 0)
 		return (send_to_exec(lexingv, data));
 	free_tab(lexingv);

@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 16:54:09 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:02:56 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ static bool	chck_identifier(char *id, t_data *data)
 
 	index = ft_substr(id, 0, find_index(id));
 	if (ft_isdigit(index[0]) || ft_strchr(index, '-') || ft_strchr(index, '.')
+		|| (id && ft_strlen(id) == 0)
 		|| ft_strchr(index, '}') || ft_strchr(index, '{')
 		|| ft_strchr(index, '*') || ft_strchr(index, '#')
 		|| ft_strchr(index, '@') || ft_strchr(index, '+')
-		|| !ft_strcmp(index, "=") || index[0] == '=')
+		|| ft_strchr(index, '!') || ft_strchr(index, '%')
+		|| !ft_strcmp(index, "=") || index[0] == '='
+		|| ft_strchr(index, '?' ))
 	{
 		ft_print_error("export", id, "not a valid identifier");
 		data->exit_code = 1;
@@ -50,28 +53,30 @@ static bool	chck_identifier(char *id, t_data *data)
 	return (true);
 }
 
-static void	add_var(char *key, char **argv, t_data *data)
+static void	add_var(char *key, char *value, char **argv, t_data *data)
 {
-	int	i;
+	int		i;
 
 	i = 1;
 	while (argv[i] && argv[i][0] != '$')
 	{
-		if (!chck_identifier(argv[i], data))
-			return ;
-		key = get_envkey(argv[i]);
-		if (ms_find(data->env_ms, key))
-			ft_unset(argv, data);
-		if (!ms_find(data->env_ms, key))
+		if (chck_identifier(argv[i], data))
 		{
+			key = get_envkey(argv[i]);
+			if (ms_find(data->env_ms, key))
+				ft_unset(argv, data);
 			if (ft_strchr(argv[i], '='))
+			{
+				value = get_envval(argv[i]);
 				ms_lstadd_back(&(data->env_ms), ms_lstnew(get_envkey(argv[i]),
-						get_envval(argv[i]), true));
+						ft_strtrim(value, " 	"), true));
+				free(value);
+			}
 			else
 				ms_lstadd_back(&(data->env_ms), ms_lstnew(get_envkey(argv[i]),
 						get_envval(argv[i]), false));
+			free(key);
 		}
-		free(key);
 		i++;
 	}
 }
@@ -79,13 +84,15 @@ static void	add_var(char *key, char **argv, t_data *data)
 void	ft_export(char **argv, t_data *data)
 {
 	char	*key;
+	char	*value;
 
 	key = NULL;
-	if (ft_strcmp(argv[0], "export") == 0 && (!argv[1] || argv[1][0] == '\0'))
+	value = NULL;
+	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
 		print_export(data->env_ms);
 	else if (ft_strcmp(argv[0], "export") == 0 && argv[1] && argv[1][0] != '$')
 	{
-		add_var(key, argv, data);
+		add_var(key, value, argv, data);
 		lst_to_tab(data->env_ms, data);
 	}
 }
