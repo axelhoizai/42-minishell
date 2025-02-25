@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 14:04:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 01:12:40 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/25 02:11:25 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void			ft_swap(char *a, char *b);
 char			*ft_trim_whitespace(const char *str);
 char			*ft_trim_start_whitespace(const char *str);
 char			*ft_trim_end_whitespace(const char *str);
+char			**ft_subarray(char **argv, int start, int end);
+int				ft_tablen(char **tab);
 
 //ft_to
 int				ft_atoi(const char *nptr);

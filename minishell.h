@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 00:10:18 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/25 02:14:12 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_data
 	char		*oldpwd;
 	char		*pwd;
 	t_data_term	*term;
+	char		**lexingv;
 }	t_data;
 
 typedef struct s_command

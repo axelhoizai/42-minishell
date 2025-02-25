@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 20:43:54 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 03:10:31 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,16 @@ static void	handle_exec(char **argv, t_data *data, t_pipeline *pip, int *fd_std)
 		here_doc_init(pip);
 	if (pip->pipe_cnt > 0)
 		pip->pid = init_pid(pip);
-	if (is_pipe(argv) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
-	{
-		data->exit_code = pipex(pip, data);
-		free_pipeline(pip);
-	}
-	// if (pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
+	// if (is_pipe(argv) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
 	// {
 	// 	data->exit_code = pipex(pip, data);
 	// 	free_pipeline(pip);
 	// }
+	if (pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
+	{
+		data->exit_code = pipex(pip, data);
+		free_pipeline(pip);
+	}
 	else if (is_builtin(pip->cmds[0]))
 		fds_dup(fd_std, pip, data);
 	else if (argv)
@@ -94,29 +94,54 @@ void	execute_command(char **argv, t_data *data)
 	// 	return ;
 	// }
 	pip = parse_pipeline(argv, data);
-	// print_pipeline(pip);
+	print_pipeline(pip);
 	init_pipe_start(pip);
 	handle_exec(argv, data, pip, &fd_std);
 }
 
 void	send_to_exec(char **argv, t_data *data)
 {
+	(void)argv;
 	int		i;
-	bool	or_and;
+	int		exit_code;
+	bool	exec_next;
+	char	**sub_cmd;
 
-	or_and = false;
 	i = 0;
-	while (argv[i])
+	exit_code = 0;
+	exec_next = true;
+	sub_cmd = NULL;
+
+	while (data->lexingv && data->lexingv[i])
 	{
-		if (ft_strcmp(argv[i], "||") == 0 || ft_strcmp(argv[i], "&&") == 0)
+		int start = i;
+		while (data->lexingv[i] && ft_strcmp(data->lexingv[i], "&&") != 0 && ft_strcmp(data->lexingv[i], "||") != 0)
+			i++;
+
+		sub_cmd = ft_subarray(data->lexingv, start, i);
+		if (!sub_cmd)
+			return;
+
+		if (exec_next)
 		{
-			or_and = true;
-			break ;
+			execute_command(sub_cmd, data);
+			exit_code = data->exit_code;
 		}
-		i++;
+
+		// Libérer `sub_cmd` après exécution
+		// free_tab(sub_cmd);
+
+		// Vérifier les opérateurs logiques && et ||
+		if (data->lexingv[i])
+		{
+			if (ft_strcmp(data->lexingv[i], "&&") == 0)
+				exec_next = (exit_code == 0);
+			else if (ft_strcmp(data->lexingv[i], "||") == 0)
+				exec_next = (exit_code != 0);
+			i++;  // Passer au token suivant
+		}
+		else
+			free_tab(sub_cmd);
+		
 	}
-	if (argv && argv[0] && or_and == false)
-		execute_command(argv, data);
-	else
-		free_tab(argv);
 }

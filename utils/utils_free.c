@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:19:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 19:04:02 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/25 02:25:22 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,5 @@ void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
 	free_pipeline(pip);
 	free(data->pwd);
 	free(data->oldpwd);
+	free_tab(data->lexingv);
 }

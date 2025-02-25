@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/21 15:56:42 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 03:14:00 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,21 @@ void	free_data(t_data *data)
 {
 	free(data->oldpwd);
 	free(data->pwd);
+	free_tab(data->lexingv);
+	data->lexingv = NULL;
+	print_tab(data->lexingv);
 }
 
 void	handle_exit(t_command *cmd, t_pipeline *pip, t_data *data)
 {
 	int		exit_code;
-
+	
 	exit_code = data->exit_code;
 	if (validate_exit_args(cmd, &exit_code, data) == 1)
 	{
 		printf("exit\n");
 		if (pip && cmd != pip->cmds[pip->pipe_cnt] && pip->pipe_cnt > 0)
-			exit_code = 0;
+		exit_code = 0;
 		if (data->my_envp)
 		{
 			free_tab(data->my_envp);
@@ -88,6 +91,7 @@ void	handle_exit(t_command *cmd, t_pipeline *pip, t_data *data)
 		data->is_reading = false;
 		rl_clear_history();
 		free_term(data);
+
 		free_data(data);
 		exit(exit_code);
 	}

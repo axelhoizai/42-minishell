@@ -6,7 +6,7 @@
 /*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 19:05:05 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/25 02:15:25 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	ft_init(char **envp, int *is_start, t_data *data)
 		data->term = (t_data_term *)ft_calloc(sizeof(t_data_term), 1);
 		data->oldpwd = ft_strdup(path_tmp);
 		data->pwd = ft_strdup(path_tmp);
+		data->lexingv = NULL;
 		free_var(path_tmp);
 		if (!data->term)
 			return ;

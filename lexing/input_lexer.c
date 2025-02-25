@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 20:50:50 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 03:09:45 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ char	**lexer_args(char *input, t_data *data)
 {
 	char	**lexingv;
 	int		count;
-	int		open_parens;
+	// int		open_parens;
 
-	open_parens = 0;
+	// open_parens = 0;
 	if (!input || check_unclosed_quotes(input))
 		return (ft_print_error(NULL, NULL, "Error: unclosed quotes"), NULL);
 	lexingv = ft_calloc(256, sizeof(char *));
@@ -78,7 +78,7 @@ char	**lexer_args(char *input, t_data *data)
 //? Get the input and lexing
 void	input_lexer(char *input, t_data *data)
 {
-	char	**lexingv;
+	// char	**lexingv;
 	int		lexingc;
 
 	if (!input || ft_strlen(input) == 0)
@@ -88,27 +88,27 @@ void	input_lexer(char *input, t_data *data)
 	check_and_expand_wildcard(&input);
 	// printf("input check_and_expand_wildcard = %s\n", input);
 	format_operators_and_redirections(&input);
-	// printf("input format_operators_and_redirections = %s\n", input);
+	printf("input format_operators_and_redirections = %s\n", input);
 	if (check_syntax_errors(input))
 	{
 		data->exit_code = 2;
 		free(input);
 		return ;
 	}
-	lexingv = NULL;
+	// lexingv = NULL;
 	lexingc = 0;
-	lexingv = lexer_args(input, data);
+	data->lexingv = lexer_args(input, data);
 	free(input);
-	if (lexingv && !lexingv[0])
+	if (data->lexingv && !data->lexingv[0])
 	{
-		free(lexingv);
+		free(data->lexingv);
 		data->exit_code = 0;
 		return ;
 	}
-	while (lexingv && lexingv[lexingc])
+	while (data->lexingv && data->lexingv[lexingc])
 		lexingc++;
-	// print_tab_lexing(lexingv);
+	print_tab_lexing(data->lexingv);
 	if (lexingc > 0)
-		return (send_to_exec(lexingv, data));
-	free_tab(lexingv);
+		return (send_to_exec(data->lexingv, data));
+	free_tab(data->lexingv);
 }

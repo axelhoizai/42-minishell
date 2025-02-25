@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 15:39:51 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/25 02:53:45 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*execute_checker(char **cmd, t_pipeline *pip, t_data *data)
 	cmd_path = get_path(cmd[0], data->my_envp);
 	if (!cmd_path)
 	{
-		ft_print_error(NULL, cmd[0], "command not found");
+		ft_print_error(NULL, cmd[0], "command not foun1d");
 		free_execute(pip, data, cmd_path);
 		exit(127);
 	}

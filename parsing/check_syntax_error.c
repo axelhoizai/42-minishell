@@ -3,16 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 00:02:05 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 15:14:51 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/24 23:32:25 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /* Verifie si `input[i]` est un cas d'erreur */
+// static int	is_syntax_error(char *input, int i, int expect_word, int prev_op)
+// {
+// 	if (is_operator(input[i]) && expect_word)
+// 		return (1);
+// 	if ((input[i] == '>' || input[i] == '<') && input[i + 1] == '\0')
+// 		return (1);
+// 	if (input[i] == '|' && (i == 0 || prev_op))
+// 		return (1);
+// 	if (input[i] == '|' && is_operator(input[i + 1]))
+// 		return (1);
+
+// 	return (0);
+// }
+
 static int	is_syntax_error(char *input, int i, int expect_word, int prev_op)
 {
 	if (is_operator(input[i]) && expect_word)
@@ -21,9 +35,8 @@ static int	is_syntax_error(char *input, int i, int expect_word, int prev_op)
 		return (1);
 	if (input[i] == '|' && (i == 0 || prev_op))
 		return (1);
-	if (input[i] == '|' && is_operator(input[i + 1]))
+	if (is_double_operator(input, i) && input[i] == '|' && (i == 0 || expect_word))
 		return (1);
-
 	return (0);
 }
 
