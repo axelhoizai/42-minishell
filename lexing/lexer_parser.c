@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 18:49:28 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 14:42:47 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	check_closing_quote(char *line, int *i, t_parse *parse)
 				|| (line[*i] == '"' && parse->in_single == 1))
 			|| (line[*i] != '"' && line[*i] != '\'')))
 		append_char(parse, line[*i]);
+	update_quote_state(line, &(parse->in_single), &(parse->in_double), *i);
 }
 
 static bool	chck_quote_state(char *line, int *i, t_parse *parse)
@@ -67,7 +68,7 @@ char	*parse_lexer(char *line, int *i, t_data *data)
 		&& (line[*i + 1] == '\'' || line[*i + 1] == '"'))
 		(*i)++;
 	init_parse(&parse, 256);
-	while (line[*i] && (parse.in_single || parse.in_double
+	while (line && line[*i] && (parse.in_single || parse.in_double
 			|| !ft_isspace(line[*i])))
 	{
 		(void)data;
