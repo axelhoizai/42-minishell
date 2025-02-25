@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:00:46 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/25 12:47:57 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 19:06:50 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static void	chck_perm_in(t_command *cmd, char *file)
 {
-	if (access(file, R_OK | F_OK) != 0 && access(file, F_OK) == 0 
+	if (access(file, R_OK | F_OK) != 0 && access(file, F_OK) == 0
 		&& cmd->in_error == 0 && cmd->out_error == 0)
-		{
-			ft_print_error(NULL, file, "Permission denied");
-			cmd->in_error = 1;
-		}
+	{
+		ft_print_error(NULL, file, "Permission denied");
+		cmd->in_error = 1;
+	}
 }
 
 int	open_file(t_command *cmd, char *file, int mode)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/22 15:03:53 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/25 19:04:46 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void	print_pipeline(t_pipeline *pipeline)
 	int			j;
 	t_command	*cmd;
 
-	// (void)pipeline;
 	if (!pipeline)
 		return ;
 	i = 0;

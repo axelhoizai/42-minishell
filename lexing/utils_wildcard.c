@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_wildcard.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:54:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 17:35:47 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/25 19:03:49 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	append_space(char **new_input, char *input, int *i)
 	(*i)++;
 }
 
-char *extract_word(char *input, int *i, int *in_single, int *in_double)
+char	*extract_word(char *input, int *i, int *in_single, int *in_double)
 {
 	int		j;
 	char	*word;
@@ -41,8 +41,6 @@ char *extract_word(char *input, int *i, int *in_single, int *in_double)
 	return (word);
 }
 
-
-// static void	append_expanded_word(char **new_input, char **word, int in_single, int in_double)
 void	ap_exp_word(char **new_str, char **word, int in_single, int in_double)
 {
 	char	*temp;
@@ -60,22 +58,25 @@ void	ap_exp_word(char **new_str, char **word, int in_single, int in_double)
 
 void	check_and_expand_wildcard(char **input)
 {
-	int		in_single = 0;
-	int		in_double = 0;
-	int		i = 0;
+	int		in_single;
+	int		in_double;
+	int		i;
 	char	*new_input;
 	char	*word;
 
+	in_single = 0;
+	in_double = 0;
+	i = 0;
 	new_input = ft_strdup("");
 	if (!new_input)
-		return;
+		return ;
 	while ((*input)[i])
 	{
 		while ((*input)[i] && ft_isspace((*input)[i]))
 			append_space(&new_input, *input, &i);
 		word = extract_word(*input, &i, &in_single, &in_double);
 		if (!word)
-			return;
+			return ;
 		ap_exp_word(&new_input, &word, in_single, in_double);
 	}
 	free(*input);

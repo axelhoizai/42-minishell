@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:19:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 19:04:02 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/25 18:54:37 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	free_term(t_data *data)
 
 void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
 {
-	(void)cmd_path;
+	free(cmd_path);
 	ms_lstclear(&data->env_ms);
 	free_tab(data->my_envp);
 	free_term(data);

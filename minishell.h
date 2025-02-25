@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 00:10:18 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/25 19:01:55 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,10 @@ typedef struct s_parse
 
 typedef struct s_argv
 {
-	char	**tokens;      // Tableau des arguments finaux
-	int		token_count;   // Nombre d'arguments stockés
+	char	**tokens; // Tableau des arguments finaux
+	int		token_count; // Nombre d'arguments stockés
 	int		token_capacity; // Capacité max avant réallocation
 }	t_argv;
-
 
 typedef struct s_env_ms
 {
@@ -177,9 +176,7 @@ void		ft_print_error(char *builting, char *arg, char *msg);
 // quote_parser
 char		**utils_parse_args(const char *str);
 
-
 // token_parser
-
 
 // send_to_exec
 void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
