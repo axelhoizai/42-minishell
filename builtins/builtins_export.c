@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/25 14:02:56 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 18:19:13 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static bool	chck_identifier(char *id, t_data *data)
 		|| ft_strchr(index, '*') || ft_strchr(index, '#')
 		|| ft_strchr(index, '@') || ft_strchr(index, '+')
 		|| ft_strchr(index, '!') || ft_strchr(index, '%')
-		|| !ft_strcmp(index, "=") || index[0] == '='
-		|| ft_strchr(index, '?' ))
+		|| ft_strchr(index, '?') || ft_strchr(index, '~')
+		|| !ft_strcmp(index, "=") || index[0] == '=')
 	{
 		ft_print_error("export", id, "not a valid identifier");
 		data->exit_code = 1;
