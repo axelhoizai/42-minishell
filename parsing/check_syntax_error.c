@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 00:02:05 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/25 15:01:34 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:32:21 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ static int	is_syntax_error(char *input, int i, int expect_word, int prev_op)
 		while (ft_isspace(input[i + 1]))
 			i++;
 		if (input[i + 1] == '|')
+			return (1);
+	}
+	if (input[i] == '>')
+	{
+		if (input[i] == '>' && input[i + 1] == '>')
+			i++;
+		while (ft_isspace(input[i + 1]))
+			i++;
+		if (input[i + 1] == '>')
 			return (1);
 	}
 	return (0);

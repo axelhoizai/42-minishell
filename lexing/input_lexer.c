@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/25 13:53:43 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/25 16:52:05 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	input_lexer(char *input, t_data *data)
 	}
 	while (lexingv && lexingv[lexingc])
 		lexingc++;
-	print_tab_lexing(lexingv);
+	// print_tab_lexing(lexingv);
 	if (lexingc > 0)
 		return (send_to_exec(lexingv, data));
 	free_tab(lexingv);

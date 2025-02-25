@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/20 22:43:07 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:24:00 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		{
 			handle_builtins(cmd, pip, data);
 			free_execute(pip, data, NULL);
-			exit(0);
+			exit(data->exit_code);
 		}
 		execute(cmd->args, pip, data);
 	}
