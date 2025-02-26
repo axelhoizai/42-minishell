@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:56:03 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 17:38:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:00:02 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ static char	*get_cmd(char *cmd)
 		cmd_parsed = ft_strjoin("/", tmp[0]);
 		free_tab(tmp);
 	}
-	else
+	else if (ft_strlen(cmd) == 1 &&  cmd[0] == '.')
+		return (NULL);
+	else 
 		cmd_parsed = ft_strjoin("/", cmd);
 	return (cmd_parsed);
 }

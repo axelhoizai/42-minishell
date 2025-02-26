@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 13:19:34 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:02:44 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	execute_command(char **argv, t_data *data)
 	if (!argv || !argv[0])
 		return ;
 	pip = parse_pipeline(argv, data);
-	print_pipeline(pip);
+	// print_pipeline(pip);
 	init_pipe_start(pip);
 	handle_exec(argv, data, pip, &fd_std);
 }
