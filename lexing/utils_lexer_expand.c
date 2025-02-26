@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_lexer_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/23 19:25:41 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/26 12:21:07 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,14 @@ static char	*handle_pwd_var(const char *line, int *i, t_data *data)
 	tmp_line = ft_strdup(line);
 	var = NULL;
 	if (line[*i + 1] == 'O' && line[*i + 2] == 'L' && line[*i + 3] == 'D'
-		&& line[*i + 4] == 'P' && line[*i + 5] == 'W' && line[*i + 6] == 'D')
+		&& line[*i + 4] == 'P' && line[*i + 5] == 'W' && line[*i + 6] == 'D'
+		&& (ft_isspace(line[*i + 7] || !line[*i + 7])))
 	{
 		var = ft_strdup(data->oldpwd);
 		(*i) += 7;
 	}
-	else if (line[*i + 1] == 'P' && line[*i + 2] == 'W' && line[*i + 3] == 'D')
+	else if (line[*i + 1] == 'P' && line[*i + 2] == 'W' && line[*i + 3] == 'D'
+		&& (ft_isspace(line[*i + 4] || !line[*i + 4])))
 	{
 		var = ft_strdup(data->pwd);
 		(*i) += 4;
@@ -97,12 +99,12 @@ void	handle_variable(char *line, int *i, t_parse *parse, t_data *data)
 		var = handle_special_var(line, i, data);
 	else if (line[*i + 1] == 'P' || line[*i + 1] == 'O')
 		var = handle_pwd_var(line, i, data);
-	else if (ft_isdigit(line[*i + 1]))
+	if (!var && ft_isdigit(line[*i + 1]))
 	{
 		(*i) += 2;
 		return ;
 	}
-	else if ((ft_isalnum(line[*i + 1]) || line[*i] == '_'))
+	else if (!var && (ft_isalnum(line[*i + 1]) || line[*i] == '_'))
 	{
 		var = parse_var(line, i, data);
 		(*i)++;

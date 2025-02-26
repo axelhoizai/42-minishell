@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 20:43:54 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 11:02:18 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ static void	fds_dup(int *fd_std, t_pipeline *pip, t_data *data)
 
 static void	handle_exec(char **argv, t_data *data, t_pipeline *pip, int *fd_std)
 {
-	if (is_hd(pip))
-		here_doc_init(pip);
 	if (pip->pipe_cnt > 0)
 		pip->pid = init_pid(pip);
+	if (is_hd(pip))
+		here_doc_init(pip);
 	if (is_pipe(argv) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
 	{
 		data->exit_code = pipex(pip, data);
@@ -94,7 +94,7 @@ void	execute_command(char **argv, t_data *data)
 	// 	return ;
 	// }
 	pip = parse_pipeline(argv, data);
-	// print_pipeline(pip);
+	print_pipeline(pip);
 	init_pipe_start(pip);
 	handle_exec(argv, data, pip, &fd_std);
 }

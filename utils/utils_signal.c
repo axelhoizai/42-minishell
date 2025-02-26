@@ -6,7 +6,7 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:19:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/17 17:13:32 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 10:07:40 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	handle_sigquit(int sig)
 	(void)sig;
 	if (data->is_reading)
 		return ;
-	printf("\nQuit (core dumped)\n");
+	printf("Quit (core dumped)\n");
 	data->exit_code = 131;
 	data->is_reading = true;
 	kill(get_process_id(), SIGQUIT);

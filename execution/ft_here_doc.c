@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 10:50:45 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/21 17:59:28 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 11:08:51 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void	here_doc_init(t_pipeline *pip)
 	lim_cnt = limiter_count(pip);
 	if (pip->cmds[pip->start] && pip->cmds[pip->start]->heredoc == 1)
 	{
-		// if (pip->cmds[pip->start]->fd_in > -1)
-		close_fds(pip);
+		if (pip->cmds[pip->start]->fd_in > -1)
+			close_fds(pip);
 		pip->cmds[pip->start]->fd_in = open("here_doc", O_RDWR | O_CREAT, 0644);
 	}
 	if (pip->cmds[pip->start])
