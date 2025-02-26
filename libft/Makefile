@@ -17,7 +17,8 @@ SRCS_STR = ft_strchr.c ft_strdup.c ft_striteri.c ft_strjoin.c \
 		   ft_str_toupper.c ft_strdup_tab.c ft_str_startwith.c \
 		   ft_str_endwith.c ft_str_countchar.c ft_dup_tab_index.c \
 		   ft_strjoin_tab.c ft_swap.c ft_trim_start_whitespace.c  \
-		   ft_trim_end_whitespace.c ft_trim_whitespace.c 
+		   ft_trim_end_whitespace.c ft_trim_whitespace.c \
+		   ft_subarray.c ft_tablen.c
 
 SRCS_TO_DIR = ft_to/
 SRCS_TO = ft_atol.c ft_atoi.c ft_itoa.c ft_tolower.c ft_toupper.c \
