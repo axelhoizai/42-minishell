@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax_error_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 00:02:05 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 16:57:23 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 18:40:43 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	is_syntax_error(char *input, int i, int expect_word, int prev_op)
 	{
 		while (ft_isspace(input[i + 1]))
 			i++;
-		if (input[i + 1] == '|' || is_operator(input[i + 1]))
+		if (input[i + 1] == '|')
 			return (1);
 	}
 	if (is_double_check(input, i) == 1)
