@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/25 18:19:13 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:24:05 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static bool	chck_identifier(char *id, t_data *data)
 		return (false);
 	}
 	free(index);
+	data->exit_code = 0;
 	return (true);
 }
 
@@ -89,7 +90,10 @@ void	ft_export(char **argv, t_data *data)
 	key = NULL;
 	value = NULL;
 	if (ft_strcmp(argv[0], "export") == 0 && !argv[1])
+	{
 		print_export(data->env_ms);
+		data->exit_code = 0;
+	}
 	else if (ft_strcmp(argv[0], "export") == 0 && argv[1] && argv[1][0] != '$')
 	{
 		add_var(key, value, argv, data);

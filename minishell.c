@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 19:05:05 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:17:36 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ static void	ft_init(char **envp, int *is_start, t_data *data)
 	}
 }
 
-static char	main_loop(t_data *data)
+static int	main_loop(t_data *data)
 {
 	char	*input;
 	char	*prompt;
-	char	exit_code;
+	int		exit_code;
 
 	setup_signal_handlers();
 	while (1)
@@ -64,7 +64,7 @@ static char	main_loop(t_data *data)
 int	main(int ac, char **av, char **envp)
 {
 	int		is_start;
-	char	exit_code;
+	int		exit_code;
 	t_data	data;
 
 	is_start = 0;
