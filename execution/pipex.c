@@ -6,11 +6,19 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/26 13:22:44 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 16:41:03 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	executing(t_command *cmd, t_pipeline *pip, t_data *data)
+{
+	if (cmd->args)
+		execute(cmd->args, pip, data);
+	free_execute(pip, data, NULL);
+	exit(data->exit_code);
+}
 
 void	close_fds(t_pipeline *pip)
 {
@@ -46,13 +54,13 @@ static void	last_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 		if (cmd->fd_out > -1)
 			dup2(cmd->fd_out, STDOUT_FILENO);
 		close_fds(pip);
-		if (cmd->args[0] && is_builtin(cmd))
+		if (cmd->args && is_builtin(cmd))
 		{
 			handle_builtins(cmd, pip, data);
 			free_execute(pip, data, NULL);
 			exit(data->exit_code);
 		}
-		execute(cmd->args, pip, data);
+		executing(cmd, pip, data);
 	}
 }
 

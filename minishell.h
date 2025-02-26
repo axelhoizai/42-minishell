@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 13:31:34 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:55:28 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void		format_operators_and_redirections(char **input);
 
 //check_syntax_error
 int			check_syntax_errors(char *input);
+int			is_syntax_error(char *input, int i, int expect_word, int prev_op);
 
 // token_parser_utils
 int			is_double_operator(const char *input, int i);
@@ -230,7 +231,7 @@ void		files_checker(char	*file, t_data *data);
 //pipex
 void		close_fds(t_pipeline *pip);
 int			pipex(t_pipeline *pip, t_data *data);
-
+void		executing(t_command *cmd, t_pipeline *pip, t_data *data);
 void		first_pipe(t_command *cmd, t_pipeline *pip,
 				int *p_fd, t_data *data);
 

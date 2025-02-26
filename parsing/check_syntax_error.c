@@ -6,40 +6,11 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 00:02:05 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 13:25:10 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:28:50 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static int	is_syntax_error(char *input, int i, int expect_word, int prev_op)
-{
-	if (is_operator(input[i]) && expect_word)
-		return (1);
-	if ((input[i] == '>' || input[i] == '<') && input[i + 1] == '\0')
-		return (1);
-	if (input[i] == '|' && (i == 0 || prev_op))
-		return (1);
-	if (input[i] == '|' && is_operator(input[i + 1]))
-		return (1);
-	if (input[i] == '|')
-	{
-		while (ft_isspace(input[i + 1]))
-			i++;
-		if (input[i + 1] == '|')
-			return (1);
-	}
-	if (input[i] == '>')
-	{
-		if (input[i] == '>' && input[i + 1] == '>')
-			i++;
-		while (ft_isspace(input[i + 1]))
-			i++;
-		if (input[i + 1] == '>')
-			return (1);
-	}
-	return (0);
-}
 
 static void	get_error_token(char *input, int i, char **error_token)
 {

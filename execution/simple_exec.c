@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 13:22:59 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:27:30 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,20 @@ static char	*execute_checker(char **cmd, t_pipeline *pip, t_data *data)
 {
 	char	*cmd_path;
 
-	if (!cmd || !cmd[0])
-	{
-		ft_print_error(NULL, NULL, "Invalid command");
-		exit(127);
-	}
 	cmd_path = get_path(cmd[0], data->my_envp);
 	if (!cmd_path)
 	{
+		if (!ft_strncmp(cmd[0], "./", 2))
+		{
+			files_checker(cmd[0], data);
+			free_execute(pip, data, cmd_path);
+			exit(data->exit_code);
+		}
 		ft_print_error(NULL, cmd[0], "command not found");
 		free_execute(pip, data, cmd_path);
 		exit(127);
 	}
-	if (ft_strstr(cmd[0], "./"))
+	if (!ft_strncmp(cmd[0], "./", 2))
 	{
 		free(cmd_path);
 		cmd_path = cmd[0];
@@ -72,7 +73,14 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	cmd_path_dir = NULL;
 	cmd_path_dir = cmd_path(cmd, pip, data, cmd_path_dir);
 	if (!cmd_path_dir)
+	{
+		if (!cmd || !cmd[0])
+		{
+			ft_print_error(NULL, NULL, "Invalid command");
+			exit(127);
+		}
 		cmd_path_dir = execute_checker(cmd, pip, data);
+	}
 	if (cmd_path_dir)
 	{
 		execve(cmd_path_dir, cmd, data->my_envp);

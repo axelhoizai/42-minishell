@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:56:03 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 14:00:02 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:27:48 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ static char	*get_cmd(char *cmd)
 		cmd_parsed = ft_strjoin("/", tmp[0]);
 		free_tab(tmp);
 	}
-	else if (ft_strlen(cmd) == 1 &&  cmd[0] == '.')
+	else if (ft_strlen(cmd) == 1 && cmd[0] == '.')
 		return (NULL);
-	else 
+	else
 		cmd_parsed = ft_strjoin("/", cmd);
 	return (cmd_parsed);
 }

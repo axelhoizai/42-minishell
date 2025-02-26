@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_first.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:03:47 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/20 22:43:21 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/26 16:41:13 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ static void	fst_child(t_command *cmd, t_pipeline *pip, int *p_fd, t_data *data)
 			dup2(p_fd[1], STDOUT_FILENO);
 		close(p_fd[1]);
 		close_fds(pip);
-		if (cmd->args[0] && is_builtin(cmd))
+		if (cmd->args && is_builtin(cmd))
 		{
 			handle_builtins(cmd, pip, data);
 			free_execute(pip, data, NULL);
 			exit(0);
 		}
-		execute(cmd->args, pip, data);
+		executing(cmd, pip, data);
 	}
 }
 

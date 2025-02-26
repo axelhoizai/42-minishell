@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/22 15:16:42 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:16:47 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	change_dir(int argc, char **argv, t_pipeline *pip, t_data *data)
 		tmp = ft_strdup(dir);
 	cwd = getcwd(NULL, 0);
 	tmpdir = ft_strjoin(cwd, tmp);
-	if (data->exit_code != 1 && handle_cd_error(argc, dir, data) == 1)
+	if (handle_cd_error(argc, dir, data) == 1)
 	{
 		if (access(dir, F_OK) == 0)
 			ft_chdir(dir);

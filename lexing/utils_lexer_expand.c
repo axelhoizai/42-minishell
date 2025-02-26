@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils_lexer_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:07:40 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/26 12:21:07 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 15:59:44 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int	char_check(int c)
+{
+	if ((c >= '0' && c <= '9')
+		|| (c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z')
+		|| c == '*')
+		return (1);
+	return (0);
+}
 
 //? Check if VAR is ok
 static char	*parse_var(const char *token, int *index, t_data *data)
@@ -24,7 +34,7 @@ static char	*parse_var(const char *token, int *index, t_data *data)
 	j = 0;
 	to_find = NULL;
 	value = NULL;
-	while (ft_isalnum(token[*index]) || token[*index] == '_')
+	while (char_check(token[*index]) || token[*index] == '_')
 		var_name[j++] = token[(*index)++];
 	var_name[j] = '\0';
 	if (is_key(data->env_ms, var_name))

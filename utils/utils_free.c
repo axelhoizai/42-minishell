@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:19:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 13:26:09 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 15:31:10 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	free_term(t_data *data)
 
 void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
 {
-	free(cmd_path);
+	free_var(cmd_path);
 	ms_lstclear(&data->env_ms);
 	free_tab(data->my_envp);
 	free_term(data);

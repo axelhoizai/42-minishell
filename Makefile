@@ -9,8 +9,7 @@ LEXING = 	lexing/input_lexer.c lexing/lexer_parser.c lexing/lexer_expand.c \
 PARSING = 	parsing/pip_free.c parsing/pip_init.c \
 			parsing/pip_parser.c parsing/pip_redir.c parsing/token_parser_utils.c \
 			parsing/format_op_and_redir.c parsing/check_and_expand_op.c \
-			parsing/check_syntax_error.c
-			# parsing/token_parser.c parsing/utils_token.c parsing/argv_parser.c
+			parsing/check_syntax_error.c parsing/check_syntax_error_utils.c \
 
 BUILTINS = 	builtins/builtins_cd.c builtins/builtins_pwd.c builtins/builtins_exit.c \
 			builtins/builtins_echo.c builtins/builtins_export.c builtins/builtins_unset.c \
