@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 00:02:05 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/25 19:06:02 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:25:10 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/* Verifie si `input[i]` est un cas d'erreur */
 static int	is_syntax_error(char *input, int i, int expect_word, int prev_op)
 {
 	if (is_operator(input[i]) && expect_word)
@@ -42,30 +41,41 @@ static int	is_syntax_error(char *input, int i, int expect_word, int prev_op)
 	return (0);
 }
 
-/* Recupere le token d'erreur a afficher */
-static char	*get_error_token(char *input, int i)
+static void	get_error_token(char *input, int i, char **error_token)
 {
 	if (!input[i])
-		return (ft_strdup("newline"));
+	{
+		*error_token = ft_strdup("newline");
+		return ;
+	}
 	if (is_double_operator(input, i))
-		return (ft_substr(input, i, 2));
-	return (ft_substr(input, i, 1));
+	{
+		*error_token = ft_substr(input, i, 2);
+		return ;
+	}
+	*error_token = ft_substr(input, i, 1);
+	return ;
 }
 
-/* Verifie les erreurs de syntaxe dans `input` */
-static char	*find_syntax_error(char *input)
+static void	check_double(int *i, char *input)
+{
+	if (is_double_operator(input, *i))
+		(*i) += 2;
+	else
+		(*i)++;
+}
+
+static void	find_syntax_error(char *input, char **error_token)
 {
 	int		i;
 	int		expecting_word;
 	int		prev_operator;
-	char	*error_token;
 	int		in_single;
 	int		in_double;
 
 	i = 0;
 	expecting_word = 0;
 	prev_operator = 0;
-	error_token = NULL;
 	in_single = 0;
 	in_double = 0;
 	while (input[i])
@@ -74,18 +84,14 @@ static char	*find_syntax_error(char *input)
 		if (!in_single && !in_double)
 		{
 			if (is_syntax_error(input, i, expecting_word, prev_operator))
-				return (get_error_token(input, i));
+				return (get_error_token(input, i, error_token));
 			prev_operator = is_operator(input[i]);
 			expecting_word = is_operator(input[i]);
 		}
-		if (is_double_operator(input, i))
-			i += 2;
-		else
-			i++;
+		check_double(&i, input);
 	}
 	if (!error_token && expecting_word)
-		error_token = ft_strdup("newline");
-	return (error_token);
+		*error_token = ft_strdup("newline");
 }
 
 int	check_syntax_errors(char *input)
@@ -94,10 +100,11 @@ int	check_syntax_errors(char *input)
 	char	*tmp_input;
 	int		ret;
 
+	error_token = NULL;
 	tmp_input = ft_trim_whitespace(input);
 	if (!tmp_input)
 		return (0);
-	error_token = find_syntax_error(tmp_input);
+	find_syntax_error(tmp_input, &error_token);
 	if (!error_token)
 	{
 		free(tmp_input);
@@ -114,25 +121,3 @@ int	check_syntax_errors(char *input)
 	free(tmp_input);
 	return (ret);
 }
-
-// | echo hello
-// 										| echo hello
-//            | echo hello
-// echo hello            |
-
-// echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $  << |' | cat -e
-// bash-5.1$ echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $  << |' | cat -e
-// > >> < * ? [ ] | ; [ ] || && ( ) & # $  << |$
-// minishell: syntax error near unexpected token '|
-
-// echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  << |" | cat -e
-// bash-5.1$ echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  << |" | cat -e
-// > >> < * ? [ ] | ; [ ] || && ( ) & # $  << |$
-
-// echo "> >> < * ? [ ] | ; [ ] && ( ) & # $  <<" | cat -e
-// bash-5.1$ echo "> >> < * ? [ ] | ; [ ] && ( ) & # $  <<" | cat -e
-// > >> < * ? [ ] | ; [ ] && ( ) & # $  <<$
-
-// echo > >> < * ? [ ] | ; [ ] || && ( ) & # $  << | | cat -e
-// bash-5.1$ echo > >> < * ? [ ] | ; [ ] || && ( ) & # $  << | | cat -e
-// bash: syntax error near unexpected token `>>'

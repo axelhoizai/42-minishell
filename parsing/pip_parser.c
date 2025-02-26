@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 21:40:08 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/25 19:04:46 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:15:11 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,29 @@ void	init_pipe_start(t_pipeline *pip)
 		}
 		i--;
 	}
+}
+
+char	*rm_quotes(const char *str)
+{
+	int		len;
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	i = 0;
+	if (ft_strchr(str, '\t') && str)
+	{
+		tmp = ft_calloc(ft_strlen(str), 1);
+		len = 0;
+		while (str[i])
+		{
+			if (str[i] != 9)
+				tmp[len++] = str[i];
+			i++;
+		}
+		return (tmp);
+	}
+	return (ft_strdup(str));
 }
 
 void	print_pipeline(t_pipeline *pipeline)

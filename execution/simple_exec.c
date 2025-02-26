@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 10:20:00 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:22:59 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,16 @@ static char	*cmd_path(char **cmd, t_pipeline *pip, t_data *data, char *cmd_path)
 			if (!cmd_path)
 				cmd_path = cmd[0];
 		}
-		else if (ft_strstartwith(cmd[0], "../") || ft_strcountchar(cmd[0], '.') > 2)
+		else if (ft_strstartwith(cmd[0], "../")
+			|| ft_strcountchar(cmd[0], '.') > 2)
 		{
 			files_checker(cmd[0], data);
 			free_execute(pip, data, cmd_path);
 			exit (data->exit_code);
 		}
-		else if ((ft_strstartwith(cmd[0], "./") && !ft_strendwith(cmd[0], ".sh"))
-				|| cmd[0][0] == '/')
+		else if ((ft_strstartwith(cmd[0], "./")
+				&& !ft_strendwith(cmd[0], ".sh"))
+			|| cmd[0][0] == '/')
 		{
 			files_checker(cmd[0], data);
 			free_execute(pip, data, cmd_path);
@@ -83,11 +85,6 @@ void	execute(char **cmd, t_pipeline *pip, t_data *data)
 	free_execute(pip, data, cmd_path_dir);
 	exit(data->exit_code);
 }
-// $PWD 
-// mini exit code = 127
-// bash exit code = 126
-// mini error = ( Execution error)
-// bash error = ( est un dossier)
 
 static void	exec_child(t_pipeline *pip, t_data *data, pid_t	pid)
 {

@@ -3,24 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expand.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:50:38 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/23 23:56:26 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:24:05 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// to use \ escape char, add :
-// if (line[i] == '\\' && (line[i + 1] == '\'' || line[i + 1] == '"'))
-// {
-// 	i += 2;
-// 	continue ;
-// }
-// after
-// while (line[i])
-// {
 int	check_unclosed_quotes(const char *line)
 {
 	int	single_quote;

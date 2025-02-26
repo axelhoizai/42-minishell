@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_and_expand_operators.c                       :+:      :+:    :+:   */
+/*   check_and_expand_op.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 22:55:15 by kalicem           #+#    #+#             */
-/*   Updated: 2025/02/23 22:56:04 by kalicem          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:24:52 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static void	append_expanded_word(char **new_input, char **word)
 	free(*word);
 }
 
-/* Separe les operateurs colles aux mots */
 void	check_and_expand_operators(char **input)
 {
 	int		i;

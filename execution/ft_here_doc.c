@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 10:50:45 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 11:08:51 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:19:25 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static char	**hd_limiters(t_pipeline *pip)
 		i++;
 	}
 	lim_tab[k] = NULL;
-	// print_tab(lim_tab);
 	return (lim_tab);
 }
 

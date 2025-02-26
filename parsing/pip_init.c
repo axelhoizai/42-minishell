@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:06:04 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 20:56:30 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:15:06 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,6 @@ int	*init_pid(t_pipeline *pip)
 	if (!pid)
 		return (NULL);
 	return (pid);
-}
-
-char	*rm_quotes(const char *str)
-{
-	int		len;
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	i = 0;
-	if (ft_strchr(str, '\t') && str)
-	{
-		tmp = ft_calloc(ft_strlen(str), 1);
-		len = 0;
-		while (str[i])
-		{
-			if (str[i] != 9)
-				tmp[len++] = str[i];
-			i++;
-		}
-		return (tmp);
-	}
-	return (ft_strdup(str));
 }
 
 char	**add_to_tab(char **tab, const char *arg)

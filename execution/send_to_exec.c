@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 11:02:18 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:19:34 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,10 @@ static void	handle_exec(char **argv, t_data *data, t_pipeline *pip, int *fd_std)
 		data->exit_code = pipex(pip, data);
 		free_pipeline(pip);
 	}
-	// if (pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
-	// {
-	// 	data->exit_code = pipex(pip, data);
-	// 	free_pipeline(pip);
-	// }
 	else if (is_builtin(pip->cmds[0]))
 		fds_dup(fd_std, pip, data);
 	else if (argv)
 	{
-		// free_tab(argv);
 		simple_exec(pip, data);
 		if (pip)
 			free_pipeline(pip);
@@ -88,11 +82,6 @@ void	execute_command(char **argv, t_data *data)
 	fd_std = -1;
 	if (!argv || !argv[0])
 		return ;
-	// if (!check_redir_pipe(argv))
-	// {
-	// 	free_tab(argv);
-	// 	return ;
-	// }
 	pip = parse_pipeline(argv, data);
 	print_pipeline(pip);
 	init_pipe_start(pip);

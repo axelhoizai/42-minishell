@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/25 19:01:55 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:31:34 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,8 @@
 # include <termios.h>
 # include <sys/ioctl.h>
 
-# define CMD_NOT_FOUND 127
-# define PERMISSION_DENIED 126
-# define EXIT_FAILURE 1
-# define EXIT_SUCCESS 0
-# define FILE_NOT_FOUND 2
-# define INVALID_INPUT 3
 # define PIPE_ERROR 4
 # define FORK_ERROR 5
-# define DUPLICATE_ERROR 6
-# define EXEC_ERROR 7
-# define MEMORY_ERROR 8
 
 # define MAX_FILES 1024
 # define MSG_ERROR_FILE "No such file or directory"
@@ -53,13 +44,6 @@ typedef struct s_parse
 	int		in_single;
 	int		in_double;
 }	t_parse;
-
-typedef struct s_argv
-{
-	char	**tokens; // Tableau des arguments finaux
-	int		token_count; // Nombre d'arguments stockés
-	int		token_capacity; // Capacité max avant réallocation
-}	t_argv;
 
 typedef struct s_env_ms
 {
@@ -79,7 +63,6 @@ typedef struct s_data
 	int			exit_code;
 	char		**my_envp;
 	t_env_ms	*env_ms;
-	char		**argv;
 	bool		is_reading;
 	char		*oldpwd;
 	char		*pwd;
@@ -94,7 +77,6 @@ typedef struct s_command
 	int		fd_out;
 	char	*input_file;
 	char	*output_file;
-	char	*limiter;
 	char	**limiters;
 	int		trunc;
 	int		append;
@@ -109,14 +91,13 @@ typedef struct s_pipeline
 	pid_t		*pid;
 	int			start;
 	int			pipe_cnt;
-	int			cmd_count;
+	int			cmd_count; // garder??
 }	t_pipeline;
 
 //-------------------------------UTILS-------------------------------
 
 // input_lexer
 void		input_lexer(char *input, t_data *data);
-void		skip_whitespace(const char *str, int *i);
 
 // lexer_parser
 char		*parse_lexer(char *line, int *i, t_data *data);
@@ -129,15 +110,12 @@ void		check_and_expand_wildcard(char **input);
 int			check_unclosed_quotes(const char *line);
 void		init_parse(t_parse *parse, int size);
 void		append_char(t_parse *parse, char c);
-void		free_tokens(char **tokens);
 bool		handle_check_var(char *line, int *i, t_data *data, t_parse *parse);
 void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 
 //utils wildcard
-bool		handle_check_wildcard(char *line, int *i, t_parse *parse);
 void		expand_wildcard(char **str);
 char		*extract_word(char *input, int *i, int *in_single, int *in_double);
-// char		**expand_wildcard(char **argv);
 
 //check_and_expand_operators
 void		check_and_expand_operators(char **input);
@@ -147,18 +125,6 @@ void		format_operators_and_redirections(char **input);
 
 //check_syntax_error
 int			check_syntax_errors(char *input);
-
-// // utils_token
-// int			check_unclosed_quotes(const char *line);
-// void		init_parse(t_parse *parse, int size);
-// void		append_char(t_parse *parse, char c);
-// void		handle_parse_token(const char *line, int *i, t_parse *parse);
-// void		free_tokens(char **tokens);
-// bool		handle_check_var(char *line, int *i, t_data *data, t_parse *parse);
-
-// // token_parser
-// char		*parse_token(char *line, int *i, t_data *data);
-// void		handle_variable(char *line, int *i, t_parse *parse, t_data *data);
 
 // token_parser_utils
 int			is_double_operator(const char *input, int i);
@@ -172,11 +138,6 @@ void		change_dir(int argc, char **argv, t_pipeline *pip, t_data *data);
 
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg);
-
-// quote_parser
-char		**utils_parse_args(const char *str);
-
-// token_parser
 
 // send_to_exec
 void		handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data);
@@ -292,5 +253,6 @@ void		handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data);
 t_pipeline	*parse_pipeline(char **tokens, t_data *data);
 void		print_pipeline(t_pipeline *pipeline);
 void		init_pipe_start(t_pipeline *pip);
+char		*rm_quotes(const char *str);
 
 #endif

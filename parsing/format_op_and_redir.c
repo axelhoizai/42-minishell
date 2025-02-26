@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format_op_and_redir.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 20:52:48 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:25:14 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,3 @@ void	format_operators_and_redirections(char **input)
 	free(*input);
 	*input = new_input;
 }
-
-//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne| echo > >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<
-//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne| echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<"
-//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne| echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ >| <| <<'
-//<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|
-//"<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|"
-//'<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|'
-
-//'<<ceci<est|un||test>|pour<|voir>le*>>parsing>>>actuel&&en&action>>>>>>>>>>si<<<<<<<<<<<il||||||||||||||fonctionne|'
-//echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<" | cat -e

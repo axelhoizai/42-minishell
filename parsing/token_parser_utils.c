@@ -6,13 +6,12 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 13:21:52 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/24 16:16:36 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 12:47:13 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/* Vérifie si le caractère est un opérateur simple */
 int	is_operator(char c)
 {
 	if (c == '|' || c == '&' || c == '<' || c == '>')
@@ -20,7 +19,6 @@ int	is_operator(char c)
 	return (0);
 }
 
-/* Vérifie si deux caractères forment un opérateur double (ex: '||', '&&', '>>', '<<') */
 int	is_double_operator(const char *input, int i)
 {
 	if (!input[i] || !input[i + 1])

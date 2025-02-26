@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:37:52 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/25 17:24:00 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:22:44 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,3 @@ int	pipex(t_pipeline *pip, t_data *data)
 		return (WEXITSTATUS(status));
 	return (data->exit_code);
 }
-
-//ls | rev | << 1 cat | << 2 rev | cat -e

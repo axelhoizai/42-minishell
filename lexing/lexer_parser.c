@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 02:46:56 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/25 14:42:47 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/26 13:24:14 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,6 @@ void	update_quote_state(const char *line, int *in_s, int *in_d, int i)
 		*in_d = !(*in_d);
 }
 
-//to use \ escape char
-// if (line[*i] == '\\' && parse->in_single == 0)
-// {
-// 	(*i)++;
-// 	if (line[*i])
-// 		append_char(parse, line[*i]);
-// 	(*i)++;
-// }
 static void	check_closing_quote(char *line, int *i, t_parse *parse)
 {
 	if (line[*i] && (((line[*i] == '\'' && parse->in_double == 1)
@@ -59,7 +51,6 @@ static void	handle_parse_token(const char *line, int *i, t_parse *parse)
 	}
 }
 
-//? function handling parsing
 char	*parse_lexer(char *line, int *i, t_data *data)
 {
 	t_parse	parse;
