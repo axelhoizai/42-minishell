@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 17:55:28 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 11:06:29 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,6 @@ void		handle_redirec(char **tokens, int *i, t_command *cmd, t_data *data);
 
 //pip_parser
 t_pipeline	*parse_pipeline(char **tokens, t_data *data);
-void		print_pipeline(t_pipeline *pipeline);
 void		init_pipe_start(t_pipeline *pip);
 char		*rm_quotes(const char *str);
 
