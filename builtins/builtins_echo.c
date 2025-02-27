@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:44:23 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/26 13:11:27 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 10:57:13 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	print_echo(char	**builtin_tab, int *i, int is_n)
 			printf("%s ", builtin_tab[*i]);
 		else if (builtin_tab[*i])
 			printf("%s", builtin_tab[*i]);
+		fflush(stdout);
 		(*i)++;
 	}
 	if (is_n == 1)

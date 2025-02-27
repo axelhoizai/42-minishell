@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 13:23:41 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 10:27:32 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	input_lexer(char *input, t_data *data)
 	lexingc = 0;
 	lexingv = lexer_args(input, data);
 	free(input);
+	// print_tab(lexingv);
 	if (lexingv && !lexingv[0])
 		return (free_lexer(lexingv, 0));
 	while (lexingv && lexingv[lexingc])

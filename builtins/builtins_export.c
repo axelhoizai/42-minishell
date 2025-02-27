@@ -6,7 +6,7 @@
 /*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 14:24:05 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 10:13:36 by mdemare          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static bool	chck_identifier(char *id, t_data *data)
 		return (false);
 	}
 	free(index);
-	data->exit_code = 0;
+	if (data->exit_code != 1)
+		data->exit_code = 0;
 	return (true);
 }
 
