@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:30:30 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 17:27:30 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:13:10 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*execute_checker(char **cmd, t_pipeline *pip, t_data *data)
 	char	*cmd_path;
 
 	cmd_path = get_path(cmd[0], data->my_envp);
-	if (!cmd_path)
+	if (!cmd_path && access(cmd[0], X_OK))
 	{
 		if (!ft_strncmp(cmd[0], "./", 2))
 		{

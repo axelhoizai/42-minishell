@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kalicem <kalicem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:18:58 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/27 13:46:46 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:13:44 by kalicem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ char	**lexer_args(char *input, t_data *data)
 {
 	char	**lexingv;
 	int		count;
-	int		open_parens;
 
-	open_parens = 0;
 	if (!input || check_unclosed_quotes(input))
 		return (ft_print_error(NULL, NULL, "Error: unclosed quotes"), NULL);
 	lexingv = ft_calloc(256, sizeof(char *));
@@ -70,9 +68,7 @@ void	input_lexer(char *input, t_data *data)
 {
 	char	**lexingv;
 	int		lexingc;
-	char	*error_token;
 
-	error_token = NULL;
 	if (!input || ft_strlen(input) == 0)
 		return ;
 	if (check_unclosed_quotes(input))
