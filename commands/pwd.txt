@@ -1,3 +1,0 @@
-pwd
-cd /tmp && pwd
-cd /usr && pwd

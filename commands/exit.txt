@@ -1,5 +1,0 @@
-exit
-exit 42
-exit 255
-exit 0
-exit 1

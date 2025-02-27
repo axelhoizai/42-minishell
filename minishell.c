@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:16:24 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 14:17:36 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 13:44:36 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,14 @@ static void	ft_init(char **envp, int *is_start, t_data *data)
 	path_tmp = NULL;
 	if (*is_start == 0)
 	{
-		path_tmp = getcwd(NULL, 0);
 		data->exit_code = 0;
 		data->is_reading = 0;
 		init_env_ms(envp, data);
 		*is_start = 1;
-		data->term = (t_data_term *)ft_calloc(sizeof(t_data_term), 1);
+		path_tmp = getcwd(NULL, 0);
 		data->oldpwd = ft_strdup(path_tmp);
 		data->pwd = ft_strdup(path_tmp);
 		free_var(path_tmp);
-		if (!data->term)
-			return ;
 	}
 }
 
@@ -67,10 +64,10 @@ int	main(int ac, char **av, char **envp)
 	int		exit_code;
 	t_data	data;
 
-	is_start = 0;
-	exit_code = 0;
 	(void)ac;
 	(void)av;
+	is_start = 0;
+	exit_code = 0;
 	rl_catch_signals = 0;
 	rl_catch_sigwinch = 0;
 	ft_bzero(&data, sizeof(t_data));

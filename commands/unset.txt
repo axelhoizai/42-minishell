@@ -1,3 +1,0 @@
-echo $USER 
-unset USER 
-echo $USER

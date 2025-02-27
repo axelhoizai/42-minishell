@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 20:52:32 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 14:25:55 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:05:16 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	handle_builtins(t_command *cmd, t_pipeline *pip, t_data *data)
 	if (ft_strcmp(cmd->args[0], "echo") == 0)
 		ft_echo(cmd->arg_cnt, cmd->args);
 	else if (ft_strcmp(cmd->args[0], "cd") == 0)
-		change_dir(cmd->arg_cnt, cmd->args, pip, data);
+		change_dir(cmd->arg_cnt, cmd->args, data);
 	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
-		get_dir(data, pip);
+		get_dir(data);
 	else if (ft_strcmp(cmd->args[0], "export") == 0)
 		ft_export(cmd->args, data);
 	else if (ft_strcmp(cmd->args[0], "unset") == 0)
@@ -61,13 +61,17 @@ static void	handle_exec(char **argv, t_data *data, t_pipeline *pip, int *fd_std)
 		here_doc_init(pip);
 	if (is_pipe(argv) && pip->start != pip->pipe_cnt && pip->pipe_cnt > 0)
 	{
+		if (data->exit_code == 130)
+			data->exit_code = 0;
 		data->exit_code = pipex(pip, data);
 		free_pipeline(pip);
 	}
 	else if (is_builtin(pip->cmds[0]))
 		fds_dup(fd_std, pip, data);
-	else if (argv)
+	else if (pip)
 	{
+		if (data->exit_code == 130)
+			data->exit_code = 0;
 		simple_exec(pip, data);
 		if (pip)
 			free_pipeline(pip);

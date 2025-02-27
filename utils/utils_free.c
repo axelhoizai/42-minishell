@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:19:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 15:31:10 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 13:41:03 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,11 @@ void	free_tab(char **tab)
 	tab = NULL;
 }
 
-void	free_term(t_data *data)
-{
-	if (data->term)
-	{
-		free(data->term);
-		data->term = NULL;
-	}
-}
-
 void	free_execute(t_pipeline *pip, t_data *data, char *cmd_path)
 {
 	free_var(cmd_path);
 	ms_lstclear(&data->env_ms);
 	free_tab(data->my_envp);
-	free_term(data);
 	free_pipeline(pip);
 	free(data->pwd);
 	free(data->oldpwd);

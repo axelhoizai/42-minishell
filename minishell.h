@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:17:11 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/27 11:06:29 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:05:24 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ typedef struct s_env_ms
 	struct s_env_ms	*next;
 }	t_env_ms;
 
-typedef struct s_data_term
-{
-	struct termios	original_term;
-}	t_data_term;
-
 typedef struct s_data
 {
 	int			exit_code;
@@ -66,7 +61,6 @@ typedef struct s_data
 	bool		is_reading;
 	char		*oldpwd;
 	char		*pwd;
-	t_data_term	*term;
 }	t_data;
 
 typedef struct s_command
@@ -135,7 +129,7 @@ int			is_operator(char c);
 char		*get_prompt(t_env_ms *lst);
 
 //utils_cd
-void		change_dir(int argc, char **argv, t_pipeline *pip, t_data *data);
+void		change_dir(int argc, char **argv, t_data *data);
 
 //utils_error
 void		ft_print_error(char *builting, char *arg, char *msg);
@@ -151,7 +145,6 @@ bool		is_token_pipe(char *token);
 bool		is_builtin(t_command *cmd);
 
 // utils_debug
-void		print_tab(char **tab);
 void		print_lst(t_env_ms *lst);
 
 //utils_list
@@ -168,7 +161,7 @@ int			get_process_id(void);
 char		*get_uid(void);
 
 //utils_pwd
-void		get_dir(t_data *data, t_pipeline *pip);
+void		get_dir(t_data *data);
 void		update_pwd(void);
 void		update_oldpwd(void);
 
@@ -178,7 +171,6 @@ void		ft_echo(int argc, char **argv);
 // utils_free
 void		free_var(void *var);
 void		free_tab(char **tab);
-void		free_term(t_data *data);
 
 // utils signal
 void		setup_signal_handlers(void);

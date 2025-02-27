@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:02:47 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/27 10:13:36 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 13:55:11 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static bool	chck_identifier(char *id, t_data *data)
 
 static void	add_var(char *key, char *value, char **argv, t_data *data)
 {
-	int		i;
+	int	i;
 
 	i = 1;
 	while (argv[i] && argv[i][0] != '$')

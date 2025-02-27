@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:13:59 by ahoizai           #+#    #+#             */
-/*   Updated: 2025/02/26 13:11:36 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 13:40:47 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void	handle_exit(t_command *cmd, t_pipeline *pip, t_data *data)
 		}
 		data->is_reading = false;
 		rl_clear_history();
-		free_term(data);
 		free_data(data);
 		exit(exit_code);
 	}

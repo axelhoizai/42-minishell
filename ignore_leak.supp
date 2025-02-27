@@ -1,6 +1,0 @@
-{
-ignore_libreadline_leak
-Memcheck:Leak
-...
-obj:*/usr/lib/*libreadline.so*
-}

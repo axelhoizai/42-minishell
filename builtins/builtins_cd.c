@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdemare <mdemare@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:56:34 by mdemare           #+#    #+#             */
-/*   Updated: 2025/02/26 17:16:47 by mdemare          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:05:09 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	free_change_dir(t_pipeline *pip, char *cwd, char *tmpdir, char *tmp)
+static void	free_change_dir(char *cwd, char *tmpdir, char *tmp)
 {
-	(void)pip;
 	if (cwd)
 		free(cwd);
 	if (tmpdir)
@@ -67,7 +66,7 @@ static void	ft_chdir(char *path)
 	chdir(path);
 }
 
-void	change_dir(int argc, char **argv, t_pipeline *pip, t_data *data)
+void	change_dir(int argc, char **argv, t_data *data)
 {
 	char	*tmp;
 	char	*dir;
@@ -93,5 +92,5 @@ void	change_dir(int argc, char **argv, t_pipeline *pip, t_data *data)
 			ft_print_error("cd", dir, "No such file or directory");
 		}
 	}
-	free_change_dir(pip, cwd, tmpdir, tmp);
+	free_change_dir(cwd, tmpdir, tmp);
 }

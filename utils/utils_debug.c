@@ -6,23 +6,11 @@
 /*   By: ahoizai <ahoizai@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:17:22 by mdemare           #+#    #+#             */
-/*   Updated: 2025/01/28 11:31:37 by ahoizai          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:01:50 by ahoizai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	print_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab && tab[i])
-	{
-		printf("[%d] : \'%s\'\n", i, tab[i]);
-		i++;
-	}
-}
 
 void	print_lst(t_env_ms *lst)
 {
