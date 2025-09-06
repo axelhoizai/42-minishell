@@ -1,6 +1,6 @@
 [![minishell](https://github.com/ayogun/42-project-badges/blob/main/badges/minishelle.png)](https://github.com/ayogun/42-project-badges/blob/main/badges/minishelle.png)
 
-#  42 Minishell - 100% ✅  
+#  42 Minishell - 110% ✅  
 
 **Minishell** is a project that consists of creating a **simple Unix shell**.  
 It allows you to explore the fundamentals of **process management, command parsing, signals, and system calls** by re-implementing basic shell behavior.  
